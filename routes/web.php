@@ -53,9 +53,9 @@ Route::middleware(['auth', 'pasien'])->group(function () {
     Route::get('/pasien/edukasi', [PasienController::class, 'edukasi'])->name('pasien.edukasi');
     Route::get('/pasien/catatan', [PasienController::class, 'catatan'])->name('pasien.catatan');
     Route::get('/pasien/notifikasi', function () {
-        return 'Notifikasi page';
+        return view('pasien.notifikasi');
     })->name('pasien.notifikasi');
     Route::get('/pasien/profile', function () {
-        return 'Profile page';
+        return view('pasien.profile');
     })->name('pasien.profile');
 });
