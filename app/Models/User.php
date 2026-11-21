@@ -7,7 +7,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable
 {
@@ -23,7 +23,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
         'age',
         'address',
     ];
@@ -39,7 +38,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
      * @return array<string, string>
      */
@@ -57,37 +56,32 @@ class User extends Authenticatable
 
     public function isPasien()
     {
-        try {
-            if (!Schema::hasColumn('users', 'role')) {
-                return true;
-            }
-            return $this->role === self::ROLE_PASIEN;
-        } catch (\Exception $e) {
-            return true;
-        }
+        return true;
     }
 
     public function isPerawat()
     {
-        try {
-            if (!Schema::hasColumn('users', 'role')) {
-                return false;
-            }
-            return $this->role === self::ROLE_PERAWAT;
-        } catch (\Exception $e) {
-            return false;
-        }
+        return false;
     }
 
     public function isAdmin()
     {
-        try {
-            if (!Schema::hasColumn('users', 'role')) {
-                return false;
-            }
-            return $this->role === self::ROLE_ADMIN;
-        } catch (\Exception $e) {
-            return false;
-        }
+        return false;
+    }
+
+    public function newQuery($excludeDeleted = true)
+    {
+        return parent::newQuery($excludeDeleted)->select([
+            'id',
+            'name',
+            'email',
+            'email_verified_at',
+            'password',
+            'remember_token',
+            'created_at',
+            'updated_at',
+            'age',
+            'address'
+        ]);
     }
 }
