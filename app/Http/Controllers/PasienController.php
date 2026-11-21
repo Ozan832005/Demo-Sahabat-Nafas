@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\TherapyHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,7 +23,12 @@ class PasienController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
-        return view('pasien.dashboard', compact('user'));
+        $therapyHistories = TherapyHistory::where('user_id', $user->id)->latest()->get();
+        $currentLayer = $therapyHistories->count() > 0 ? min($therapyHistories->first()->layer, 4) : 0;
+        $totalTherapySessions = $therapyHistories->count();
+        $unreadNotifications = 3; // Contoh notifikasi belum dibaca
+        
+        return view('pasien.dashboard', compact('user', 'therapyHistories', 'currentLayer', 'totalTherapySessions', 'unreadNotifications'));
     }
 
     public function terapi()
