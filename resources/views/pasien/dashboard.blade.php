@@ -175,10 +175,10 @@
                         @foreach($therapyHistories->take(4) as $history)
                             <div class="flex items-center gap-5 p-5 border border-gray-100 rounded-2xl hover:border-teal-200 hover:bg-teal-50/30 transition-all">
                                 <div class="w-14 h-14 bg-gradient-to-br from-teal-400 to-teal-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg">
-                                    L{{ $history->layer }}
+                                    L{{ $history->layer ?? 1 }}
                                 </div>
                                 <div class="flex-1">
-                                    <p class="font-bold text-gray-800">Sesi Terapi Layer {{ $history->layer }}</p>
+                                    <p class="font-bold text-gray-800">Sesi Terapi Layer {{ $history->layer ?? 1 }}</p>
                                     <p class="text-sm text-gray-500">{{ $history->created_at->format('d F Y, H:i') }}</p>
                                 </div>
                                 <span class="px-4 py-2 bg-green-100 text-green-700 text-xs font-bold rounded-full">Selesai</span>
