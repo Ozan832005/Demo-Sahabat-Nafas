@@ -7,7 +7,6 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Schema;
 
 class User extends Authenticatable
 {
@@ -57,23 +56,16 @@ class User extends Authenticatable
 
     public function isPasien()
     {
-        try {
-            if (!Schema::hasColumn('users', 'role')) {
-                return true;
-            }
-            return $this->role === self::ROLE_PASIEN;
-        } catch (\Exception $e) {
-            return true;
-        }
+        return isset($this->role) && $this->role === self::ROLE_PASIEN;
     }
 
     public function isPerawat()
     {
-        return $this->role === self::ROLE_PERAWAT;
+        return isset($this->role) && $this->role === self::ROLE_PERAWAT;
     }
 
     public function isAdmin()
     {
-        return $this->role === self::ROLE_ADMIN;
+        return isset($this->role) && $this->role === self::ROLE_ADMIN;
     }
 }
