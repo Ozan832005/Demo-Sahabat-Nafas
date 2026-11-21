@@ -1,246 +1,210 @@
-@extends('layouts.app')
-
-@section('content')
-<div class="pt-32 pb-12">
-    <div class="max-w-7xl mx-auto px-4">
+<x-pasien-layout>
+    <div class="pt-40 pb-16">
         <!-- Welcome Section -->
-        <div class="mb-10">
-            <div class="flex items-center justify-between flex-wrap gap-4">
+        <div class="mb-12">
+            <div class="flex items-center gap-6 mb-4">
+                <div class="w-16 h-16 gradient-teal rounded-2xl flex items-center justify-center text-white text-3xl shadow-xl shadow-teal-300/40">
+                    👋
+                </div>
                 <div>
-                    <h1 class="text-3xl font-bold" style="color: var(--text-primary)">Selamat Datang, {{ $user->name }}! 👋</h1>
-                    <p class="mt-2 text-lg" style="color: var(--text-secondary)">Berikut adalah ringkasan progres terapi PPOK Anda hari ini.</p>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span class="text-sm px-4 py-2 rounded-full bg-gradient-to-r from-teal-400 to-teal-600 text-white font-medium">
-                        🟢 Terapi Aktif
-                    </span>
+                    <h1 class="text-4xl font-extrabold" style="color: var(--text-primary)">Selamat Datang, {{ $user->name }}!</h1>
+                    <p class="text-lg mt-1" style="color: var(--text-secondary)">Semangat terus dalam perjalanan terapi pernapasanmu hari ini 💪</p>
                 </div>
             </div>
         </div>
 
-        <!-- Statistik Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-            <!-- Card Progres Layer -->
-            <div class="widget-card">
-                <div class="widget-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
-                </div>
-                <h3 class="text-2xl font-bold mb-2">Layer {{ $currentLayer }}/4</h3>
-                <p class="text-sm mb-4" style="color: var(--text-secondary)">Progres terapi saat ini</p>
-                <div class="w-full bg-gray-200 rounded-full h-3 mb-2">
-                    <div class="gradient-teal h-3 rounded-full transition-all duration-500" style="width: {{ ($currentLayer / 4) * 100 }}%"></div>
-                </div>
-                <div class="widget-arrow">
-                    <span>Lanjutkan Terapi</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-                    </svg>
-                </div>
-            </div>
-
-            <!-- Card Sesi Terapi -->
-            <div class="widget-card">
-                <div class="widget-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                    </svg>
-                </div>
-                <h3 class="text-2xl font-bold mb-2">{{ $totalTherapySessions }} Sesi</h3>
-                <p class="text-sm mb-4" style="color: var(--text-secondary)">Total riwayat terapi</p>
-                <div class="flex items-center gap-2 text-sm text-blue-600">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-                    </svg>
-                    <span>+2 sesi minggu ini</span>
-                </div>
-            </div>
-
-            <!-- Card Notifikasi -->
-            <div class="widget-card">
-                <div class="widget-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                    </svg>
-                </div>
-                <h3 class="text-2xl font-bold mb-2">{{ $unreadNotifications }} Baru</h3>
-                <p class="text-sm mb-4" style="color: var(--text-secondary)">Catatan dari perawat</p>
-                <div class="flex items-center gap-2 text-sm text-amber-600">
-                    <span class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></span>
-                    <span>Menunggu dibaca</span>
-                </div>
-            </div>
-
-            <!-- Card Status Kesehatan -->
-            <div class="widget-card">
-                <div class="widget-icon" style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                    </svg>
-                </div>
-                <h3 class="text-2xl font-bold mb-2">Baik</h3>
-                <p class="text-sm mb-4" style="color: var(--text-secondary)">Status kesehatan hari ini</p>
-                <div class="flex items-center gap-2 text-sm text-green-600">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                    </svg>
-                    <span>Tidak ada keluhan</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Main Content Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Progres Terapi Layer -->
-            <div class="lg:col-span-2">
-                <div class="card-hover p-8 rounded-2xl" style="background: var(--bg-secondary); border: 1px solid var(--border-color);">
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-xl font-bold" style="color: var(--text-primary)">Progres Layer Terapi</h2>
-                        <a href="{{ route('pasien.terapi') }}" class="text-sm font-medium text-teal-600 hover:text-teal-700 transition">
-                            Lihat Detail →
-                        </a>
-                    </div>
-                    
-                    <div class="grid grid-cols-5 gap-4">
-                        @for ($i = 0; $i <= 4; $i++)
-                            <div class="text-center">
-                                <div class="w-full aspect-square rounded-2xl flex flex-col items-center justify-center transition-all duration-300 @if($i <= $currentLayer) gradient-teal text-white shadow-lg shadow-teal-200 @else bg-gray-100 text-gray-400 @endif">
-                                    <span class="text-2xl font-bold">Layer {{ $i }}</span>
-                                    <span class="text-xs mt-1 opacity-80">
-                                        @if($i == 0) Identitas @endif
-                                        @if($i == 1) Audit Inhaler @endif
-                                        @if($i == 2) Opsi & Mitos @endif
-                                        @if($i == 3) Nilai & Simulasi @endif
-                                        @if($i == 4) Paspor @endif
-                                    </span>
-                                </div>
-                                <div class="mt-3">
-                                    @if($i < $currentLayer)
-                                        <span class="text-xs text-green-600 font-medium">✓ Selesai</span>
-                                    @elseif($i == $currentLayer)
-                                        <span class="text-xs text-teal-600 font-medium animate-pulse">⚡ Sedang Berjalan</span>
-                                    @else
-                                        <span class="text-xs text-gray-400 font-medium">🔒 Tertunda</span>
-                                    @endif
-                                </div>
-                            </div>
-                        @endfor
-                    </div>
-                </div>
-            </div>
-
-            <!-- Notifikasi Terbaru -->
-            <div>
-                <div class="card-hover p-8 rounded-2xl h-full" style="background: var(--bg-secondary); border: 1px solid var(--border-color);">
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-xl font-bold" style="color: var(--text-primary)">Notifikasi</h2>
-                        <span class="px-3 py-1 rounded-full bg-red-500 text-white text-xs font-bold">{{ $unreadNotifications }}</span>
-                    </div>
-                    
-                    <div class="space-y-4">
-                        <div class="p-4 rounded-xl bg-amber-50 border border-amber-100 transition-all hover:shadow-md">
-                            <div class="flex items-start gap-3">
-                                <div class="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center text-white flex-shrink-0">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                                    </svg>
-                                </div>
-                                <div class="flex-1">
-                                    <p class="text-sm font-semibold" style="color: var(--text-primary)">Catatan Perawat</p>
-                                    <p class="text-xs mt-1" style="color: var(--text-secondary)">Ingat untuk rutin menggunakan inhaler sesuai jadwal ya!</p>
-                                    <p class="text-xs mt-2 text-amber-600">2 jam yang lalu</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="p-4 rounded-xl bg-blue-50 border border-blue-100 transition-all hover:shadow-md">
-                            <div class="flex items-start gap-3">
-                                <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white flex-shrink-0">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                </div>
-                                <div class="flex-1">
-                                    <p class="text-sm font-semibold" style="color: var(--text-primary)">Sesi Terapi Selesai</p>
-                                    <p class="text-xs mt-1" style="color: var(--text-secondary)">Layer 1 telah selesai dikerjakan. Lanjutkan ke Layer berikutnya!</p>
-                                    <p class="text-xs mt-2 text-blue-600">Kemarin</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="p-4 rounded-xl bg-green-50 border border-green-100 transition-all hover:shadow-md">
-                            <div class="flex items-start gap-3">
-                                <div class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white flex-shrink-0">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                                    </svg>
-                                </div>
-                                <div class="flex-1">
-                                    <p class="text-sm font-semibold" style="color: var(--text-primary)">Peningkatan Progres!</p>
-                                    <p class="text-xs mt-1" style="color: var(--text-secondary)">Anda telah menyelesaikan 75% dari seluruh sesi terapi.</p>
-                                    <p class="text-xs mt-2 text-green-600">3 hari yang lalu</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Riwayat Terapi Terbaru -->
-        <div class="mt-8">
-            <div class="card-hover p-8 rounded-2xl" style="background: var(--bg-secondary); border: 1px solid var(--border-color);">
+        <!-- Statistic Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 mb-12">
+            <!-- Card 1: Layer Terapi Saat Ini -->
+            <div class="bg-white rounded-[28px] p-8 shadow-[0_15px_50px_rgba(0,0,0,0.08)] border border-gray-100 hover:shadow-[0_25px_70px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-2">
                 <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-bold" style="color: var(--text-primary)">Riwayat Hasil Terapi Terbaru</h2>
-                    <a href="{{ route('pasien.catatan') }}" class="text-sm font-medium text-teal-600 hover:text-teal-700 transition">
-                        Lihat Semua Riwayat →
-                    </a>
+                    <div class="w-14 h-14 bg-gradient-to-br from-teal-400 to-teal-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-teal-300/50">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <span class="px-4 py-1.5 bg-teal-50 text-teal-600 text-xs font-bold rounded-full">Progres</span>
                 </div>
-                
-                @if($therapyHistories->count() > 0)
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            <thead>
-                                <tr class="border-b" style="border-color: var(--border-color)">
-                                    <th class="text-left py-4 px-4 text-sm font-semibold" style="color: var(--text-secondary)">Tanggal</th>
-                                    <th class="text-left py-4 px-4 text-sm font-semibold" style="color: var(--text-secondary)">Layer</th>
-                                    <th class="text-left py-4 px-4 text-sm font-semibold" style="color: var(--text-secondary)">Skor mMRC</th>
-                                    <th class="text-left py-4 px-4 text-sm font-semibold" style="color: var(--text-secondary)">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($therapyHistories->take(5) as $history)
-                                    <tr class="border-b hover:bg-gray-50 transition" style="border-color: var(--border-color)">
-                                        <td class="py-4 px-4 text-sm" style="color: var(--text-primary)">{{ $history->created_at->format('d M Y') }}</td>
-                                        <td class="py-4 px-4">
-                                            <span class="px-3 py-1 rounded-full text-xs font-medium gradient-teal text-white">
-                                                Layer {{ $history->layer ?? '-' }}
-                                            </span>
-                                        </td>
-                                        <td class="py-4 px-4 text-sm" style="color: var(--text-primary)">{{ $history->mmrc_score ?? '-' }}/4</td>
-                                        <td class="py-4 px-4">
-                                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                                                Selesai
-                                            </span>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                <p class="text-sm font-semibold text-gray-500 mb-2">Layer Terapi Saat Ini</p>
+                <p class="text-5xl font-extrabold" style="color: var(--gradient-end)">Layer {{ $currentLayer }}</p>
+            </div>
+
+            <!-- Card 2: Total Sesi Terapi -->
+            <div class="bg-white rounded-[28px] p-8 shadow-[0_15px_50px_rgba(0,0,0,0.08)] border border-gray-100 hover:shadow-[0_25px_70px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-2">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="w-14 h-14 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-300/50">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
                     </div>
-                @else
-                    <div class="text-center py-12">
-                        <div class="text-6xl mb-4">📋</div>
-                        <h3 class="text-lg font-semibold mb-2" style="color: var(--text-primary)">Belum ada riwayat terapi</h3>
-                        <p class="text-sm mb-6" style="color: var(--text-secondary)">Mulai sesi terapi pertama Anda untuk melihat riwayat di sini.</p>
-                        <a href="{{ route('pasien.terapi') }}" class="inline-block px-6 py-3 rounded-xl bg-gradient-to-r from-teal-400 to-teal-600 text-white font-semibold hover:shadow-lg transition">
-                            Mulai Terapi Sekarang
-                        </a>
+                    <span class="px-4 py-1.5 bg-blue-50 text-blue-600 text-xs font-bold rounded-full">Total</span>
+                </div>
+                <p class="text-sm font-semibold text-gray-500 mb-2">Sesi Terapi Selesai</p>
+                <p class="text-5xl font-extrabold text-blue-600">{{ $totalTherapySessions }}</p>
+            </div>
+
+            <!-- Card 3: Notifikasi Baru -->
+            <div class="bg-white rounded-[28px] p-8 shadow-[0_15px_50px_rgba(0,0,0,0.08)] border border-gray-100 hover:shadow-[0_25px_70px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-2">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="w-14 h-14 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-orange-300/50">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
                     </div>
-                @endif
+                    <span class="px-4 py-1.5 bg-orange-50 text-orange-600 text-xs font-bold rounded-full">Baru</span>
+                </div>
+                <p class="text-sm font-semibold text-gray-500 mb-2">Notifikasi dari Perawat</p>
+                <p class="text-5xl font-extrabold text-orange-600">{{ $unreadNotifications }}</p>
+            </div>
+
+            <!-- Card 4: Target Terapi -->
+            <div class="bg-white rounded-[28px] p-8 shadow-[0_15px_50px_rgba(0,0,0,0.08)] border border-gray-100 hover:shadow-[0_25px_70px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-2">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-purple-300/50">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <span class="px-4 py-1.5 bg-purple-50 text-purple-600 text-xs font-bold rounded-full">Target</span>
+                </div>
+                <p class="text-sm font-semibold text-gray-500 mb-2">Target Layer Berikutnya</p>
+                <p class="text-5xl font-extrabold text-purple-600">Layer {{ min($currentLayer + 1, 4) }}</p>
+            </div>
+        </div>
+
+        <!-- Progres Layer Terapi Section -->
+        <div class="bg-white rounded-[28px] p-10 shadow-[0_15px_50px_rgba(0,0,0,0.08)] border border-gray-100 mb-12">
+            <div class="flex items-center justify-between mb-10">
+                <div>
+                    <h2 class="text-2xl font-extrabold" style="color: var(--text-primary)">Progres Layer Terapi</h2>
+                    <p class="text-gray-500 mt-1">Lacak kemajuan terapi pernapasanmu dari Layer 0 hingga Layer 4</p>
+                </div>
+                <div class="px-6 py-3 bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-xl font-bold shadow-lg shadow-teal-300/40">
+                    {{ round(($currentLayer / 4) * 100) }}% Selesai
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+                @for ($i = 0; $i <= 4; $i++)
+                    <div class="relative group">
+                        <div class="h-40 rounded-[24px] flex flex-col items-center justify-center transition-all duration-500 @if($i <= $currentLayer) bg-gradient-to-br from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/50 scale-105 @else bg-gray-50 border-2 border-gray-200 text-gray-400 @endif">
+                            <span class="text-5xl font-extrabold mb-3">Layer {{ $i }}</span>
+                            @if($i < $currentLayer)
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="text-white">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            @elseif($i == $currentLayer)
+                                <div class="w-6 h-6 bg-white rounded-full animate-pulse"></div>
+                                <span class="text-sm font-bold mt-2">Sedang Berjalan</span>
+                            @else
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            @endif
+                        </div>
+                        @if($i < 4)
+                            <div class="hidden md:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{ $i < $currentLayer ? '#14b8a6' : '#d1d5db' }}" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </div>
+                        @endif
+                    </div>
+                @endfor
+            </div>
+        </div>
+
+        <!-- Grid untuk Notifikasi dan Riwayat -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Notifikasi Terbaru -->
+            <div class="bg-white rounded-[28px] p-10 shadow-[0_15px_50px_rgba(0,0,0,0.08)] border border-gray-100">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="text-2xl font-extrabold" style="color: var(--text-primary)">Notifikasi Terbaru</h2>
+                        <p class="text-gray-500 mt-1">Catatan penting dari perawat untukmu</p>
+                    </div>
+                    <a href="{{ route('pasien.catatan') }}" class="text-teal-600 font-bold hover:text-teal-700 transition-colors">Lihat Semua →</a>
+                </div>
+
+                <div class="space-y-5">
+                    <div class="flex items-start gap-5 p-5 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-2xl border border-orange-100 hover:shadow-lg transition-shadow">
+                        <div class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center text-white flex-shrink-0">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-gray-800">Catatan dari Perawat</p>
+                            <p class="text-sm text-gray-600 mt-1">Bagus! Pertahankan frekuensi pernapasan yang konsisten hari ini.</p>
+                            <p class="text-xs text-gray-400 mt-2">2 jam yang lalu</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-5 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 hover:shadow-lg transition-shadow">
+                        <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center text-white flex-shrink-0">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-gray-800">Pencapaian Baru!</p>
+                            <p class="text-sm text-gray-600 mt-1">Kamu telah menyelesaikan 5 sesi terapi berturut-turut. Luar biasa!</p>
+                            <p class="text-xs text-gray-400 mt-2">Kemarin</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-5 p-5 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border border-green-100 hover:shadow-lg transition-shadow">
+                        <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center text-white flex-shrink-0">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-gray-800">Jadwal Terapi</p>
+                            <p class="text-sm text-gray-600 mt-1">Ingat untuk melakukan sesi terapi pagi ini sekitar pukul 09.00 WIB.</p>
+                            <p class="text-xs text-gray-400 mt-2">3 hari yang lalu</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Riwayat Hasil Terapi Terbaru -->
+            <div class="bg-white rounded-[28px] p-10 shadow-[0_15px_50px_rgba(0,0,0,0.08)] border border-gray-100">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="text-2xl font-extrabold" style="color: var(--text-primary)">Riwayat Hasil Terapi</h2>
+                        <p class="text-gray-500 mt-1">Catatan hasil terapi pernapasanmu</p>
+                    </div>
+                    <a href="{{ route('pasien.catatan') }}" class="text-teal-600 font-bold hover:text-teal-700 transition-colors">Lihat Semua →</a>
+                </div>
+
+                <div class="space-y-5">
+                    @if($therapyHistories->count() > 0)
+                        @foreach($therapyHistories->take(4) as $history)
+                            <div class="flex items-center gap-5 p-5 border border-gray-100 rounded-2xl hover:border-teal-200 hover:bg-teal-50/30 transition-all">
+                                <div class="w-14 h-14 bg-gradient-to-br from-teal-400 to-teal-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                                    L{{ $history->layer }}
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-bold text-gray-800">Sesi Terapi Layer {{ $history->layer }}</p>
+                                    <p class="text-sm text-gray-500">{{ $history->created_at->format('d F Y, H:i') }}</p>
+                                </div>
+                                <span class="px-4 py-2 bg-green-100 text-green-700 text-xs font-bold rounded-full">Selesai</span>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="text-center py-12">
+                            <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-5">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                </svg>
+                            </div>
+                            <p class="text-gray-500 font-semibold">Belum ada riwayat terapi</p>
+                            <p class="text-sm text-gray-400 mt-1">Mulai sesi terapi pertamamu hari ini!</p>
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
-</div>
-@endsection
+</x-pasien-layout>
