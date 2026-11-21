@@ -24,7 +24,11 @@ class PasienController extends Controller
     {
         $user = Auth::user();
         $therapyHistories = TherapyHistory::where('user_id', $user->id)->latest()->get();
-        $currentLayer = $therapyHistories->count() > 0 ? min($therapyHistories->first()->layer ?? 1, 4) : 0;
+        $currentLayer = 0;
+        if ($therapyHistories->count() > 0) {
+            $firstHistory = $therapyHistories->first();
+            $currentLayer = min($firstHistory->layer ?? 1, 4);
+        }
         $totalTherapySessions = $therapyHistories->count();
         $unreadNotifications = 3;
         $notifications = collect();

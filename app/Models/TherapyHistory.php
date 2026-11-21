@@ -15,7 +15,8 @@ class TherapyHistory extends Model
         'therapy_type',
         'duration',
         'notes',
-        'status'
+        'status',
+        'layer'
     ];
 
     public function user()

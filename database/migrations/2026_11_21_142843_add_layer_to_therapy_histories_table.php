@@ -6,23 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::table('therapy_histories', function (Blueprint $table) {
-            //
+            $table->integer('layer')->default(1)->after('status');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('therapy_histories', function (Blueprint $table) {
-            //
+            $table->dropColumn('layer');
         });
     }
 };
