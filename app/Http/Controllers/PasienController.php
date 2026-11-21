@@ -7,17 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class PasienController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware(function ($request, $next) {
-            if (!Auth::user()->isPasien()) {
-                abort(403);
-            }
-            return $next($request);
-        });
-    }
-
     public function dashboard()
     {
         $user = Auth::user();
