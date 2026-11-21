@@ -1,4 +1,6 @@
-<x-pasien-layout>
+@extends('layouts.app')
+@section('content')
+    @include('layouts.pasien-nav')
     <div class="pt-40 pb-16">
         <!-- Welcome Section -->
         <div class="mb-12">
@@ -197,4 +199,4 @@
             </div>
         </div>
     </div>
-</x-pasien-layout>
+@endsection
