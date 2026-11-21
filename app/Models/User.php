@@ -7,7 +7,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Schema;
 
 class User extends Authenticatable
 {
@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
         'age',
         'address',
     ];
@@ -38,7 +39,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
@@ -56,32 +57,23 @@ class User extends Authenticatable
 
     public function isPasien()
     {
-        return true;
+        try {
+            if (!Schema::hasColumn('users', 'role')) {
+                return true;
+            }
+            return $this->role === self::ROLE_PASIEN;
+        } catch (\Exception $e) {
+            return true;
+        }
     }
 
     public function isPerawat()
     {
-        return false;
+        return $this->role === self::ROLE_PERAWAT;
     }
 
     public function isAdmin()
     {
-        return false;
-    }
-
-    public function newQuery($excludeDeleted = true)
-    {
-        return parent::newQuery($excludeDeleted)->select([
-            'id',
-            'name',
-            'email',
-            'email_verified_at',
-            'password',
-            'remember_token',
-            'created_at',
-            'updated_at',
-            'age',
-            'address'
-        ]);
+        return $this->role === self::ROLE_ADMIN;
     }
 }

@@ -10,10 +10,10 @@ class PasienMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check()) {
+        if (auth()->check() && auth()->user()->isPasien()) {
             return $next($request);
         }
         
-        abort(403, 'Akses ditolak.');
+        abort(403, 'Akses ditolak. Hanya pasien yang dapat mengakses halaman ini.');
     }
 }
