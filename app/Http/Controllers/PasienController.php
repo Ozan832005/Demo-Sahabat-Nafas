@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TherapyHistory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PasienController extends Controller
 {
@@ -21,9 +21,18 @@ class PasienController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
-        $therapyHistories = TherapyHistory::where('user_id', $user->id)->latest()->get();
-        $totalTherapySessions = $therapyHistories->count();
-        $currentLayer = $totalTherapySessions > 0 ? min($totalTherapySessions, 4) : 0;
+        
+        $therapyHistories = collect();
+        $totalTherapySessions = 0;
+        $currentLayer = 0;
+        
+        try {
+            $therapyHistories = DB::table('therapy_histories')->where('user_id', $user->id)->latest()->get();
+            $totalTherapySessions = count($therapyHistories);
+            $currentLayer = $totalTherapySessions > 0 ? min($totalTherapySessions, 4) : 0;
+        } catch (\Exception $e) {
+        }
+        
         $unreadNotifications = 3;
         $notifications = collect();
         

@@ -2,7 +2,6 @@
 @section('content')
     @include('layouts.pasien-nav')
     <div class="pt-40 pb-16">
-        <!-- Welcome Section -->
         <div class="mb-12">
             <div class="flex items-center gap-6 mb-4">
                 <div class="w-16 h-16 gradient-teal rounded-2xl flex items-center justify-center text-white text-3xl shadow-xl shadow-teal-300/40">
@@ -17,9 +16,7 @@
             </div>
         </div>
 
-        <!-- Statistic Cards Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 mb-12">
-            <!-- Card 1: Layer Terapi Saat Ini -->
             <div class="bg-white rounded-[28px] p-8 shadow-[0_15px_50px_rgba(0,0,0,0.08)] border border-gray-100 hover:shadow-[0_25px_70px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-2">
                 <div class="flex items-center justify-between mb-6">
                     <div class="w-14 h-14 bg-gradient-to-br from-teal-400 to-teal-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-teal-300/50">
@@ -33,12 +30,11 @@
                 <p class="text-5xl font-extrabold" style="color: var(--gradient-end)">Layer {{ $currentLayer }}</p>
             </div>
 
-            <!-- Card 2: Total Sesi Terapi -->
             <div class="bg-white rounded-[28px] p-8 shadow-[0_15px_50px_rgba(0,0,0,0.08)] border border-gray-100 hover:shadow-[0_25px_70px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-2">
                 <div class="flex items-center justify-between mb-6">
                     <div class="w-14 h-14 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-300/50">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 002-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                         </svg>
                     </div>
                     <span class="px-4 py-1.5 bg-blue-50 text-blue-600 text-xs font-bold rounded-full">Total</span>
@@ -47,7 +43,6 @@
                 <p class="text-5xl font-extrabold text-blue-600">{{ $totalTherapySessions }}</p>
             </div>
 
-            <!-- Card 3: Notifikasi Baru -->
             <div class="bg-white rounded-[28px] p-8 shadow-[0_15px_50px_rgba(0,0,0,0.08)] border border-gray-100 hover:shadow-[0_25px_70px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-2">
                 <div class="flex items-center justify-between mb-6">
                     <div class="w-14 h-14 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-orange-300/50">
@@ -61,7 +56,6 @@
                 <p class="text-5xl font-extrabold text-orange-600">{{ $unreadNotifications }}</p>
             </div>
 
-            <!-- Card 4: Target Terapi -->
             <div class="bg-white rounded-[28px] p-8 shadow-[0_15px_50px_rgba(0,0,0,0.08)] border border-gray-100 hover:shadow-[0_25px_70px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-2">
                 <div class="flex items-center justify-between mb-6">
                     <div class="w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-purple-300/50">
@@ -76,7 +70,6 @@
             </div>
         </div>
 
-        <!-- Progres Layer Terapi Section -->
         <div class="bg-white rounded-[28px] p-10 shadow-[0_15px_50px_rgba(0,0,0,0.08)] border border-gray-100 mb-12">
             <div class="flex items-center justify-between mb-10">
                 <div>
@@ -118,9 +111,7 @@
             </div>
         </div>
 
-        <!-- Grid untuk Notifikasi dan Riwayat -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Notifikasi Terbaru -->
             <div class="bg-white rounded-[28px] p-10 shadow-[0_15px_50px_rgba(0,0,0,0.08)] border border-gray-100">
                 <div class="flex items-center justify-between mb-8">
                     <div>
@@ -142,7 +133,7 @@
                                 <div class="flex-1">
                                     <p class="font-bold text-gray-800">{{ $notification->title ?? 'Catatan dari Perawat' }}</p>
                                     <p class="text-sm text-gray-600 mt-1">{{ $notification->message ?? '' }}</p>
-                                    <p class="text-xs text-gray-400 mt-2">{{ $notification->created_at->diffForHumans() }}</p>
+                                    <p class="text-xs text-gray-400 mt-2">{{ isset($notification->created_at) ? $notification->created_at->diffForHumans() : '' }}</p>
                                 </div>
                             </div>
                         @endforeach
@@ -160,7 +151,6 @@
                 </div>
             </div>
 
-            <!-- Riwayat Hasil Terapi Terbaru -->
             <div class="bg-white rounded-[28px] p-10 shadow-[0_15px_50px_rgba(0,0,0,0.08)] border border-gray-100">
                 <div class="flex items-center justify-between mb-8">
                     <div>
@@ -171,15 +161,15 @@
                 </div>
 
                 <div class="space-y-5">
-                    @if($therapyHistories->count() > 0)
-                        @foreach($therapyHistories->take(4) as $history)
+                    @if($therapyHistories && count($therapyHistories) > 0)
+                        @foreach($therapyHistories->take(4) as $index => $history)
                             <div class="flex items-center gap-5 p-5 border border-gray-100 rounded-2xl hover:border-teal-200 hover:bg-teal-50/30 transition-all">
                                 <div class="w-14 h-14 bg-gradient-to-br from-teal-400 to-teal-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg">
-                                    L{{ $loop->iteration }}
+                                    L{{ $index + 1 }}
                                 </div>
                                 <div class="flex-1">
-                                    <p class="font-bold text-gray-800">Sesi Terapi Layer {{ $loop->iteration }}</p>
-                                    <p class="text-sm text-gray-500">{{ $history->created_at->format('d F Y, H:i') }}</p>
+                                    <p class="font-bold text-gray-800">Sesi Terapi Layer {{ $index + 1 }}</p>
+                                    <p class="text-sm text-gray-500">{{ isset($history->created_at) ? $history->created_at->format('d F Y, H:i') : '' }}</p>
                                 </div>
                                 <span class="px-4 py-2 bg-green-100 text-green-700 text-xs font-bold rounded-full">Selesai</span>
                             </div>
@@ -188,7 +178,7 @@
                         <div class="text-center py-12">
                             <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-5">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 002-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                                 </svg>
                             </div>
                             <p class="text-gray-500 font-semibold">Belum ada riwayat terapi</p>
