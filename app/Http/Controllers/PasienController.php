@@ -50,4 +50,11 @@ class PasienController extends Controller
     {
         return view('pasien.profile');
     }
+    public function notifikasi()
+    {
+        $user = Auth::user();
+        $therapyHistories = TherapyHistory::where('user_id', $user->id)->latest()->get();
+        
+        return view('pasien.notifikasi', compact('user', 'therapyHistories'));
+    }
 }
