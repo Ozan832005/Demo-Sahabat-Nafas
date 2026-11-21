@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    @include('layouts.pasien-nav')
     <div class="pt-40 pb-16">
         <div class="mb-12">
             <div class="flex items-center gap-6 mb-4">

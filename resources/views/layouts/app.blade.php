@@ -1514,12 +1514,6 @@
             </div>
         </div>
     </header>
-    <!-- Pasien Navigation (hanya ditampilkan untuk role pasien) -->
-    @auth
-        @if(auth()->user()->isPasien())
-            @include('layouts.pasien-nav')
-        @endif
-    @endauth
 
     <div class="fab-container">
         <button onclick="toggleTheme()" class="fab-button" title="Ganti Tema">
