@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\TherapyHistory;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PasienController extends Controller
@@ -24,12 +22,8 @@ class PasienController extends Controller
     {
         $user = Auth::user();
         $therapyHistories = TherapyHistory::where('user_id', $user->id)->latest()->get();
-        $currentLayer = 0;
-        if ($therapyHistories->count() > 0) {
-            $firstHistory = $therapyHistories->first();
-            $currentLayer = min($firstHistory->layer ?? 1, 4);
-        }
         $totalTherapySessions = $therapyHistories->count();
+        $currentLayer = $totalTherapySessions > 0 ? min($totalTherapySessions, 4) : 0;
         $unreadNotifications = 3;
         $notifications = collect();
         
@@ -38,28 +32,19 @@ class PasienController extends Controller
 
     public function terapi()
     {
-        return view('pasien.terapi');
+        $user = Auth::user();
+        return view('pasien.terapi', compact('user'));
     }
 
     public function edukasi()
     {
-        return view('pasien.edukasi');
+        $user = Auth::user();
+        return view('pasien.edukasi', compact('user'));
     }
 
     public function catatan()
     {
-        return view('pasien.catatan');
-    }
-
-    public function profile()
-    {
-        return view('pasien.profile');
-    }
-    public function notifikasi()
-    {
         $user = Auth::user();
-        $therapyHistories = TherapyHistory::where('user_id', $user->id)->latest()->get();
-        
-        return view('pasien.notifikasi', compact('user', 'therapyHistories'));
+        return view('pasien.catatan', compact('user'));
     }
 }
