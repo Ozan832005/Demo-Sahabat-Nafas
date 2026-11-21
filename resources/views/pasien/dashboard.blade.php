@@ -4,11 +4,13 @@
         <div class="mb-12">
             <div class="flex items-center gap-6 mb-4">
                 <div class="w-16 h-16 gradient-teal rounded-2xl flex items-center justify-center text-white text-3xl shadow-xl shadow-teal-300/40">
-                    👋
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
                 </div>
                 <div>
                     <h1 class="text-4xl font-extrabold" style="color: var(--text-primary)">Selamat Datang, {{ $user->name }}!</h1>
-                    <p class="text-lg mt-1" style="color: var(--text-secondary)">Semangat terus dalam perjalanan terapi pernapasanmu hari ini 💪</p>
+                    <p class="text-lg mt-1" style="color: var(--text-secondary)">Semangat terus dalam perjalanan terapi pernapasanmu hari ini</p>
                 </div>
             </div>
         </div>
@@ -123,48 +125,36 @@
                         <h2 class="text-2xl font-extrabold" style="color: var(--text-primary)">Notifikasi Terbaru</h2>
                         <p class="text-gray-500 mt-1">Catatan penting dari perawat untukmu</p>
                     </div>
-                    <a href="{{ route('pasien.catatan') }}" class="text-teal-600 font-bold hover:text-teal-700 transition-colors">Lihat Semua →</a>
+                    <a href="{{ route('pasien.notifikasi') }}" class="text-teal-600 font-bold hover:text-teal-700 transition-colors">Lihat Semua →</a>
                 </div>
 
                 <div class="space-y-5">
-                    <div class="flex items-start gap-5 p-5 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-2xl border border-orange-100 hover:shadow-lg transition-shadow">
-                        <div class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center text-white flex-shrink-0">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                            </svg>
+                    @if(isset($notifications) && $notifications->count() > 0)
+                        @foreach($notifications->take(3) as $notification)
+                            <div class="flex items-start gap-5 p-5 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-2xl border border-orange-100 hover:shadow-lg transition-shadow">
+                                <div class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center text-white flex-shrink-0">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                                    </svg>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-bold text-gray-800">{{ $notification->title ?? 'Catatan dari Perawat' }}</p>
+                                    <p class="text-sm text-gray-600 mt-1">{{ $notification->message ?? '' }}</p>
+                                    <p class="text-xs text-gray-400 mt-2">{{ $notification->created_at->diffForHumans() }}</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="text-center py-8">
+                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                                </svg>
+                            </div>
+                            <p class="text-gray-500 font-semibold">Belum ada notifikasi</p>
+                            <p class="text-sm text-gray-400 mt-1">Notifikasi dari perawat akan muncul di sini</p>
                         </div>
-                        <div class="flex-1">
-                            <p class="font-bold text-gray-800">Catatan dari Perawat</p>
-                            <p class="text-sm text-gray-600 mt-1">Bagus! Pertahankan frekuensi pernapasan yang konsisten hari ini.</p>
-                            <p class="text-xs text-gray-400 mt-2">2 jam yang lalu</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start gap-5 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 hover:shadow-lg transition-shadow">
-                        <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center text-white flex-shrink-0">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                        </div>
-                        <div class="flex-1">
-                            <p class="font-bold text-gray-800">Pencapaian Baru!</p>
-                            <p class="text-sm text-gray-600 mt-1">Kamu telah menyelesaikan 5 sesi terapi berturut-turut. Luar biasa!</p>
-                            <p class="text-xs text-gray-400 mt-2">Kemarin</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start gap-5 p-5 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border border-green-100 hover:shadow-lg transition-shadow">
-                        <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center text-white flex-shrink-0">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                        </div>
-                        <div class="flex-1">
-                            <p class="font-bold text-gray-800">Jadwal Terapi</p>
-                            <p class="text-sm text-gray-600 mt-1">Ingat untuk melakukan sesi terapi pagi ini sekitar pukul 09.00 WIB.</p>
-                            <p class="text-xs text-gray-400 mt-2">3 hari yang lalu</p>
-                        </div>
-                    </div>
+                    @endif
                 </div>
             </div>
 
@@ -175,7 +165,7 @@
                         <h2 class="text-2xl font-extrabold" style="color: var(--text-primary)">Riwayat Hasil Terapi</h2>
                         <p class="text-gray-500 mt-1">Catatan hasil terapi pernapasanmu</p>
                     </div>
-                    <a href="{{ route('pasien.catatan') }}" class="text-teal-600 font-bold hover:text-teal-700 transition-colors">Lihat Semua →</a>
+                    <a href="{{ route('pasien.notifikasi') }}" class="text-teal-600 font-bold hover:text-teal-700 transition-colors">Lihat Semua →</a>
                 </div>
 
                 <div class="space-y-5">
