@@ -530,6 +530,7 @@
             jenis_inhaler: '',
             checklist_inhaler: [],
             hari_pemakaian: 7,
+            duration: 0,  // Added duration field
             kendala_kepatuhan: [],
             pilihan_terapi: null,
             jawaban_fakta_mitos: {},
@@ -642,6 +643,8 @@
                 skala_mmrc: null,
                 pendamping: '',
                 jenis_inhaler: '',
+                duration: 0,
+                duration: 0,  // Added duration field
                 checklist_inhaler: [],
                 hari_pemakaian: 7,
                 kendala_kepatuhan: [],
