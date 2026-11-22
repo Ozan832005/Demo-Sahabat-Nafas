@@ -4,11 +4,8 @@
         <div class="px-8 py-5 flex items-center justify-between">
             <!-- Brand -->
             <a href="{{ route('pasien.dashboard') }}" class="flex items-center gap-4" style="color: var(--gradient-end)">
-                <div class="w-12 h-12 gradient-teal rounded-[18px] flex items-center justify-center text-white shadow-xl shadow-teal-300/50">
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                    </svg>
+                <div class="w-14 h-14 bg-gradient-to-br from-teal-500 to-teal-700 rounded-[18px] flex items-center justify-center shadow-xl shadow-teal-300/50 p-2">
+                    <img src="{{ asset('icon.png') }}" alt="Logo Sahabat Nafas" class="w-full h-full object-contain">
                 </div>
                 <span class="font-bold text-2xl tracking-tight" style="color: var(--text-primary)">Sahabat Nafas</span>
             </a>
@@ -85,9 +82,9 @@
             </div>
 
             <!-- User Avatar with Dropdown -->
-            <div class="relative" x-data="{ open: false }" @click.away="open = false">
+            <div class="relative" x-data="{ open: false, showLogoutModal: false }">
                 <button @click="open = !open" class="flex items-center gap-4 p-3 rounded-[20px] hover:bg-gray-50 transition-all duration-300 group">
-                    <div class="w-12 h-12 gradient-teal rounded-full flex items-center justify-center text-white font-bold text-lg shadow-xl shadow-teal-300/40 transition-transform duration-300 group-hover:scale-110">
+                    <div class="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-700 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-xl shadow-teal-300/40 transition-transform duration-300 group-hover:scale-110">
                         {{ substr(auth()->user()->name, 0, 1) }}
                     </div>
                     <svg :class="open ? 'rotate-90' : ''" class="w-5 h-5 text-gray-500 transition-transform duration-300 group-hover:text-teal-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
@@ -96,48 +93,71 @@
                 </button>
 
                 <!-- Dropdown Menu -->
-                <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 mt-4 w-72 bg-white rounded-[24px] shadow-[0_25px_80px_rgba(0,0,0,0.2)] border border-gray-100 overflow-hidden z-50">
+                <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="transform opacity-0 scale-90 translate-y-2" x-transition:enter-end="transform opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100 translate-y-0" x-transition:leave-end="transform opacity-0 scale-90 translate-y-2" class="absolute right-0 mt-4 w-80 bg-white rounded-[28px] shadow-[0_30px_100px_rgba(0,0,0,0.2)] border border-gray-100 overflow-hidden z-[100]">
                     <!-- User Info Header -->
-                    <div class="px-6 py-5 bg-gradient-to-r from-teal-50 to-teal-100 border-b border-teal-100">
+                    <div class="px-6 py-5 bg-gradient-to-r from-teal-500 to-teal-700">
                         <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 gradient-teal rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                            <div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg">
                                 {{ substr(auth()->user()->name, 0, 1) }}
                             </div>
                             <div class="flex-1">
-                                <p class="font-bold text-lg" style="color: var(--text-primary)">{{ auth()->user()->name }}</p>
-                                <p class="text-sm text-gray-500">{{ auth()->user()->email }}</p>
+                                <p class="font-bold text-lg text-white">{{ auth()->user()->name }}</p>
+                                <p class="text-sm text-teal-100">{{ auth()->user()->email }}</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Menu Items -->
                     <div class="p-3">
-                        <a href="{{ route('pasien.profile') }}" class="flex items-center gap-4 px-5 py-4 rounded-[16px] text-gray-700 hover:bg-teal-50 hover:text-teal-700 transition-all duration-200 group">
-                            <div class="w-11 h-11 bg-gray-100 rounded-xl flex items-center justify-center group-hover:bg-teal-100 transition-colors">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-600 group-hover:text-teal-600">
+                        <a href="{{ route('pasien.profile') }}" @click="open = false" class="flex items-center gap-4 px-5 py-4 rounded-[20px] text-gray-700 hover:bg-teal-50 hover:text-teal-700 transition-all duration-300 group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-teal-100 to-teal-200 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-teal-600">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                 </svg>
                             </div>
                             <div class="flex-1">
-                                <p class="font-semibold">Profil Saya</p>
-                                <p class="text-xs text-gray-400">Lihat dan edit data profil</p>
+                                <p class="font-bold">Edit Profil</p>
+                                <p class="text-xs text-gray-400">Perbarui data diri Anda</p>
                             </div>
                         </a>
 
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="w-full flex items-center gap-4 px-5 py-4 rounded-[16px] text-red-600 hover:bg-red-50 transition-all duration-200 group">
-                                <div class="w-11 h-11 bg-red-50 rounded-xl flex items-center justify-center group-hover:bg-red-100 transition-colors">
-                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-red-500 group-hover:text-red-600">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                                    </svg>
-                                </div>
-                                <div class="flex-1 text-left">
-                                    <p class="font-semibold">Keluar</p>
-                                    <p class="text-xs text-gray-400">Keluar dari akun</p>
-                                </div>
-                            </button>
-                        </form>
+                        <button @click="open = false; showLogoutModal = true" class="w-full flex items-center gap-4 px-5 py-4 rounded-[20px] text-red-600 hover:bg-red-50 transition-all duration-300 group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-red-100 to-red-200 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-red-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                </svg>
+                            </div>
+                            <div class="flex-1 text-left">
+                                <p class="font-bold">Keluar</p>
+                                <p class="text-xs text-gray-400">Keluar dari akun Anda</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Logout Confirmation Modal -->
+                <div x-show="showLogoutModal" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-[200] flex items-center justify-center p-4" style="background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);">
+                    <div @click.away="showLogoutModal = false" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="transform opacity-0 scale-90" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-90" class="bg-white rounded-[32px] p-8 w-full max-w-md shadow-[0_40px_120px_rgba(0,0,0,0.3)]">
+                        <div class="text-center">
+                            <div class="w-20 h-20 bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-red-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-3">Yakin ingin keluar?</h3>
+                            <p class="text-gray-500 mb-8">Anda akan keluar dari akun Sahabat Nafas. Pastikan semua data sudah tersimpan.</p>
+                            <div class="flex gap-4">
+                                <button @click="showLogoutModal = false" class="flex-1 px-6 py-4 bg-gray-100 text-gray-700 rounded-[20px] font-bold hover:bg-gray-200 transition-all duration-300">
+                                    Batal
+                                </button>
+                                <form method="POST" action="{{ route('logout') }}" class="flex-1">
+                                    @csrf
+                                    <button type="submit" class="w-full px-6 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-[20px] font-bold hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-lg shadow-red-300/40">
+                                        Ya, Keluar
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
