@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="pt-40 pb-16">
+    @include('layouts.pasien-nav')
+    
+    <div class="pt-40 pb-16">
     <div class="max-w-4xl mx-auto px-4">
         <div class="mb-8">
             <a href="{{ route('pasien.dashboard') }}" class="inline-flex items-center gap-2 text-sm font-medium mb-4" style="color: var(--text-secondary)">
