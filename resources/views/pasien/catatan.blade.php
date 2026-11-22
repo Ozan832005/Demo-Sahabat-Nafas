@@ -4,58 +4,81 @@
     @include('layouts.pasien-nav')
     
     <div class="pt-40 pb-16">
-    <div class="max-w-4xl mx-auto px-4">
+    <div class="max-w-5xl mx-auto px-4">
         <div class="mb-8">
-            <h1 class="text-3xl font-bold" style="color: var(--text-primary)">Catatan Harian</h1>
-            <p class="mt-2" style="color: var(--text-secondary)">Catat gejala dan kondisi Anda setiap hari</p>
+            <h1 class="text-4xl font-extrabold" style="color: var(--text-primary)">Riwayat Terapi</h1>
+            <p class="text-lg mt-1" style="color: var(--text-secondary)">Daftar sesi terapi PPOK yang telah Anda selesaikan</p>
         </div>
 
-        <div class="card-hover p-8 rounded-2xl mb-8">
-            <h3 class="text-xl font-bold mb-6" style="color: var(--text-primary)">Tambah Catatan Hari Ini</h3>
-            <form class="space-y-6">
-                <div>
-                    <label class="block text-sm font-medium mb-3" style="color: var(--text-primary)">Tingkat Sesak Napas</label>
-                    <div class="flex gap-2">
-                        <button type="button" class="flex-1 py-3 rounded-xl border text-sm font-medium hover:border-teal-500 transition" style="border-color: var(--border-color); color: var(--text-primary)">Tidak Ada</button>
-                        <button type="button" class="flex-1 py-3 rounded-xl border text-sm font-medium hover:border-teal-500 transition" style="border-color: var(--border-color); color: var(--text-primary)">Ringan</button>
-                        <button type="button" class="flex-1 py-3 rounded-xl border text-sm font-medium hover:border-teal-500 transition" style="border-color: var(--border-color); color: var(--text-primary)">Sedang</button>
-                        <button type="button" class="flex-1 py-3 rounded-xl border text-sm font-medium hover:border-teal-500 transition" style="border-color: var(--border-color); color: var(--text-primary)">Berat</button>
+        @if($therapyHistories && count($therapyHistories) > 0)
+            <div class="space-y-6">
+                @foreach($therapyHistories as $index => $therapy)
+                <div class="bg-white rounded-[28px] p-8 shadow-[0_15px_50px_rgba(0,0,0,0.08)] border border-gray-100">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 gradient-teal rounded-2xl flex items-center justify-center text-white text-2xl font-bold shadow-xl shadow-teal-300/40">
+                                {{ $therapy->layer ?? $index + 1 }}
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold" style="color: var(--text-primary)">Sesi Terapi #{{ $therapy->layer ?? $index + 1 }}</h3>
+                                <p class="text-sm" style="color: var(--text-secondary)">{{ $therapy->created_at ? $therapy->created_at->format('d F Y H:i') : '-' }}</p>
+                            </div>
+                        </div>
+                        <span class="px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-bold">Selesai</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="p-4 rounded-xl" style="background: var(--bg-secondary)">
+                            <p class="text-xs font-semibold uppercase tracking-wide mb-1" style="color: var(--text-secondary)">Nama Pasien</p>
+                            <p class="font-bold" style="color: var(--text-primary)">{{ $therapy->nama_pasien ?? '-' }}</p>
+                        </div>
+                        <div class="p-4 rounded-xl" style="background: var(--bg-secondary)">
+                            <p class="text-xs font-semibold uppercase tracking-wide mb-1" style="color: var(--text-secondary)">Usia</p>
+                            <p class="font-bold" style="color: var(--text-primary)">{{ $therapy->usia ?? '-' }} tahun</p>
+                        </div>
+                        <div class="p-4 rounded-xl" style="background: var(--bg-secondary)">
+                            <p class="text-xs font-semibold uppercase tracking-wide mb-1" style="color: var(--text-secondary)">Skala MMRC</p>
+                            <p class="font-bold" style="color: var(--text-primary)">{{ $therapy->skala_mmrc ?? '-' }}/4</p>
+                        </div>
+                        <div class="p-4 rounded-xl" style="background: var(--bg-secondary)">
+                            <p class="text-xs font-semibold uppercase tracking-wide mb-1" style="color: var(--text-secondary)">Skor SURE</p>
+                            <p class="font-bold" style="color: var(--text-primary)">{{ $therapy->skor_sure ?? '-' }}/4</p>
+                        </div>
+                    </div>
+
+                    @if($therapy->paspor_keputusan)
+                    <div class="p-4 rounded-xl mb-6" style="background: var(--bg-secondary)">
+                        <p class="text-xs font-semibold uppercase tracking-wide mb-2" style="color: var(--text-secondary)">Paspor Keputusan</p>
+                        <p class="text-sm" style="color: var(--text-primary)">{{ $therapy->paspor_keputusan }}</p>
+                    </div>
+                    @endif
+
+                    <div class="flex gap-3">
+                        <button class="flex-1 py-3 px-6 bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-xl font-bold hover:shadow-lg hover:shadow-teal-300/40 transition-all">
+                            Lihat Detail
+                        </button>
+                        <button class="py-3 px-6 border border-gray-200 rounded-xl font-bold hover:bg-gray-50 transition-all" style="color: var(--text-primary)">
+                            Cetak Ulang
+                        </button>
                     </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium mb-3" style="color: var(--text-primary)">Catatan Tambahan</label>
-                    <textarea rows="4" class="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-teal-500 outline-none transition" style="background: var(--input-bg); border-color: var(--border-color); color: var(--text-primary)" placeholder="Tulis gejala lain, kondisi, atau hal penting lainnya..."></textarea>
-                </div>
-                <button type="submit" class="w-full py-4 gradient-teal text-white rounded-xl font-semibold hover:opacity-90 transition">
-                    Simpan Catatan
-                </button>
-            </form>
-        </div>
-
-        <h3 class="text-xl font-bold mb-4" style="color: var(--text-primary)">Riwayat Catatan</h3>
-        <div class="space-y-4">
-            <div class="card-hover p-6 rounded-2xl">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-sm font-medium" style="color: var(--text-secondary)">18 November 2026</span>
-                    <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">Ringan</span>
-                </div>
-                <p style="color: var(--text-primary)">Hari ini merasa cukup baik, sesak napas hanya muncul saat berjalan cepat. Sudah melakukan semua latihan napas sesuai jadwal.</p>
+                @endforeach
             </div>
-            <div class="card-hover p-6 rounded-2xl">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-sm font-medium" style="color: var(--text-secondary)">17 November 2026</span>
-                    <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">Sedang</span>
+        @else
+            <div class="bg-white rounded-[28px] p-16 shadow-[0_15px_50px_rgba(0,0,0,0.08)] border border-gray-100 text-center">
+                <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--text-secondary)">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                    </svg>
                 </div>
-                <p style="color: var(--text-primary)">Pagi ini sesak napas cukup terasa saat bangun tidur. Sudah menggunakan inhaler dan kondisi membaik setelah 30 menit.</p>
+                <h3 class="text-2xl font-bold mb-3" style="color: var(--text-primary)">Belum Ada Riwayat Terapi</h3>
+                <p class="text-lg mb-8" style="color: var(--text-secondary)">Mulai sesi terapi pertama Anda untuk melihat riwayat di sini</p>
+                <a href="{{ route('pasien.terapi') }}" class="inline-block py-4 px-8 gradient-teal text-white rounded-xl font-bold hover:shadow-lg hover:shadow-teal-300/40 transition-all">
+                    Mulai Terapi
+                </a>
             </div>
-            <div class="card-hover p-6 rounded-2xl">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-sm font-medium" style="color: var(--text-secondary)">16 November 2026</span>
-                    <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">Tidak Ada</span>
-                </div>
-                <p style="color: var(--text-primary)">Hari ini kondisi sangat baik, tidak ada sesak napas sama sekali. Bisa berjalan santai di taman tanpa kesulitan bernapas.</p>
-            </div>
-        </div>
+        @endif
     </div>
     </div>
 @endsection

@@ -569,6 +569,13 @@
             formData.jawaban_sure = Array.from(document.querySelectorAll('.jawaban-sure:checked')).map(el => el.value);
             formData.paspor_keputusan = document.getElementById('paspor-keputusan').value;
 
+            if (!formData.nama_pasien || !formData.usia || formData.riwayat_kambuh === null || formData.skala_mmrc === null || !formData.pendamping || !formData.jenis_inhaler || formData.pilihan_terapi === null || formData.prioritas_tujuan === null || formData.skor_sure === null) {
+                alert('Harap lengkapi semua field yang wajib diisi!');
+                return;
+            }
+
+            console.log('Sending data:', formData);
+
             fetch('{{ route('pasien.terapi.store') }}', {
                 method: 'POST',
                 headers: {
@@ -577,15 +584,23 @@
                 },
                 body: JSON.stringify(formData)
             })
-            .then(res => res.json())
+            .then(res => {
+                console.log('Response status:', res.status);
+                return res.json();
+            })
             .then(data => {
+                console.log('Server response:', data);
                 if (data.success) {
-                    document.getElementById('success-message').classList.remove('hidden');
+                    alert('Data berhasil disimpan!');
                     generatePDF();
+                    document.getElementById('success-message').classList.remove('hidden');
+                } else {
+                    alert('Gagal menyimpan: ' + (data.message || JSON.stringify(data)));
                 }
             })
             .catch(err => {
                 console.error('Error:', err);
+                alert('Error: ' + err.message);
             });
         }
 

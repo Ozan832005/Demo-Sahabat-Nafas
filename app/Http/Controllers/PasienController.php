@@ -40,25 +40,33 @@ class PasienController extends Controller
     {
         $user = Auth::user();
         
-        $validated = $request->validate([
-            'nama_pasien' => 'required|string|max:255',
-            'usia' => 'required|integer|min:0|max:150',
-            'riwayat_kambuh' => 'required|integer|in:0,1,2',
-            'skala_mmrc' => 'required|integer|min:0|max:4',
-            'pendamping' => 'required|string',
-            'jenis_inhaler' => 'required|string|in:mdi,dpi',
-            'checklist_inhaler' => 'required|array',
-            'hari_pemakaian' => 'required|integer|min:0|max:7',
-            'kendala_kepatuhan' => 'nullable|array',
-            'pilihan_terapi' => 'required|integer|min:1|max:4',
-            'jawaban_fakta_mitos' => 'required|array',
-            'prioritas_tujuan' => 'required|integer|min:1|max:3',
-            'dukungan_pendamping' => 'nullable|string',
-            'kesepakatan_tindakan' => 'required|array',
-            'jawaban_sure' => 'required|array',
-            'skor_sure' => 'required|integer|min:0|max:4',
-            'paspor_keputusan' => 'required|string',
-        ]);
+        try {
+            $validated = $request->validate([
+                'nama_pasien' => 'required|string|max:255',
+                'usia' => 'required|integer|min:0|max:150',
+                'riwayat_kambuh' => 'required|integer|in:0,1,2',
+                'skala_mmrc' => 'required|integer|min:0|max:4',
+                'pendamping' => 'required|string',
+                'jenis_inhaler' => 'required|string|in:mdi,dpi',
+                'checklist_inhaler' => 'required|array',
+                'hari_pemakaian' => 'required|integer|min:0|max:7',
+                'kendala_kepatuhan' => 'nullable|array',
+                'pilihan_terapi' => 'required|integer|min:0|max:3',
+                'jawaban_fakta_mitos' => 'required|array',
+                'prioritas_tujuan' => 'required|integer|min:0|max:3',
+                'dukungan_pendamping' => 'nullable|string',
+                'kesepakatan_tindakan' => 'required|array',
+                'jawaban_sure' => 'required|array',
+                'skor_sure' => 'required|integer|min:0|max:4',
+                'paspor_keputusan' => 'required|string',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $e->errors()
+            ], 422);
+        }
         
         $layer = TherapyHistory::where('user_id', $user->id)->count() + 1;
         
@@ -105,6 +113,14 @@ class PasienController extends Controller
     public function catatan()
     {
         $user = Auth::user();
-        return view('pasien.catatan', compact('user'));
+        $therapyHistories = TherapyHistory::where('user_id', $user->id)->latest()->get();
+        return view('pasien.catatan', compact('user', 'therapyHistories'));
+    }
+
+    public function notifikasi()
+    {
+        $user = Auth::user();
+        $therapyHistories = TherapyHistory::where('user_id', $user->id)->latest()->get();
+        return view('pasien.notifikasi', compact('user', 'therapyHistories'));
     }
 }

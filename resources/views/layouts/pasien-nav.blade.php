@@ -19,7 +19,7 @@
                     $currentRoute = request()->route()->getName() ?? '';
                     $isDashboard = $currentRoute === 'pasien.dashboard';
                     $isTerapi = $currentRoute === 'pasien.terapi';
-                    $isCatatan = $currentRoute === 'pasien.catatan';
+                    $isRiwayatTerapi = $currentRoute === 'pasien.catatan';
                     $isCatatanPerawat = $currentRoute === 'pasien.notifikasi';
                     $isEdukasi = $currentRoute === 'pasien.edukasi';
                 @endphp
@@ -48,9 +48,9 @@
                     Terapi
                 </a>
 
-                <!-- Catatan -->
+                <!-- Riwayat Terapi -->
                 <a href="{{ route('pasien.catatan') }}"
-                   class="nav-item px-6 py-3.5 rounded-[20px] text-sm font-bold transition-all duration-300 flex items-center gap-3 @if($isCatatan) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
+                   class="nav-item px-6 py-3.5 rounded-[20px] text-sm font-bold transition-all duration-300 flex items-center gap-3 @if($isRiwayatTerapi) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
                    style="color: var(--text-primary)">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -59,7 +59,7 @@
                         <line x1="16" y1="17" x2="8" y2="17"/>
                         <polyline points="10 9 9 9 8 9"/>
                     </svg>
-                    Catatan
+                    Riwayat Terapi
                 </a>
 
                 <!-- Catatan Perawat -->
