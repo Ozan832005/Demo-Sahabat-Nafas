@@ -72,6 +72,7 @@ class PasienController extends Controller
                 'jawaban_sure' => 'nullable|array',
                 'skor_sure' => 'required|integer|min:0|max:4',
                 'paspor_keputusan' => 'required|string',
+                'duration' => 'required|integer|min:0',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
@@ -88,7 +89,7 @@ class PasienController extends Controller
                 'user_id' => $user->id,
                 'admin_id' => null,
                 'therapy_type' => 'terapi_ppok',
-                'duration' => $request->input('duration', 0),
+                'duration' => $validated['duration'],
                 'notes' => 'Sesi terapi PPOK selesai',
                 'status' => 'selesai',
                 'layer' => $layer,
