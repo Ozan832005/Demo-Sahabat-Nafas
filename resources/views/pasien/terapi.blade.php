@@ -30,10 +30,10 @@
             </h2>
 
             <div class="flex flex-wrap gap-3 mb-6">
-                <button onclick="isiContohKasus()" class="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition text-sm font-medium">
+                <button onclick="isiContohKasus()" class="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition text-sm font-medium sm:w-full">
                     Isi Contoh Kasus Tn. R
                 </button>
-                <button onclick="resetSession()" class="px-4 py-2 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition text-sm font-medium">
+                <button onclick="resetSession()" class="px-4 py-2 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition text-sm font-medium sm:w-full">
                     Reset Sesi Baru
                 </button>
             </div>
@@ -108,7 +108,7 @@
             </div>
 
             <div class="flex justify-end mt-8">
-                <button onclick="nextScreen(1)" class="px-8 py-3 bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-xl font-bold hover:shadow-lg hover:shadow-teal-300/40 transition-all">
+                <button onclick="nextScreen(1)" class="px-6 py-2.5 bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-lg font-bold hover:shadow-lg hover:shadow-teal-300/40 transition-all sm:w-full">
                     Lanjut ke Layar Berikutnya →
                 </button>
             </div>
@@ -201,7 +201,7 @@
                 <button onclick="prevScreen(0)" class="px-8 py-3 bg-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-300 transition-all">
                     ← Kembali
                 </button>
-                <button onclick="nextScreen(2)" class="px-8 py-3 bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-xl font-bold hover:shadow-lg hover:shadow-teal-300/40 transition-all">
+                <button onclick="nextScreen(2)" class="px-6 py-2.5 bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-lg font-bold hover:shadow-lg hover:shadow-teal-300/40 transition-all sm:w-full">
                     Lanjut ke Layar Berikutnya →
                 </button>
             </div>
@@ -263,10 +263,10 @@
             </div>
 
             <div class="flex justify-between mt-8">
-                <button onclick="prevScreen(1)" class="px-8 py-3 bg-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-300 transition-all">
+                <button onclick="prevScreen(1)" class="px-6 py-2.5 bg-gray-200 text-gray-700 rounded-lg font-bold hover:bg-gray-300 transition-all sm:w-full">
                     ← Kembali
                 </button>
-                <button onclick="nextScreen(3)" class="px-8 py-3 bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-xl font-bold hover:shadow-lg hover:shadow-teal-300/40 transition-all">
+                <button onclick="nextScreen(3)" class="px-6 py-2.5 bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-lg font-bold hover:shadow-lg hover:shadow-teal-300/40 transition-all sm:w-full">
                     Lanjut ke Layar Berikutnya →
                 </button>
             </div>
@@ -332,10 +332,10 @@
             </div>
 
             <div class="flex justify-between mt-8">
-                <button onclick="prevScreen(2)" class="px-8 py-3 bg-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-300 transition-all">
+                <button onclick="prevScreen(2)" class="px-6 py-2.5 bg-gray-200 text-gray-700 rounded-lg font-bold hover:bg-gray-300 transition-all sm:w-full">
                     ← Kembali
                 </button>
-                <button onclick="nextScreen(4)" class="px-8 py-3 bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-xl font-bold hover:shadow-lg hover:shadow-teal-300/40 transition-all">
+                <button onclick="nextScreen(4)" class="px-6 py-2.5 bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-lg font-bold hover:shadow-lg hover:shadow-teal-300/40 transition-all sm:w-full">
                     Lanjut ke Layar Berikutnya →
                 </button>
             </div>
@@ -405,14 +405,14 @@
             </div>
 
             <div class="flex justify-between mt-8">
-                <button onclick="prevScreen(3)" class="px-8 py-3 bg-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-300 transition-all">
+                <button onclick="prevScreen(3)" class="px-6 py-2.5 bg-gray-200 text-gray-700 rounded-lg font-bold hover:bg-gray-300 transition-all sm:w-full">
                     ← Kembali
                 </button>
                 <div class="flex gap-3">
-                    <button onclick="simpanData()" class="px-8 py-3 bg-gradient-to-r from-green-500 to-green-700 text-white rounded-xl font-bold hover:shadow-lg hover:shadow-green-300/40 transition-all">
+                    <button onclick="simpanData()" class="px-6 py-2.5 bg-gradient-to-r from-green-500 to-green-700 text-white rounded-lg font-bold hover:shadow-lg hover:shadow-green-300/40 transition-all sm:w-full">
                         Simpan & Cetak PDF
                     </button>
-                    <button onclick="resetSession()" class="px-8 py-3 bg-gray-600 text-white rounded-xl font-bold hover:bg-gray-700 transition-all">
+                    <button onclick="resetSession()" class="px-6 py-2.5 bg-gray-600 text-white rounded-lg font-bold hover:bg-gray-700 transition-all sm:w-full">
                         Reset
                     </button>
                 </div>
