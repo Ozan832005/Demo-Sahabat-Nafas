@@ -10,27 +10,103 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         * { font-family: 'Inter', sans-serif; }
-        body { background: #f8fafc; min-height: 100vh; }
-        .sidebar { background: linear-gradient(180deg, #059669, #047857, #065f46); box-shadow: 4px 0 32px rgba(0,0,0,0.12); transition: all 0.3s ease; z-index: 40; height: 100vh; position: fixed; top: 0; left: 0; display: flex; flex-direction: column; }
+
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-tertiary: #94a3b8;
+            --border-color: #e2e8f0;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --gradient-start: #042F2E;
+            --gradient-end: #0D9488;
+        }
+
+        .dark {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #64748b;
+            --border-color: #334155;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --gradient-start: #0D9488;
+            --gradient-end: #14b8a6;
+        }
+
+        body { background-color: var(--bg-primary); color: var(--text-primary); min-height: 100vh; transition: background-color 0.3s ease, color 0.3s ease; }
+
+        .sidebar {
+            background: linear-gradient(180deg, var(--gradient-start), var(--gradient-end));
+            box-shadow: 4px 0 32px rgba(0,0,0,0.12);
+            transition: all 0.3s ease;
+            z-index: 40;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+        }
         .sidebar-link { transition: all 0.3s ease; position: relative; }
         .sidebar-link:hover, .sidebar-link.active { background: rgba(255,255,255,0.15); transform: translateX(4px); }
-        .glass { background: rgba(255,255,255,0.95); backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.8); box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+        .glass {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+        }
+        .dark .glass {
+            background: rgba(30, 41, 59, 0.95);
+            border-color: rgba(255,255,255,0.1);
+        }
         .btn-primary { background: linear-gradient(135deg, #10b981, #059669); transition: all 0.3s ease; box-shadow: 0 4px 16px rgba(16,185,129,0.3); }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(16,185,129,0.4); }
         .card-hover { transition: all 0.3s ease; }
         .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
         @keyframes pulse-dot { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.5; transform:scale(1.3); } }
         .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
-        @media (max-width: 1024px) { .sidebar { left: -288px; } .sidebar.open { left: 0; } }
-        main { margin-left: 288px; }
+
+        /* Dark mode for cards and surfaces */
+        .dark .bg-white { background-color: var(--bg-secondary) !important; color: var(--text-primary) !important; }
+        .dark .bg-gray-50 { background-color: var(--bg-tertiary) !important; }
+        .dark .text-gray-800 { color: var(--text-primary) !important; }
+        .dark .text-gray-700 { color: var(--text-secondary) !important; }
+        .dark .text-gray-600 { color: var(--text-secondary) !important; }
+        .dark .text-gray-500 { color: var(--text-tertiary) !important; }
+        .dark .text-gray-400 { color: var(--text-tertiary) !important; }
+        .dark .border-gray-100 { border-color: var(--border-color) !important; }
+        .dark .border-gray-200 { border-color: var(--border-color) !important; }
+        .dark .divide-gray-100 { border-color: var(--border-color) !important; }
+        .dark .bg-gray-100 { background-color: var(--bg-tertiary) !important; }
+        .dark .shadow-sm { box-shadow: 0 4px 24px rgba(0,0,0,0.2); }
+        .dark .hover\:bg-gray-50:hover { background-color: var(--bg-tertiary) !important; }
+
+        @media (max-width: 1024px) {
+            .sidebar { left: -288px; }
+            .sidebar.open { left: 0; }
+        }
+        main { margin-left: 288px; transition: margin-left 0.3s ease; }
         @media (max-width: 1024px) { main { margin-left: 0; } }
+
+        /* Mobile: sidebar icon-only when collapsed */
+        @media (max-width: 640px) {
+            .sidebar-link span { display: none; }
+            .sidebar-link { justify-content: center; px-2; }
+            .sidebar-link i { margin-right: 0 !important; }
+        }
+
         .header-notification { position: relative; }
         .header-notification .badge { position: absolute; top: -2px; right: -2px; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; border: 2px solid white; }
         .notification-dropdown { position: absolute; top: calc(100% + 8px); right: 0; width: 360px; background: white; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); border: 1px solid #e5e7eb; z-index: 50; display: none; overflow: hidden; }
+        .dark .notification-dropdown { background: var(--bg-secondary); border-color: var(--border-color); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
         .notification-dropdown.show { display: block; }
         .sidebar nav { overflow: visible !important; height: auto !important; }
         .sidebar { overflow: hidden !important; }
-        
+
         .form-modal {
             position: fixed !important;
             top: 0 !important;
@@ -43,10 +119,8 @@
             justify-content: center !important;
             padding: 16px !important;
         }
-        .form-modal.show {
-            display: flex !important;
-        }
-        
+        .form-modal.show { display: flex !important; }
+
         .confirm-modal {
             position: fixed !important;
             top: 0 !important;
@@ -58,9 +132,7 @@
             align-items: center !important;
             justify-content: center !important;
         }
-        .confirm-modal.show {
-            display: flex !important;
-        }
+        .confirm-modal.show { display: flex !important; }
     </style>
 </head>
 <body>
@@ -142,6 +214,9 @@
                         <i class="fa-solid fa-calendar-days text-emerald-600"></i>
                         <span class="text-sm font-semibold text-gray-700">{{ now()->format('d F Y') }}</span>
                     </div>
+                    <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl hover:bg-gray-100 transition-all" title="Ganti Mode Gelap">
+                        <i class="fa-solid fa-moon text-xl text-gray-600 dark:fa-sun text-gray-300"></i>
+                    </button>
                     <div class="header-notification relative">
                         <button onclick="toggleNotification()" class="p-2.5 rounded-xl hover:bg-gray-100 transition-all">
                             <i class="fa-solid fa-bell text-xl text-gray-600"></i>
@@ -271,6 +346,21 @@
             }, 100);
         }
         
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // Load saved theme on startup
+        (function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+
         document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById('confirmModal');
             if (modal) {

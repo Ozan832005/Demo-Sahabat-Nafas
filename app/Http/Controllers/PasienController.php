@@ -12,21 +12,33 @@ class PasienController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
-        
+
         $therapyHistories = collect();
         $totalTherapySessions = 0;
         $currentLayer = 0;
-        
+        $notifications = collect();
+
         try {
-            $therapyHistories = DB::table('therapy_histories')->where('user_id', $user->id)->latest()->get();
-            $totalTherapySessions = count($therapyHistories);
+            $therapyHistories = TherapyHistory::where('user_id', $user->id)->latest()->get();
+            $totalTherapySessions = $therapyHistories->count();
             $currentLayer = $totalTherapySessions > 0 ? min($totalTherapySessions, 4) : 0;
+
+            // Buat notifikasi real-time dari riwayat terapi terbaru
+            $notifications = $therapyHistories->take(3)->map(function ($history, $index) {
+                return (object) [
+                    'id' => 'therapy_' . $history->id,
+                    'title' => 'Sesi Terapi Layer ' . ($index + 1) . ' Selesai',
+                    'message' => 'Data terapi PPOK Anda telah berhasil disimpan pada ' .
+                        \Carbon\Carbon::parse($history->created_at)->format('d F Y, H:i'),
+                    'created_at' => $history->created_at,
+                    'type' => 'therapy'
+                ];
+            });
         } catch (\Exception $e) {
         }
-        
-        $unreadNotifications = 3;
-        $notifications = collect();
-        
+
+        $unreadNotifications = $notifications->count();
+
         return view('pasien.dashboard', compact('user', 'therapyHistories', 'currentLayer', 'totalTherapySessions', 'unreadNotifications', 'notifications'));
     }
 

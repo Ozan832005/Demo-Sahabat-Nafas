@@ -136,23 +136,26 @@
                 </div>
 
                 <!-- Logout Confirmation Modal -->
-                <div x-show="showLogoutModal" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-[200] flex items-center justify-center p-4" style="background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);">
-                    <div @click.away="showLogoutModal = false" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="transform opacity-0 scale-90" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-90" class="bg-white rounded-[32px] p-8 w-full max-w-md shadow-[0_40px_120px_rgba(0,0,0,0.3)]">
+                <div x-show="showLogoutModal" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-[9999] flex items-center justify-center p-4" style="background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%);">
+                    <div @click.away="showLogoutModal = false" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="transform opacity-0 scale-90 translate-y-4" x-transition:enter-end="transform opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100 translate-y-0" x-transition:leave-end="transform opacity-0 scale-90 translate-y-4" class="bg-white rounded-[32px] p-8 w-full max-w-md shadow-[0_40px_120px_rgba(0,0,0,0.35)] border border-white/20">
                         <div class="text-center">
-                            <div class="w-20 h-20 bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <div class="w-20 h-20 bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-red-200/40">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-red-600">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                                 </svg>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-3">Yakin ingin keluar?</h3>
-                            <p class="text-gray-500 mb-8">Anda akan keluar dari akun Sahabat Nafas. Pastikan semua data sudah tersimpan.</p>
-                            <div class="flex gap-4">
-                                <button @click="showLogoutModal = false" class="flex-1 px-6 py-4 bg-gray-100 text-gray-700 rounded-[20px] font-bold hover:bg-gray-200 transition-all duration-300">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-3">Yakin ingin keluar?</h3>
+                            <p class="text-gray-500 mb-8 text-sm leading-relaxed">Anda akan keluar dari akun Sahabat Nafas. Pastikan semua data terapi sudah tersimpan sebelum keluar.</p>
+                            <div class="flex gap-3 sm:flex-row flex-col">
+                                <button @click="showLogoutModal = false" class="flex-1 px-6 py-4 bg-gray-100 text-gray-700 rounded-[20px] font-bold hover:bg-gray-200 transition-all duration-300 shadow-sm">
                                     Batal
                                 </button>
                                 <form method="POST" action="{{ route('logout') }}" class="flex-1">
                                     @csrf
-                                    <button type="submit" class="w-full px-6 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-[20px] font-bold hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-lg shadow-red-300/40">
+                                    <button type="submit" class="w-full px-6 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-[20px] font-bold hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-lg shadow-red-300/40 flex items-center justify-center gap-2">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-white">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                        </svg>
                                         Ya, Keluar
                                     </button>
                                 </form>

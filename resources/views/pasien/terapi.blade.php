@@ -682,12 +682,24 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 body: JSON.stringify(formData)
             })
             .then(res => {
-                console.log('Response status:', res.status);
+                console.log('Response status:', res.status, 'Content-Type:', res.headers.get('content-type'));
+                if (!res.ok) {
+                    // Coba baca sebagai JSON dulu, kalau gagal ambil text
+                    return res.text().then(text => {
+                        try {
+                            const errData = JSON.parse(text);
+                            throw { status: res.status, json: errData };
+                        } catch (e) {
+                            throw { status: res.status, text: text.substring(0, 200) };
+                        }
+                    });
+                }
                 return res.json();
             })
             .then(data => {
@@ -706,7 +718,18 @@
             })
             .catch(err => {
                 console.error('Error:', err);
-                showToast('Terjadi kesalahan jaringan: ' + err.message, 'error');
+                let errorMsg = 'Terjadi kesalahan jaringan';
+                if (err.text) {
+                    errorMsg = 'Server mengembalikan respons tidak valid (bukan JSON). Status: ' + err.status;
+                } else if (err.json && err.json.message) {
+                    errorMsg = 'Gagal menyimpan: ' + err.json.message;
+                    if (err.json.errors) {
+                        showValidationErrors(err.json.errors);
+                    }
+                } else if (err.message) {
+                    errorMsg = 'Terjadi kesalahan jaringan: ' + err.message;
+                }
+                showToast(errorMsg, 'error');
                 hideValidationErrors();
             });
         }
