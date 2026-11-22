@@ -10,10 +10,12 @@
             <p class="text-lg mt-1" style="color: var(--text-secondary)">Saran dan catatan medis setelah sesi terapi dari perawat</p>
         </div>
 
+        @php $hasNotes = false; @endphp
         @if($therapyHistories && count($therapyHistories) > 0)
             <div class="space-y-6">
                 @foreach($therapyHistories as $therapy)
                     @if(!empty($therapy->perawat_notes))
+                    @php $hasNotes = true; @endphp
                     <div class="bg-white rounded-[28px] p-8 shadow-[0_15px_50px_rgba(0,0,0,0.08)] border border-gray-100">
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center gap-3">
@@ -37,7 +39,7 @@
             </div>
         @endif
 
-        @if(!$therapyHistories || count($therapyHistories) == 0 || $therapyHistories->filter(fn($t) => !empty($t->perawat_notes))->count() == 0)
+        @if(!$hasNotes)
             <div class="bg-white rounded-[28px] p-16 shadow-[0_15px_50px_rgba(0,0,0,0.08)] border border-gray-100 text-center">
                 <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--text-secondary)">

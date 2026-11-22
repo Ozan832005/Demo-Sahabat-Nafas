@@ -53,9 +53,7 @@ Route::middleware(['auth', 'pasien'])->group(function () {
     Route::post('/pasien/terapi/store', [PasienController::class, 'storeTerapi'])->name('pasien.terapi.store');
     Route::get('/pasien/edukasi', [PasienController::class, 'edukasi'])->name('pasien.edukasi');
     Route::get('/pasien/catatan', [PasienController::class, 'catatan'])->name('pasien.catatan');
-    Route::get('/pasien/notifikasi', function () {
-        return view('pasien.notifikasi');
-    })->name('pasien.notifikasi');
+    Route::get('/pasien/notifikasi', [PasienController::class, 'notifikasi'])->name('pasien.notifikasi');
     Route::get('/pasien/profile', function () {
         return view('pasien.profile');
     })->name('pasien.profile');

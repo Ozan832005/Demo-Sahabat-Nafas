@@ -237,25 +237,25 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-3">Fakta vs Mitos PPOK</label>
                     <div class="space-y-4">
-                        <div class="p-4 border border-gray-200 rounded-xl">
-                            <p class="font-medium text-gray-800 mb-3">"Inhaler steroid akan membuat ketergantungan"</p>
-                            <div class="flex gap-3">
-                                <button onclick="pilihFaktaMitos(0, 'fakta')" class="fm-btn px-4 py-2 border border-gray-300 rounded-lg hover:bg-green-100" data-q="0" data-v="fakta">Fakta</button>
-                                <button onclick="pilihFaktaMitos(0, 'mitos')" class="fm-btn px-4 py-2 border border-gray-300 rounded-lg hover:bg-red-100" data-q="0" data-v="mitos">Mitos</button>
+                        <div class="p-5 border border-gray-200 rounded-xl bg-gray-50">
+                            <p class="font-semibold text-gray-800 mb-4 text-lg">"Inhaler steroid akan membuat ketergantungan"</p>
+                            <div class="flex gap-4">
+                                <button onclick="pilihFaktaMitos(0, 'fakta')" class="fm-btn flex-1 px-5 py-3 border-2 border-gray-300 rounded-xl font-bold transition-all duration-300 hover:scale-105" data-q="0" data-v="fakta">Fakta</button>
+                                <button onclick="pilihFaktaMitos(0, 'mitos')" class="fm-btn flex-1 px-5 py-3 border-2 border-gray-300 rounded-xl font-bold transition-all duration-300 hover:scale-105" data-q="0" data-v="mitos">Mitos</button>
                             </div>
                         </div>
-                        <div class="p-4 border border-gray-200 rounded-xl">
-                            <p class="font-medium text-gray-800 mb-3">"PPOK hanya terjadi pada perokok"</p>
-                            <div class="flex gap-3">
-                                <button onclick="pilihFaktaMitos(1, 'fakta')" class="fm-btn px-4 py-2 border border-gray-300 rounded-lg hover:bg-green-100" data-q="1" data-v="fakta">Fakta</button>
-                                <button onclick="pilihFaktaMitos(1, 'mitos')" class="fm-btn px-4 py-2 border border-gray-300 rounded-lg hover:bg-red-100" data-q="1" data-v="mitos">Mitos</button>
+                        <div class="p-5 border border-gray-200 rounded-xl bg-gray-50">
+                            <p class="font-semibold text-gray-800 mb-4 text-lg">"PPOK hanya terjadi pada perokok"</p>
+                            <div class="flex gap-4">
+                                <button onclick="pilihFaktaMitos(1, 'fakta')" class="fm-btn flex-1 px-5 py-3 border-2 border-gray-300 rounded-xl font-bold transition-all duration-300 hover:scale-105" data-q="1" data-v="fakta">Fakta</button>
+                                <button onclick="pilihFaktaMitos(1, 'mitos')" class="fm-btn flex-1 px-5 py-3 border-2 border-gray-300 rounded-xl font-bold transition-all duration-300 hover:scale-105" data-q="1" data-v="mitos">Mitos</button>
                             </div>
                         </div>
-                        <div class="p-4 border border-gray-200 rounded-xl">
-                            <p class="font-medium text-gray-800 mb-3">"Latihan pernapasan bisa membantu PPOK"</p>
-                            <div class="flex gap-3">
-                                <button onclick="pilihFaktaMitos(2, 'fakta')" class="fm-btn px-4 py-2 border border-gray-300 rounded-lg hover:bg-green-100" data-q="2" data-v="fakta">Fakta</button>
-                                <button onclick="pilihFaktaMitos(2, 'mitos')" class="fm-btn px-4 py-2 border border-gray-300 rounded-lg hover:bg-red-100" data-q="2" data-v="mitos">Mitos</button>
+                        <div class="p-5 border border-gray-200 rounded-xl bg-gray-50">
+                            <p class="font-semibold text-gray-800 mb-4 text-lg">"Latihan pernapasan bisa membantu PPOK"</p>
+                            <div class="flex gap-4">
+                                <button onclick="pilihFaktaMitos(2, 'fakta')" class="fm-btn flex-1 px-5 py-3 border-2 border-gray-300 rounded-xl font-bold transition-all duration-300 hover:scale-105" data-q="2" data-v="fakta">Fakta</button>
+                                <button onclick="pilihFaktaMitos(2, 'mitos')" class="fm-btn flex-1 px-5 py-3 border-2 border-gray-300 rounded-xl font-bold transition-all duration-300 hover:scale-105" data-q="2" data-v="mitos">Mitos</button>
                             </div>
                         </div>
                     </div>
@@ -509,7 +509,20 @@
         }
 
         function pilihFaktaMitos(q, v) {
+            document.querySelectorAll(`.fm-btn[data-q="${q}"]`).forEach(btn => {
+                btn.classList.remove('border-teal-500', 'bg-teal-500', 'text-white', 'border-red-500', 'bg-red-500');
+                btn.classList.add('border-gray-300');
+            });
+            const selectedBtn = document.querySelector(`.fm-btn[data-q="${q}"][data-v="${v}"]`);
+            if (v === 'fakta') {
+                selectedBtn.classList.remove('border-gray-300');
+                selectedBtn.classList.add('border-teal-500', 'bg-teal-500', 'text-white');
+            } else {
+                selectedBtn.classList.remove('border-gray-300');
+                selectedBtn.classList.add('border-red-500', 'bg-red-500', 'text-white');
+            }
             formData.jawaban_fakta_mitos[q] = v;
+            console.log('FaktaMitos selected:', q, v, formData.jawaban_fakta_mitos);
         }
 
         function pilihPrioritas(val) {
