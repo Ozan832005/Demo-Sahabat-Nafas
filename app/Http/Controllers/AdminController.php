@@ -171,16 +171,35 @@ class AdminController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        TherapyHistory::create([
-            'user_id' => $validated['user_id'],
-            'admin_id' => Auth::id(),
-            'therapy_type' => $validated['therapy_type'],
-            'duration' => $validated['duration'],
-            'notes' => $validated['notes'] ?? null,
-            'status' => 'selesai',
-        ]);
+        try {
+            $therapy = TherapyHistory::create([
+                'user_id' => $validated['user_id'],
+                'admin_id' => Auth::id(),
+                'therapy_type' => $validated['therapy_type'],
+                'duration' => $validated['duration'],
+                'notes' => $validated['notes'] ?? null,
+                'status' => 'selesai',
+            ]);
 
-        return redirect()->route('admin.therapy.history')->with('success', 'Riwayat terapi berhasil ditambahkan');
+            if ($request->expectsJson() || $request->header('Accept') === 'application/json') {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Riwayat terapi berhasil ditambahkan',
+                    'therapy_id' => $therapy->id
+                ]);
+            }
+
+            return redirect()->route('admin.therapy.history')->with('success', 'Riwayat terapi berhasil ditambahkan');
+        } catch (\Exception $e) {
+            if ($request->expectsJson() || $request->header('Accept') === 'application/json') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal menyimpan: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return back()->withErrors(['error' => 'Gagal menyimpan: ' . $e->getMessage()]);
+        }
     }
 
     public function editTherapy(TherapyHistory $therapy)

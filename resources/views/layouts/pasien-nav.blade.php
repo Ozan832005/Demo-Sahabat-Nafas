@@ -135,9 +135,10 @@
                     </div>
                 </div>
 
-                <!-- Logout Confirmation Modal -->
-                <div x-show="showLogoutModal" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-[9999] flex items-center justify-center p-4" style="background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%);">
-                    <div @click.away="showLogoutModal = false" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="transform opacity-0 scale-90 translate-y-4" x-transition:enter-end="transform opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100 translate-y-0" x-transition:leave-end="transform opacity-0 scale-90 translate-y-4" class="bg-white rounded-[32px] p-8 w-full max-w-md shadow-[0_40px_120px_rgba(0,0,0,0.35)] border border-white/20">
+                <!-- Logout Confirmation Modal Overlay (Full Screen) -->
+                <div x-show="showLogoutModal" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click.away="showLogoutModal = false" class="fixed inset-0 z-[9999] flex items-center justify-center" style="background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);">
+                    <!-- Modal Content -->
+                    <div x-transition:enter="transition ease-out duration-300" x-transition:enter-start="transform opacity-0 scale-90 translate-y-4" x-transition:enter-end="transform opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100 translate-y-0" x-transition:leave-end="transform opacity-0 scale-90 translate-y-4" class="bg-white rounded-[32px] p-8 w-full max-w-md shadow-[0_40px_120px_rgba(0,0,0,0.4)] border border-white/20 mx-4 sm:mx-0">
                         <div class="text-center">
                             <div class="w-20 h-20 bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-red-200/40">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-red-600">

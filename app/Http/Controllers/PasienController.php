@@ -83,32 +83,39 @@ class PasienController extends Controller
         
         $layer = TherapyHistory::where('user_id', $user->id)->count() + 1;
         
-        $therapy = TherapyHistory::create([
-            'user_id' => $user->id,
-            'admin_id' => null,
-            'therapy_type' => 'terapi_ppok',
-            'duration' => $request->input('duration', 0),
-            'notes' => 'Sesi terapi PPOK selesai',
-            'status' => 'selesai',
-            'layer' => $layer,
-            'nama_pasien' => $validated['nama_pasien'],
-            'usia' => $validated['usia'],
-            'riwayat_kambuh' => $validated['riwayat_kambuh'],
-            'skala_mmrc' => $validated['skala_mmrc'],
-            'pendamping' => $validated['pendamping'],
-            'jenis_inhaler' => $validated['jenis_inhaler'],
-            'checklist_inhaler' => json_encode($validated['checklist_inhaler']),
-            'hari_pemakaian' => $validated['hari_pemakaian'],
-            'kendala_kepatuhan' => isset($validated['kendala_kepatuhan']) ? json_encode($validated['kendala_kepatuhan']) : null,
-            'pilihan_terapi' => $validated['pilihan_terapi'],
-            'jawaban_fakta_mitos' => json_encode($validated['jawaban_fakta_mitos']),
-            'prioritas_tujuan' => $validated['prioritas_tujuan'],
-            'dukungan_pendamping' => $validated['dukungan_pendamping'] ?? null,
-            'kesepakatan_tindakan' => json_encode($validated['kesepakatan_tindakan']),
-            'jawaban_sure' => json_encode($validated['jawaban_sure']),
-            'skor_sure' => $validated['skor_sure'],
-            'paspor_keputusan' => $validated['paspor_keputusan'],
-        ]);
+        try {
+            $therapy = TherapyHistory::create([
+                'user_id' => $user->id,
+                'admin_id' => null,
+                'therapy_type' => 'terapi_ppok',
+                'duration' => $request->input('duration', 0),
+                'notes' => 'Sesi terapi PPOK selesai',
+                'status' => 'selesai',
+                'layer' => $layer,
+                'nama_pasien' => $validated['nama_pasien'],
+                'usia' => $validated['usia'],
+                'riwayat_kambuh' => $validated['riwayat_kambuh'],
+                'skala_mmrc' => $validated['skala_mmrc'],
+                'pendamping' => $validated['pendamping'],
+                'jenis_inhaler' => $validated['jenis_inhaler'],
+                'checklist_inhaler' => json_encode($validated['checklist_inhaler'] ?? []),
+                'hari_pemakaian' => $validated['hari_pemakaian'],
+                'kendala_kepatuhan' => isset($validated['kendala_kepatuhan']) ? json_encode($validated['kendala_kepatuhan']) : null,
+                'pilihan_terapi' => $validated['pilihan_terapi'],
+                'jawaban_fakta_mitos' => json_encode($validated['jawaban_fakta_mitos'] ?? []),
+                'prioritas_tujuan' => $validated['prioritas_tujuan'],
+                'dukungan_pendamping' => $validated['dukungan_pendamping'] ?? null,
+                'kesepakatan_tindakan' => json_encode($validated['kesepakatan_tindakan'] ?? []),
+                'jawaban_sure' => json_encode($validated['jawaban_sure'] ?? []),
+                'skor_sure' => $validated['skor_sure'],
+                'paspor_keputusan' => $validated['paspor_keputusan'],
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menyimpan ke database: ' . $e->getMessage()
+            ], 500);
+        }
         
         return response()->json([
             'success' => true,

@@ -2,7 +2,7 @@
 @section('content')
     @include('layouts.pasien-nav')
     
-    <div class="pt-40 pb-16">
+    <div class="pt-40 pb-16 px-4 sm:px-6 lg:px-8">
         <div class="mb-12">
             <div class="flex items-center gap-6 mb-4">
                 <div class="w-16 h-16 gradient-teal rounded-2xl flex items-center justify-center text-white text-3xl shadow-xl shadow-teal-300/40">

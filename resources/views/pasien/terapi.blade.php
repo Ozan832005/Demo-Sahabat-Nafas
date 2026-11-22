@@ -5,7 +5,7 @@
 @section('content')
     @include('layouts.pasien-nav')
     
-    <div class="pt-40 pb-16">
+    <div class="pt-40 pb-16 px-4 sm:px-6 lg:px-8">
         <div class="bg-gradient-to-r from-teal-600 to-teal-700 rounded-2xl p-6 text-white shadow-lg mb-6">
             <h1 class="text-2xl font-bold mb-2">Proses Terapi PPOK</h1>
             <p class="text-teal-100">Alur 5 Layar & Konten Klinis Lengkap</p>
