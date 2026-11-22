@@ -3,15 +3,15 @@
     <div class="bg-white/95 backdrop-blur-2xl border border-white/40 rounded-[28px] shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
         <div class="px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between">
             <!-- Brand -->
-            <a href="{{ route('pasien.dashboard') }}" class="flex items-center gap-4" style="color: var(--gradient-end)">
-                <div class="w-12 sm:w-14 h-12 sm:h-14 bg-gradient-to-br from-teal-500 to-teal-700 rounded-[16px] sm:rounded-[18px] flex items-center justify-center shadow-xl shadow-teal-300/50 p-2">
+            <a href="{{ route('pasien.dashboard') }}" class="flex items-center gap-3" style="color: var(--gradient-end)">
+                <div class="w-8 sm:w-10 h-8 sm:h-10 bg-gradient-to-br from-teal-500 to-teal-700 rounded-[10px] sm:rounded-[12px] flex items-center justify-center shadow-xl shadow-teal-300/50 p-1">
                     <img src="{{ asset('icon.png') }}" alt="Logo Sahabat Nafas" class="w-full h-full object-contain">
                 </div>
-                <span class="font-bold text-lg sm:text-2xl tracking-tight hidden sm:block" style="color: var(--text-primary)">Sahabat Nafas</span>
+                <span class="font-bold text-sm sm:text-lg tracking-tight hidden sm:block" style="color: var(--text-primary)">Sahabat Nafas</span>
             </a>
 
             <!-- Main Menu -->
-            <div class="flex items-center gap-1 sm:gap-3 overflow-x-auto pb-1">
+            <div class="flex items-center gap-1 sm:gap-3 overflow-x-auto md:overflow-visible pb-1">
                 @php
                     $currentRoute = request()->route()->getName() ?? '';
                     $isDashboard = $currentRoute === 'pasien.dashboard';
@@ -23,9 +23,9 @@
 
                 <!-- Dashboard -->
                 <a href="{{ route('pasien.dashboard') }}"
-                   class="nav-item px-4 sm:px-6 py-3 sm:py-3.5 rounded-[20px] text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 sm:gap-3 @if($isDashboard) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
+                   class="nav-item px-3 sm:px-4 py-2 sm:py-2.5 rounded-[16px] text-[10px] sm:text-xs font-bold transition-all duration-300 flex items-center gap-1 sm:gap-2 @if($isDashboard) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-102 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-101 @endif"
                    style="color: var(--text-primary)">
-                    <svg width="20" height="20" sm:width="22" sm:height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="16" height="16" sm:width="18" sm:height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                         <polyline points="9 22 9 12 15 12 15 22"/>
                     </svg>
@@ -34,9 +34,9 @@
 
                 <!-- Terapi -->
                 <a href="{{ route('pasien.terapi') }}"
-                   class="nav-item px-4 sm:px-6 py-3 sm:py-3.5 rounded-[20px] text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 sm:gap-3 @if($isTerapi) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
+                   class="nav-item px-3 sm:px-4 py-2 sm:py-2.5 rounded-[16px] text-[10px] sm:text-xs font-bold transition-all duration-300 flex items-center gap-1 sm:gap-2 @if($isTerapi) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-102 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-101 @endif"
                    style="color: var(--text-primary)">
-                    <svg width="20" height="20" sm:width="22" sm:height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="16" height="16" sm:width="18" sm:height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"/>
                         <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
                         <path d="M2 12h20"/>
@@ -47,9 +47,9 @@
 
                 <!-- Riwayat Terapi -->
                 <a href="{{ route('pasien.catatan') }}"
-                   class="nav-item px-4 sm:px-6 py-3 sm:py-3.5 rounded-[20px] text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 sm:gap-3 @if($isRiwayatTerapi) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
+                   class="nav-item px-3 sm:px-4 py-2 sm:py-2.5 rounded-[16px] text-[10px] sm:text-xs font-bold transition-all duration-300 flex items-center gap-1 sm:gap-2 @if($isRiwayatTerapi) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-102 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-101 @endif"
                    style="color: var(--text-primary)">
-                    <svg width="20" height="20" sm:width="22" sm:height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="16" height="16" sm:width="18" sm:height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                         <polyline points="14 2 14 8 20 8"/>
                         <line x1="16" y1="13" x2="8" y2="13"/>
@@ -61,9 +61,9 @@
 
                 <!-- Catatan Perawat -->
                 <a href="{{ route('pasien.notifikasi') }}"
-                   class="nav-item px-4 sm:px-6 py-3 sm:py-3.5 rounded-[20px] text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 sm:gap-3 @if($isCatatanPerawat) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
+                   class="nav-item px-3 sm:px-4 py-2 sm:py-2.5 rounded-[16px] text-[10px] sm:text-xs font-bold transition-all duration-300 flex items-center gap-1 sm:gap-2 @if($isCatatanPerawat) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-102 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-101 @endif"
                    style="color: var(--text-primary)">
-                    <svg width="20" height="20" sm:width="22" sm:height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="16" height="16" sm:width="18" sm:height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
                     </svg>
                     <span class="hidden sm:block whitespace-nowrap">Catatan Perawat</span>
@@ -71,9 +71,9 @@
 
                 <!-- Edukasi -->
                 <a href="{{ route('pasien.edukasi') }}"
-                   class="nav-item px-4 sm:px-6 py-3 sm:py-3.5 rounded-[20px] text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 sm:gap-3 @if($isEdukasi) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
+                   class="nav-item px-3 sm:px-4 py-2 sm:py-2.5 rounded-[16px] text-[10px] sm:text-xs font-bold transition-all duration-300 flex items-center gap-1 sm:gap-2 @if($isEdukasi) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-102 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-101 @endif"
                    style="color: var(--text-primary)">
-                    <svg width="20" height="20" sm:width="22" sm:height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="16" height="16" sm:width="18" sm:height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
                         <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
                     </svg>

@@ -92,11 +92,11 @@
         main { margin-left: 288px; transition: margin-left 0.3s ease; }
         @media (max-width: 1024px) { main { margin-left: 0; } }
 
-        /* Mobile: sidebar icon-only when collapsed */
+        /* Mobile: sidebar always show text, just adjust padding */
         @media (max-width: 640px) {
-            .sidebar-link span { display: none; }
-            .sidebar-link { justify-content: center; px-2; }
-            .sidebar-link i { margin-right: 0 !important; }
+            .sidebar-link span { display: block; }
+            .sidebar-link { justify-content: flex-start; px-3; }
+            .sidebar-link i { margin-right: 0.5rem !important; }
         }
 
         .header-notification { position: relative; }
