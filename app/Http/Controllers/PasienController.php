@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\TherapyHistory;
 
 class PasienController extends Controller
 {
@@ -31,7 +32,68 @@ class PasienController extends Controller
     public function terapi()
     {
         $user = Auth::user();
-        return view('pasien.terapi', compact('user'));
+        $therapyHistories = TherapyHistory::where('user_id', $user->id)->latest()->get();
+        return view('pasien.terapi', compact('user', 'therapyHistories'));
+    }
+
+    public function storeTerapi(\Illuminate\Http\Request $request)
+    {
+        $user = Auth::user();
+        
+        $validated = $request->validate([
+            'nama_pasien' => 'required|string|max:255',
+            'usia' => 'required|integer|min:0|max:150',
+            'riwayat_kambuh' => 'required|integer|in:0,1,2',
+            'skala_mmrc' => 'required|integer|min:0|max:4',
+            'pendamping' => 'required|string',
+            'jenis_inhaler' => 'required|string|in:mdi,dpi',
+            'checklist_inhaler' => 'required|array',
+            'hari_pemakaian' => 'required|integer|min:0|max:7',
+            'kendala_kepatuhan' => 'nullable|array',
+            'pilihan_terapi' => 'required|integer|min:1|max:4',
+            'jawaban_fakta_mitos' => 'required|array',
+            'prioritas_tujuan' => 'required|integer|min:1|max:3',
+            'dukungan_pendamping' => 'nullable|string',
+            'kesepakatan_tindakan' => 'required|array',
+            'jawaban_sure' => 'required|array',
+            'skor_sure' => 'required|integer|min:0|max:4',
+            'paspor_keputusan' => 'required|string',
+        ]);
+        
+        $layer = TherapyHistory::where('user_id', $user->id)->count() + 1;
+        
+        $therapy = TherapyHistory::create([
+            'user_id' => $user->id,
+            'admin_id' => null,
+            'therapy_type' => 'terapi_ppok',
+            'duration' => $request->input('duration', 0),
+            'notes' => 'Sesi terapi PPOK selesai',
+            'status' => 'selesai',
+            'layer' => $layer,
+            'nama_pasien' => $validated['nama_pasien'],
+            'usia' => $validated['usia'],
+            'riwayat_kambuh' => $validated['riwayat_kambuh'],
+            'skala_mmrc' => $validated['skala_mmrc'],
+            'pendamping' => $validated['pendamping'],
+            'jenis_inhaler' => $validated['jenis_inhaler'],
+            'checklist_inhaler' => json_encode($validated['checklist_inhaler']),
+            'hari_pemakaian' => $validated['hari_pemakaian'],
+            'kendala_kepatuhan' => isset($validated['kendala_kepatuhan']) ? json_encode($validated['kendala_kepatuhan']) : null,
+            'pilihan_terapi' => $validated['pilihan_terapi'],
+            'jawaban_fakta_mitos' => json_encode($validated['jawaban_fakta_mitos']),
+            'prioritas_tujuan' => $validated['prioritas_tujuan'],
+            'dukungan_pendamping' => $validated['dukungan_pendamping'] ?? null,
+            'kesepakatan_tindakan' => json_encode($validated['kesepakatan_tindakan']),
+            'jawaban_sure' => json_encode($validated['jawaban_sure']),
+            'skor_sure' => $validated['skor_sure'],
+            'paspor_keputusan' => $validated['paspor_keputusan'],
+        ]);
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Data terapi berhasil disimpan!',
+            'therapy_id' => $therapy->id
+        ]);
     }
 
     public function edukasi()

@@ -16,7 +16,24 @@ class TherapyHistory extends Model
         'duration',
         'notes',
         'status',
-        'layer'
+        'layer',
+        'nama_pasien',
+        'usia',
+        'riwayat_kambuh',
+        'skala_mmrc',
+        'pendamping',
+        'jenis_inhaler',
+        'checklist_inhaler',
+        'hari_pemakaian',
+        'kendala_kepatuhan',
+        'pilihan_terapi',
+        'jawaban_fakta_mitos',
+        'prioritas_tujuan',
+        'dukungan_pendamping',
+        'kesepakatan_tindakan',
+        'jawaban_sure',
+        'skor_sure',
+        'paspor_keputusan'
     ];
 
     public function user()

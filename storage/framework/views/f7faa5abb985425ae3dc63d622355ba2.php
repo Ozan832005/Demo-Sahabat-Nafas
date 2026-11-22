@@ -955,13 +955,15 @@
         .flip-card-container {
             perspective: 1200px;
             width: 100%;
-            height: 650px;
+            min-height: 650px;
+            height: auto;
         }
 
         .flip-card {
             position: relative;
             width: 100%;
-            height: 100%;
+            min-height: 650px;
+            height: auto;
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             transform-style: preserve-3d;
         }
@@ -974,10 +976,12 @@
         .flip-card-back {
             position: absolute;
             width: 100%;
-            height: 100%;
+            min-height: 100%;
+            height: auto;
             backface-visibility: hidden;
             border-radius: 32px;
-            overflow: hidden;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
         .flip-card-front {
@@ -991,6 +995,13 @@
             border: 1px solid var(--border-color);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
             transform: rotateY(180deg);
+        }
+
+        .flip-card-front p, .flip-card-back p {
+            word-break: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            max-width: 100%;
         }
 
         .feature-widget {
@@ -1504,12 +1515,6 @@
             </div>
         </div>
     </header>
-    <!-- Pasien Navigation (hanya ditampilkan untuk role pasien) -->
-    <?php if(auth()->guard()->check()): ?>
-        <?php if(auth()->user()->isPasien()): ?>
-            <?php echo $__env->make('layouts.pasien-nav', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-        <?php endif; ?>
-    <?php endif; ?>
 
     <div class="fab-container">
         <button onclick="toggleTheme()" class="fab-button" title="Ganti Tema">
@@ -1748,5 +1753,4 @@
         
     </script>
 </body>
-</html>
-<?php /**PATH C:\Users\nurda\project-sahabat-nafas\resources\views/layouts/app.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\Users\nurda\project-sahabat-nafas\resources\views/layouts/app.blade.php ENDPATH**/ ?>
