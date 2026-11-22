@@ -6,12 +6,6 @@
     <div class="pt-40 pb-16">
     <div class="max-w-4xl mx-auto px-4">
         <div class="mb-8">
-            <a href="{{ route('pasien.dashboard') }}" class="inline-flex items-center gap-2 text-sm font-medium mb-4" style="color: var(--text-secondary)">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                </svg>
-                Kembali ke Dashboard
-            </a>
             <h1 class="text-3xl font-bold" style="color: var(--text-primary)">Catatan Harian</h1>
             <p class="mt-2" style="color: var(--text-secondary)">Catat gejala dan kondisi Anda setiap hari</p>
         </div>
@@ -52,16 +46,16 @@
                     <span class="text-sm font-medium" style="color: var(--text-secondary)">17 November 2026</span>
                     <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">Sedang</span>
                 </div>
-                <p style="color: var(--text-primary)">Pagi hari ada batuk dengan dahak putih. Sore hari sesak sedikit meningkat, istirahat 30 menit kemudian membaik.</p>
+                <p style="color: var(--text-primary)">Pagi ini sesak napas cukup terasa saat bangun tidur. Sudah menggunakan inhaler dan kondisi membaik setelah 30 menit.</p>
             </div>
             <div class="card-hover p-6 rounded-2xl">
                 <div class="flex items-center justify-between mb-3">
                     <span class="text-sm font-medium" style="color: var(--text-secondary)">16 November 2026</span>
                     <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">Tidak Ada</span>
                 </div>
-                <p style="color: var(--text-primary)">Hari ini sangat baik, tidak ada keluhan sesak napas. Berjalan santai di taman selama 20 menit tanpa kesulitan.</p>
+                <p style="color: var(--text-primary)">Hari ini kondisi sangat baik, tidak ada sesak napas sama sekali. Bisa berjalan santai di taman tanpa kesulitan bernapas.</p>
             </div>
         </div>
     </div>
-</div>
+    </div>
 @endsection

@@ -1400,10 +1400,23 @@
             text-align: center;
             color: var(--text-tertiary);
         }
+
+        /* Dark mode widget fix - ensure all cards use var(--card-bg) */
+        [data-theme="dark"] .bg-white,
+        [data-theme="dark"] [class*="bg-white"],
+        .dark .bg-white,
+        .dark [class*="bg-white"] {
+            background-color: var(--card-bg) !important;
+        }
+
+        /* Ensure all card elements use theme-aware background */
+        .rounded-2xl, .rounded-[28px], .rounded-xl, .rounded-lg {
+            background-color: var(--card-bg);
+        }
     </style>
 </head>
 <body class="font-scale-1">
-    <header class="header-container fixed top-0 left-0 right-0 z-50">
+    <header class="header-container fixed top-0 left-0 right-0 z-50" id="old-header">
         <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
             <a href="/" class="flex items-center gap-3">
                 <div class="w-10 h-10 gradient-teal rounded-xl flex items-center justify-center overflow-hidden">
@@ -1414,6 +1427,7 @@
 <nav class="hidden md:flex items-center gap-2">
                 @auth
                     @if(auth()->user()->isPasien())
+                        <style>#old-header { display: none !important; }</style>
                         @php
                             $currentRoute = request()->route()->getName() ?? '';
                             $isDashboard = $currentRoute === 'pasien.dashboard';

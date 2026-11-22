@@ -19,9 +19,9 @@
                     $currentRoute = request()->route()->getName() ?? '';
                     $isDashboard = $currentRoute === 'pasien.dashboard';
                     $isTerapi = $currentRoute === 'pasien.terapi';
-                    $isRiwayat = $currentRoute === 'pasien.notifikasi' || $currentRoute === 'pasien.catatan';
+                    $isCatatan = $currentRoute === 'pasien.catatan';
+                    $isCatatanPerawat = $currentRoute === 'pasien.notifikasi';
                     $isEdukasi = $currentRoute === 'pasien.edukasi';
-                    $unreadNotifications = 3;
                 @endphp
 
                 <!-- Dashboard -->
@@ -48,20 +48,28 @@
                     Terapi
                 </a>
 
-                <!-- Notifikasi -->
-                <a href="{{ route('pasien.notifikasi') }}"
-                   class="nav-item relative px-6 py-3.5 rounded-[20px] text-sm font-bold transition-all duration-300 flex items-center gap-3 @if($isRiwayat) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
+                <!-- Catatan -->
+                <a href="{{ route('pasien.catatan') }}"
+                   class="nav-item px-6 py-3.5 rounded-[20px] text-sm font-bold transition-all duration-300 flex items-center gap-3 @if($isCatatan) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
                    style="color: var(--text-primary)">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
                     </svg>
-                    Notifikasi
-                    @if($unreadNotifications > 0)
-                        <span class="absolute -top-1 -right-1 flex items-center justify-center min-w-[22px] h-[22px] bg-red-500 text-white text-[11px] font-bold rounded-full ring-2 ring-white animate-pulse shadow-lg">
-                            {{ $unreadNotifications }}
-                        </span>
-                    @endif
+                    Catatan
+                </a>
+
+                <!-- Catatan Perawat -->
+                <a href="{{ route('pasien.notifikasi') }}"
+                   class="nav-item px-6 py-3.5 rounded-[20px] text-sm font-bold transition-all duration-300 flex items-center gap-3 @if($isCatatanPerawat) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
+                   style="color: var(--text-primary)">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+                    </svg>
+                    Catatan Perawat
                 </a>
 
                 <!-- Edukasi -->
