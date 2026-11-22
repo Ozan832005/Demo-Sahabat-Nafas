@@ -1,6 +1,6 @@
 <!-- Pasien Navigation - Modern Header Menu -->
 <nav class="fixed top-6 left-0 right-0 z-50 max-w-7xl mx-auto px-4">
-    <div class="bg-white/95 backdrop-blur-2xl border border-white/40 rounded-[28px] shadow-[0_20px_60px_rgba(0,0,0,0.15)] overflow-hidden">
+    <div class="bg-white/95 backdrop-blur-2xl border border-white/40 rounded-[28px] shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
         <div class="px-8 py-5 flex items-center justify-between">
             <!-- Brand -->
             <a href="{{ route('pasien.dashboard') }}" class="flex items-center gap-4" style="color: var(--gradient-end)">
@@ -93,7 +93,7 @@
                 </button>
 
                 <!-- Dropdown Menu -->
-                <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="transform opacity-0 scale-90 translate-y-2" x-transition:enter-end="transform opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100 translate-y-0" x-transition:leave-end="transform opacity-0 scale-90 translate-y-2" class="absolute right-0 mt-4 w-80 bg-white rounded-[28px] shadow-[0_30px_100px_rgba(0,0,0,0.2)] border border-gray-100 overflow-hidden z-[100]">
+                <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="transform opacity-0 scale-90 translate-y-2" x-transition:enter-end="transform opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100 translate-y-0" x-transition:leave-end="transform opacity-0 scale-90 translate-y-2" class="absolute right-0 mt-3 w-96 bg-white rounded-[28px] shadow-[0_30px_100px_rgba(0,0,0,0.22)] border border-white/60 z-[200]">
                     <!-- User Info Header -->
                     <div class="px-6 py-5 bg-gradient-to-r from-teal-500 to-teal-700">
                         <div class="flex items-center gap-4">

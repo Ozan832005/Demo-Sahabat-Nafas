@@ -420,7 +420,7 @@
         </div>
 
         <div id="success-message" class="hidden bg-green-100 border border-green-300 rounded-2xl p-6 text-center mb-6">
-            <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl shadow-green-400/25">
                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
                 </svg>
@@ -428,10 +428,98 @@
             <h3 class="text-xl font-bold text-green-800 mb-2">Data Berhasil Disimpan!</h3>
             <p class="text-green-600">Sesi terapi telah dicatat ke dalam riwayat.</p>
         </div>
+
+        <!-- Panel Error Validasi (Modern) -->
+        <div id="validation-error-panel" class="hidden bg-red-50 border border-red-200 rounded-2xl p-6 mb-6 shadow-sm ring-1 ring-red-500/20">
+            <div class="flex items-start gap-4">
+                <div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-red-800 mb-1 flex items-center gap-2">
+                        <span>Validasi Gagal</span>
+                    </h3>
+                    <p class="text-sm text-red-700 mb-3">Periksa kembali pengisian berikut sebelum menyimpan:</p>
+                    <ul id="validation-error-list" class="list-disc list-inside space-y-2 text-sm text-red-700"></ul>
+                </div>
+            </div>
+            <div class="mt-4 pt-4 border-t border-red-100 flex justify-end">
+                <button onclick="hideValidationErrors()" class="px-4 py-2 text-red-600 text-sm font-medium hover:bg-red-50 rounded-xl transition">Tutup</button>
+            </div>
+        </div>
+
+        <!-- Toast Notification Container -->
+        <div id="toast-container" class="fixed top-4 right-4 z-[100] flex flex-col gap-3 pointer-events-none"></div>
     </div>
 
+    <style>
+        #toast-container .toast {
+            animation: toastIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes toastOut {
+            to { opacity: 0; transform: translateY(-10px) scale(0.98); }
+        }
+        #validation-error-panel {
+            animation: slideUp 0.35s ease-out forwards;
+        }
+    </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
+        function showToast(message, type = 'success', duration = 5000) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const isError = type === 'error';
+            const bg = isError ? 'bg-gradient-to-r from-red-500 to-red-600' : 'bg-gradient-to-r from-teal-500 to-teal-600';
+            const icon = isError
+                ? '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>'
+                : '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>';
+            toast.className = 'toast flex items-center gap-3 px-5 py-4 rounded-2xl ' + bg + ' text-white shadow-[0_10px_40px_rgba(0,0,0,0.25)] border border-white/20 backdrop-blur-sm min-w-[260px]';
+            toast.innerHTML =
+                '<div class="flex-shrink-0">' + icon + '</div>' +
+                '<div class="flex-1 min-w-0">' +
+                '<p class="text-sm font-semibold leading-tight">' + (isError ? 'Gagal' : 'Berhasil') + '</p>' +
+                '<p class="text-xs opacity-90 leading-tight mt-0.5">' + message + '</p>' +
+                '</div>' +
+                '<button onclick="this.parentElement.style.animation=\'toastOut 0.3s ease forwards\'; setTimeout(()=>this.parentElement.remove(),300)" class="w-7 h-7 rounded-full hover:bg-white/20 flex items-center justify-center transition shrink-0">' +
+                '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>' +
+                '</button>';
+            container.appendChild(toast);
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.style.animation = 'toastOut 0.3s ease forwards';
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, duration);
+        }
+
+        function showValidationErrors(errors) {
+            const panel = document.getElementById('validation-error-panel');
+            const list = document.getElementById('validation-error-list');
+            list.innerHTML = '';
+            let total = 0;
+            for (const [field, msgs] of Object.entries(errors)) {
+                const label = field.replace(/_/g, ' ');
+                msgs.forEach(msg => {
+                    const li = document.createElement('li');
+                    li.className = 'flex items-center gap-2 text-sm text-red-700';
+                    li.innerHTML = '<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' +
+                        '<strong>' + label + ':</strong> ' + msg;
+                    list.appendChild(li);
+                    total++;
+                });
+            }
+            panel.classList.remove('hidden');
+            panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showToast('Terdapat ' + total + ' kesalahan pengisian data', 'error', 7000);
+        }
+
+        function hideValidationErrors() {
+            document.getElementById('validation-error-panel').classList.add('hidden');
+        }
         let currentScreen = 0;
         let formData = {
             nama_pasien: '',
@@ -583,7 +671,8 @@
             formData.paspor_keputusan = document.getElementById('paspor-keputusan').value;
 
             if (!formData.nama_pasien || !formData.usia || formData.riwayat_kambuh === null || formData.skala_mmrc === null || !formData.pendamping || !formData.jenis_inhaler || formData.pilihan_terapi === null || formData.prioritas_tujuan === null || formData.skor_sure === null) {
-                alert('Harap lengkapi semua field yang wajib diisi!');
+                showToast('Harap lengkapi semua field yang wajib diisi!', 'error');
+                hideValidationErrors();
                 return;
             }
 
@@ -603,17 +692,22 @@
             })
             .then(data => {
                 console.log('Server response:', data);
+                hideValidationErrors();
                 if (data.success) {
-                    alert('Data berhasil disimpan!');
+                    showToast('Data terapi berhasil disimpan!', 'success');
                     generatePDF();
                     document.getElementById('success-message').classList.remove('hidden');
                 } else {
-                    alert('Gagal menyimpan: ' + (data.message || JSON.stringify(data)));
+                    showToast('Gagal menyimpan: ' + (data.message || 'Terjadi kesalahan server'), 'error');
+                    if (data.errors) {
+                        showValidationErrors(data.errors);
+                    }
                 }
             })
             .catch(err => {
                 console.error('Error:', err);
-                alert('Error: ' + err.message);
+                showToast('Terjadi kesalahan jaringan: ' + err.message, 'error');
+                hideValidationErrors();
             });
         }
 

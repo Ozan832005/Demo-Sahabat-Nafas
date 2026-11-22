@@ -57,4 +57,5 @@ Route::middleware(['auth', 'pasien'])->group(function () {
     Route::get('/pasien/profile', function () {
         return view('pasien.profile');
     })->name('pasien.profile');
+    Route::put('/pasien/profile', [PasienController::class, 'updateProfile'])->name('pasien.profile.update');
 });

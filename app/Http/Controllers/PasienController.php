@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use App\Models\TherapyHistory;
 
 class PasienController extends Controller
@@ -47,16 +48,16 @@ class PasienController extends Controller
                 'riwayat_kambuh' => 'required|integer|in:0,1,2',
                 'skala_mmrc' => 'required|integer|min:0|max:4',
                 'pendamping' => 'required|string',
-                'jenis_inhaler' => 'required|string|in:mdi,dpi',
-                'checklist_inhaler' => 'required|array',
+                'jenis_inhaler' => 'required|string|in:mdpi,dpi,nebu',
+                'checklist_inhaler' => 'nullable|array',
                 'hari_pemakaian' => 'required|integer|min:0|max:7',
                 'kendala_kepatuhan' => 'nullable|array',
                 'pilihan_terapi' => 'required|integer|min:0|max:3',
-                'jawaban_fakta_mitos' => 'required|array',
+                'jawaban_fakta_mitos' => 'nullable|array',
                 'prioritas_tujuan' => 'required|integer|min:0|max:3',
                 'dukungan_pendamping' => 'nullable|string',
-                'kesepakatan_tindakan' => 'required|array',
-                'jawaban_sure' => 'required|array',
+                'kesepakatan_tindakan' => 'nullable|array',
+                'jawaban_sure' => 'nullable|array',
                 'skor_sure' => 'required|integer|min:0|max:4',
                 'paspor_keputusan' => 'required|string',
             ]);
@@ -122,5 +123,34 @@ class PasienController extends Controller
         $user = Auth::user();
         $therapyHistories = TherapyHistory::where('user_id', $user->id)->latest()->get();
         return view('pasien.notifikasi', compact('user', 'therapyHistories'));
+    }
+
+    public function updateProfile(\Illuminate\Http\Request $request)
+    {
+        $user = Auth::user();
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
+
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+
+        if (!empty($validated['password'])) {
+            $user->password = Hash::make($validated['password']);
+        }
+
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Profil berhasil diperbarui!',
+            'user' => [
+                'name' => $user->name,
+                'email' => $user->email,
+            ]
+        ]);
     }
 }
