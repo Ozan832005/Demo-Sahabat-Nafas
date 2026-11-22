@@ -164,14 +164,14 @@ class AdminController extends Controller
 
     public function storeTherapy(Request $request)
     {
-        $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'therapy_type' => 'required|string|max:255',
-            'duration' => 'required|integer|min:1',
-            'notes' => 'nullable|string',
-        ]);
-
         try {
+            $validated = $request->validate([
+                'user_id' => 'required|exists:users,id',
+                'therapy_type' => 'required|string|max:255',
+                'duration' => 'required|integer|min:1',
+                'notes' => 'nullable|string',
+            ]);
+
             $therapy = TherapyHistory::create([
                 'user_id' => $validated['user_id'],
                 'admin_id' => Auth::id(),
@@ -181,7 +181,7 @@ class AdminController extends Controller
                 'status' => 'selesai',
             ]);
 
-            if ($request->expectsJson() || $request->header('Accept') === 'application/json') {
+            if ($request->expectsJson() || $request->header('Accept') === 'application/json' || $request->ajax()) {
                 return response()->json([
                     'success' => true,
                     'message' => 'Riwayat terapi berhasil ditambahkan',
@@ -190,15 +190,25 @@ class AdminController extends Controller
             }
 
             return redirect()->route('admin.therapy.history')->with('success', 'Riwayat terapi berhasil ditambahkan');
-        } catch (\Exception $e) {
-            if ($request->expectsJson() || $request->header('Accept') === 'application/json') {
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->expectsJson() || $request->header('Accept') === 'application/json' || $request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Gagal menyimpan: ' . $e->getMessage()
+                    'message' => 'Validation error',
+                    'errors' => $e->errors()
+                ], 422);
+            }
+
+            return back()->withErrors($e->errors());
+        } catch (\Exception $e) {
+            if ($request->expectsJson() || $request->header('Accept') === 'application/json' || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal menyimpan ke database: ' . $e->getMessage()
                 ], 500);
             }
 
-            return back()->withErrors(['error' => 'Gagal menyimpan: ' . $e->getMessage()]);
+            return back()->withErrors(['error' => 'Gagal menyimpan ke database: ' . $e->getMessage()]);
         }
     }
 
