@@ -9,6 +9,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('therapy_histories', function (Blueprint $table) {
+            if (!Schema::hasColumn('therapy_histories', 'layer')) {
+                $table->integer('layer')->default(1);
+            }
+            
             $table->string('nama_pasien')->nullable();
             $table->integer('usia')->nullable();
             $table->integer('riwayat_kambuh')->nullable();
