@@ -1,17 +1,17 @@
 <!-- Pasien Navigation - Modern Header Menu -->
-<nav class="fixed top-6 left-0 right-0 z-50 max-w-7xl mx-auto px-4">
+<nav class="fixed top-6 left-0 right-0 z-50 max-w-7xl mx-auto px-4 sm:px-6">
     <div class="bg-white/95 backdrop-blur-2xl border border-white/40 rounded-[28px] shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
-        <div class="px-8 py-5 flex items-center justify-between">
+        <div class="px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between">
             <!-- Brand -->
             <a href="{{ route('pasien.dashboard') }}" class="flex items-center gap-4" style="color: var(--gradient-end)">
-                <div class="w-14 h-14 bg-gradient-to-br from-teal-500 to-teal-700 rounded-[18px] flex items-center justify-center shadow-xl shadow-teal-300/50 p-2">
+                <div class="w-12 sm:w-14 h-12 sm:h-14 bg-gradient-to-br from-teal-500 to-teal-700 rounded-[16px] sm:rounded-[18px] flex items-center justify-center shadow-xl shadow-teal-300/50 p-2">
                     <img src="{{ asset('icon.png') }}" alt="Logo Sahabat Nafas" class="w-full h-full object-contain">
                 </div>
-                <span class="font-bold text-2xl tracking-tight" style="color: var(--text-primary)">Sahabat Nafas</span>
+                <span class="font-bold text-lg sm:text-2xl tracking-tight hidden sm:block" style="color: var(--text-primary)">Sahabat Nafas</span>
             </a>
 
             <!-- Main Menu -->
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1 sm:gap-3 overflow-x-auto pb-1">
                 @php
                     $currentRoute = request()->route()->getName() ?? '';
                     $isDashboard = $currentRoute === 'pasien.dashboard';
@@ -23,61 +23,61 @@
 
                 <!-- Dashboard -->
                 <a href="{{ route('pasien.dashboard') }}"
-                   class="nav-item px-6 py-3.5 rounded-[20px] text-sm font-bold transition-all duration-300 flex items-center gap-3 @if($isDashboard) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
+                   class="nav-item px-4 sm:px-6 py-3 sm:py-3.5 rounded-[20px] text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 sm:gap-3 @if($isDashboard) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
                    style="color: var(--text-primary)">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="20" height="20" sm:width="22" sm:height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                         <polyline points="9 22 9 12 15 12 15 22"/>
                     </svg>
-                    Dashboard
+                    <span class="hidden sm:block whitespace-nowrap">Dashboard</span>
                 </a>
 
                 <!-- Terapi -->
                 <a href="{{ route('pasien.terapi') }}"
-                   class="nav-item px-6 py-3.5 rounded-[20px] text-sm font-bold transition-all duration-300 flex items-center gap-3 @if($isTerapi) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
+                   class="nav-item px-4 sm:px-6 py-3 sm:py-3.5 rounded-[20px] text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 sm:gap-3 @if($isTerapi) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
                    style="color: var(--text-primary)">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="20" height="20" sm:width="22" sm:height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"/>
                         <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
                         <path d="M2 12h20"/>
                         <path d="M12 2v20"/>
                     </svg>
-                    Terapi
+                    <span class="hidden sm:block whitespace-nowrap">Terapi</span>
                 </a>
 
                 <!-- Riwayat Terapi -->
                 <a href="{{ route('pasien.catatan') }}"
-                   class="nav-item px-6 py-3.5 rounded-[20px] text-sm font-bold transition-all duration-300 flex items-center gap-3 @if($isRiwayatTerapi) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
+                   class="nav-item px-4 sm:px-6 py-3 sm:py-3.5 rounded-[20px] text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 sm:gap-3 @if($isRiwayatTerapi) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
                    style="color: var(--text-primary)">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="20" height="20" sm:width="22" sm:height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                         <polyline points="14 2 14 8 20 8"/>
                         <line x1="16" y1="13" x2="8" y2="13"/>
                         <line x1="16" y1="17" x2="8" y2="17"/>
                         <polyline points="10 9 9 9 8 9"/>
                     </svg>
-                    Riwayat Terapi
+                    <span class="hidden sm:block whitespace-nowrap">Riwayat Terapi</span>
                 </a>
 
                 <!-- Catatan Perawat -->
                 <a href="{{ route('pasien.notifikasi') }}"
-                   class="nav-item px-6 py-3.5 rounded-[20px] text-sm font-bold transition-all duration-300 flex items-center gap-3 @if($isCatatanPerawat) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
+                   class="nav-item px-4 sm:px-6 py-3 sm:py-3.5 rounded-[20px] text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 sm:gap-3 @if($isCatatanPerawat) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
                    style="color: var(--text-primary)">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="20" height="20" sm:width="22" sm:height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
                     </svg>
-                    Catatan Perawat
+                    <span class="hidden sm:block whitespace-nowrap">Catatan Perawat</span>
                 </a>
 
                 <!-- Edukasi -->
                 <a href="{{ route('pasien.edukasi') }}"
-                   class="nav-item px-6 py-3.5 rounded-[20px] text-sm font-bold transition-all duration-300 flex items-center gap-3 @if($isEdukasi) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
+                   class="nav-item px-4 sm:px-6 py-3 sm:py-3.5 rounded-[20px] text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 sm:gap-3 @if($isEdukasi) bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-xl shadow-teal-300/40 scale-105 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-102 @endif"
                    style="color: var(--text-primary)">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="20" height="20" sm:width="22" sm:height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
                         <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
                     </svg>
-                    Edukasi
+                    <span class="hidden sm:block whitespace-nowrap">Edukasi</span>
                 </a>
             </div>
 
@@ -136,10 +136,10 @@
                 </div>
 
                 <!-- Logout Confirmation Modal Overlay (Full Screen) -->
-                <div x-show="showLogoutModal" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click.away="showLogoutModal = false" class="fixed inset-0 z-[9999] flex items-center justify-center" style="background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);">
+                <div x-show="showLogoutModal" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click.away="showLogoutModal = false" class="fixed inset-0 z-[99999] flex items-center justify-center p-4" style="background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(24px) saturate(200%); -webkit-backdrop-filter: blur(24px) saturate(200%);">
                     <!-- Modal Content -->
-                    <div x-transition:enter="transition ease-out duration-300" x-transition:enter-start="transform opacity-0 scale-90 translate-y-4" x-transition:enter-end="transform opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100 translate-y-0" x-transition:leave-end="transform opacity-0 scale-90 translate-y-4" class="bg-white rounded-[32px] p-8 w-full max-w-md shadow-[0_40px_120px_rgba(0,0,0,0.4)] border border-white/20 mx-4 sm:mx-0">
-                        <div class="text-center">
+                    <div x-transition:enter="transition ease-out duration-300" x-transition:enter-start="transform opacity-0 scale-90 translate-y-4" x-transition:enter-end="transform opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100 translate-y-0" x-transition:leave-end="transform opacity-0 scale-90 translate-y-4" class="bg-white rounded-[32px] p-8 w-full max-w-md max-h-[90vh] overflow-y-auto shadow-[0_40px_120px_rgba(0,0,0,0.5)] border border-white/20 mx-4 sm:mx-0 flex flex-col">
+                        <div class="text-center flex-1">
                             <div class="w-20 h-20 bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-red-200/40">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-red-600">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>

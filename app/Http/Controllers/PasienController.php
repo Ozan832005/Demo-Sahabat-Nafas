@@ -51,9 +51,9 @@ class PasienController extends Controller
 
     public function storeTerapi(\Illuminate\Http\Request $request)
     {
-        $user = Auth::user();
-        
         try {
+            $user = Auth::user();
+
             $validated = $request->validate([
                 'nama_pasien' => 'required|string|max:255',
                 'usia' => 'required|integer|min:0|max:150',
@@ -80,9 +80,9 @@ class PasienController extends Controller
                 'errors' => $e->errors()
             ], 422);
         }
-        
+
         $layer = TherapyHistory::where('user_id', $user->id)->count() + 1;
-        
+
         try {
             $therapy = TherapyHistory::create([
                 'user_id' => $user->id,
@@ -116,7 +116,7 @@ class PasienController extends Controller
                 'message' => 'Gagal menyimpan ke database: ' . $e->getMessage()
             ], 500);
         }
-        
+
         return response()->json([
             'success' => true,
             'message' => 'Data terapi berhasil disimpan!',
