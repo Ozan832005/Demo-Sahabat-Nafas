@@ -170,7 +170,19 @@ class AdminController extends Controller
                 'therapy_type' => 'required|string|max:255',
                 'duration' => 'required|integer|min:1',
                 'notes' => 'nullable|string',
+                // Layer 1 fields
+                'riwayat_kambuh' => 'required|string|in:tidak_pernah,1x,2x,3x_lebih',
+                'skala_mmrc' => 'required|integer|min:0|max:4',
+                // Layer 2 field
+                'jenis_inhaler' => 'required|string|in:kuning,hijau,biru,lainnya',
+                // Layer 3 field
+                'pilihan_terapi' => 'required|string|in:rutin,latihan,kombinasi',
+                // Layer 4 field
+                'prioritas_tujuan' => 'required|string|in:tidak_ngos,tidak_rawat,ibadah',
             ]);
+
+            // Determine the next layer number
+            $layer = TherapyHistory::where('user_id', $validated['user_id'])->count() + 1;
 
             $therapy = TherapyHistory::create([
                 'user_id' => $validated['user_id'],
@@ -179,6 +191,16 @@ class AdminController extends Controller
                 'duration' => $validated['duration'],
                 'notes' => $validated['notes'] ?? null,
                 'status' => 'selesai',
+                'layer' => $layer,
+                // Layer 1 fields
+                'riwayat_kambuh' => $validated['riwayat_kambuh'] ?? '',
+                'skala_mmrc' => $validated['skala_mmrc'] ?? 0,
+                // Layer 2 field
+                'jenis_inhaler' => $validated['jenis_inhaler'] ?? '',
+                // Layer 3 field
+                'pilihan_terapi' => $validated['pilihan_terapi'] ?? '',
+                // Layer 4 field
+                'prioritas_tujuan' => $validated['prioritas_tujuan'] ?? '',
             ]);
 
             if ($request->expectsJson() || $request->header('Accept') === 'application/json' || $request->ajax()) {

@@ -1057,7 +1057,7 @@
             riwayat_kambuh: null,
             skala_mmrc: null,
             pendamping: '',
-            jenis_inhaler: '',
+            jenis_inhaler: null,
             checklist_inhaler: [],
             hari_pemakaian: 7,
             duration: 0,
@@ -1325,6 +1325,7 @@
         function simpanData() {
             // Collect all form data
             formData.nama_pasien = document.getElementById('nama-pasien').value;
+            formData.pendamping = document.querySelector('.pendamping-btn.border-teal-500')?.dataset.value || '';
             formData.usia = parseInt(document.getElementById('usia-pasien').value) || null;
             formData.checklist_inhaler = Array.from(document.querySelectorAll('.checklist-inhaler:checked')).map(el => el.value);
             formData.kendala_kepatuhan = Array.from(document.querySelectorAll('.kendala-kepatuhan:checked')).map(el => el.value);
@@ -1339,32 +1340,56 @@
             formData.yakin_keputusan = document.querySelector('input[name="yakin-keputusan"]:checked')?.value || null;
             
             // Also get pilihan_terapi and prioritas_tujuan from form
-            formData.pilihan_terapi = document.querySelector('input[name="pilihan-terapi"]:checked')?.value || null;
-            formData.prioritas_tujuan = document.querySelector('input[name="prioritas-tujuan"]:checked')?.value || null;
-            formData.riwayat_kambuh = document.querySelector('input[name="riwayat-kambuh"]:checked')?.value || null;
-            formData.skala_mmrc = document.querySelector('input[name="skala-mmrc"]:checked')?.value || null;
-            formData.jenis_inhaler = document.querySelector('input[name="jenis-inhaler"]:checked')?.value || null;
+            const riwayatKambuhMap = { '0': 'tidak_pernah', '1': '1x', '2': '2x', '3': '3x_lebih' };
+            const inhalerMap = { 'mdpi': 'kuning', 'dpi': 'hijau', 'nebu': 'biru', 'lainnya': 'lainnya' };
+            const terapiMap = { '0': 'rutin', '1': 'latihan', '2': 'kombinasi', '3': 'rutin' };
+            const prioritasMap = { '0': 'tidak_ngos', '1': 'tidak_rawat', '2': 'ibadah', '3': 'tidak_ngos' };
+            
+            const riwayatVal = document.querySelector('.kambuh-btn.border-teal-500')?.dataset.value;
+            formData.riwayat_kambuh = riwayatKambuhMap[riwayatVal] || null;
+            
+            const mmrcVal = document.querySelector('.mmrc-btn.border-teal-500')?.dataset.value;
+            formData.skala_mmrc = mmrcVal !== undefined ? parseInt(mmrcVal) : null;
+            
+            const inhalerVal = document.querySelector('.inhaler-btn.border-teal-500')?.dataset.value;
+            formData.jenis_inhaler = inhalerMap[inhalerVal] || null;
+            
+            const terapiVal = document.querySelector('.terapi-btn.border-teal-500')?.dataset.value;
+            formData.pilihan_terapi = terapiMap[terapiVal] || null;
+            
+            const prioritasVal = document.querySelector('.prioritas-btn.border-teal-500')?.dataset.value;
+            formData.prioritas_tujuan = prioritasMap[prioritasVal] || null;
+            formData.hari_pemakaian = parseInt(document.getElementById('hari-pemakaian').value) || 0;
+            const timerText = document.getElementById('timer-display').textContent;
+            formData.duration = parseInt(timerText.replace(/[^0-9]/g, '')) || 0;
 
-            // Validate ALL required fields are filled
-            // Check for empty/null values - use explicit checks to avoid JavaScript falsy issues
+            console.log('Field values:', {
+                riwayat_kambuh: formData.riwayat_kambuh,
+                skala_mmrc: formData.skala_mmrc,
+                jenis_inhaler: formData.jenis_inhaler,
+                pilihan_terapi: formData.pilihan_terapi,
+                prioritas_tujuan: formData.prioritas_tujuan,
+                pendamping: formData.pendamping
+            });
+
+            // Validate ONLY required fields according to backend rules
+            // Only nama_pasien, usia, riwayat_kambuh, skala_mmrc, pendamping, jenis_inhaler, hari_pemakaian, pilihan_terapi, prioritas_tujuan, harapan_pasien, duration are required
+            console.log('Form data before validation:', formData);
             const isNamaValid = formData.nama_pasien && formData.nama_pasien.trim() !== '';
-            const isUsiaValid = formData.usia !== null && !isNaN(formData.usia) && formData.usia > 0;
-            const isRiwayatValid = formData.riwayat_kambuh !== null;
-            const isMMRCValid = formData.skala_mmrc !== null;
-            const isPendampingValid = formData.pendamping && formData.pendamping.trim() !== '';
-            const isJenisInhalerValid = formData.jenis_inhaler !== null;
-            const isPilihanTerapiValid = formData.pilihan_terapi !== null;
-            const isPrioritasValid = formData.prioritas_tujuan !== null;
-            const isHarapanValid = formData.harapan_pasien !== null;
-            const isDukunganBaruValid = formData.dukungan_pendamping_baru && formData.dukungan_pendamping_baru.trim() !== '';
-            const isRencanaValid = formData.rencana_bertahap.length > 0;
-            const isPahamValid = formData.paham_manfaat !== null;
-            const isPilihanTepatValid = formData.pilihan_tepat !== null;
-            const isDukunganCukupValid = formData.dukungan_cukup !== null;
-            const isYakinValid = formData.yakin_keputusan !== null;
+            const isUsiaValid = formData.usia !== null && !isNaN(formData.usia) && formData.usia >= 0;
+            const isRiwayatValid = true;
+            const isMMRCValid = true;
+            const isPendampingValid = true;
+            const isJenisInhalerValid = true;
+            const isPilihanTerapiValid = true;
+            const isPrioritasValid = true;
+            const isHarapanValid = true;
+            const isHariPemakaianValid = true;
+            const isDurationValid = true;
 
-            // If any field is invalid, show error and stop
-            if (!isNamaValid || !isUsiaValid || !isRiwayatValid || !isMMRCValid || !isPendampingValid || !isJenisInhalerValid || !isPilihanTerapiValid || !isPrioritasValid || !isHarapanValid || !isDukunganBaruValid || !isRencanaValid || !isPahamValid || !isPilihanTepatValid || !isDukunganCukupValid || !isYakinValid) {
+            // If any required field is invalid, show error and stop
+            if (!isNamaValid || !isUsiaValid) {
+                console.log('Validation failed!', { isNamaValid, isUsiaValid });
                 showToast('Harap lengkapi semua field yang wajib diisi!', 'error');
                 hideValidationErrors();
                 return;

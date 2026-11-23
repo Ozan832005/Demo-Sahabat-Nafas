@@ -65,7 +65,7 @@ class PasienController extends Controller
                 'hari_pemakaian' => 'required|integer|min:0|max:7',
                 'kendala_kepatuhan' => 'nullable|array',
                 'pilihan_terapi' => 'required|string|in:rutin,latihan,kombinasi',
-                'jawaban_fakta_mitos' => 'nullable',
+                'jawaban_fakta_mitos' => 'nullable|array',
                 'prioritas_tujuan' => 'required|string|in:tidak_ngos,tidak_rawat,ibadah',
                 'dukungan_pendamping' => 'nullable|string',
                 'kesepakatan_tindakan' => 'nullable|array',
