@@ -6,113 +6,103 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\TherapyHistory;
-use PDF;
 use Illuminate\Support\Facades\Log;
 class PasienController extends Controller
 {
     public function storeTerapi(\Illuminate\Http\Request $request)
     {
-        // Log data mentah yang diterima untuk debugging
-        Log::info('Menerima data mentah dari form:', $request->all());
+        Log::info('Menerima data terapi:', $request->all());
 
-        // 1. Transformasi Data dari Front-end
-        // Mengubah nilai numerik dari form menjadi string yang diharapkan oleh database.
-        $input = $request->all();
-        $riwayatKambuhMapping = [
-            0 => 'tidak_pernah',
-            1 => '1x',
-            2 => '2x_atau_lebih',
-        ];
-        // Pastikan nilai yang masuk ada di dalam mapping, jika tidak, set default atau null
-        if (isset($input['riwayat_kambuh']) && array_key_exists($input['riwayat_kambuh'], $riwayatKambuhMapping)) {
-            $input['riwayat_kambuh_string'] = $riwayatKambuhMapping[$input['riwayat_kambuh']];
-        } else {
-            $input['riwayat_kambuh_string'] = null; // Atau nilai default yang sesuai
-        }
-
-        // 2. Validasi Data yang Sudah Ditransformasi
-        $validated = validator($input, [
+        $validated = $request->validate([
             'nama_pasien' => 'required|string|max:255',
             'usia' => 'required|integer|min:0|max:150',
-            'riwayat_kambuh_string' => 'required|string|in:tidak_pernah,1x,2x_atau_lebih', // Validasi string
-            'skala_mmrc' => 'required|integer|min:0|max:4',
-            'pendamping' => 'required|string',
-            'jenis_inhaler' => 'required|string', // Dibuat lebih fleksibel
+            'riwayat_kambuh' => 'nullable',
+            'skala_mmrc' => 'nullable|integer|min:0|max:4',
+            'pendamping' => 'nullable',
+            'jenis_inhaler' => 'nullable',
             'checklist_inhaler' => 'nullable|array',
-            'hari_pemakaian' => 'required|integer|min:0|max:7',
+            'hari_pemakaian' => 'nullable|integer|min:0|max:7',
             'kendala_kepatuhan' => 'nullable|array',
-            'pilihan_terapi' => 'required|string',
+            'pilihan_terapi' => 'nullable',
             'jawaban_fakta_mitos' => 'nullable|array',
-            'prioritas_tujuan' => 'required|string',
+            'prioritas_tujuan' => 'nullable',
             'dukungan_pendamping' => 'nullable|string',
             'kesepakatan_tindakan' => 'nullable|array',
-            'harapan_pasien' => 'required|string',
+            'harapan_pasien' => 'nullable',
             'dukungan_pendamping_baru' => 'nullable|string',
             'rencana_bertahap' => 'nullable|array',
             'paham_manfaat' => 'nullable|string',
             'pilihan_tepat' => 'nullable|string',
             'dukungan_cukup' => 'nullable|string',
             'yakin_keputusan' => 'nullable|string',
-            'duration' => 'required|integer|min:0',
-            'layer' => 'required|integer',
-        ])->validate();
+            'duration' => 'nullable|integer|min:0',
+            'layer' => 'nullable|integer',
+        ]);
 
-        // 3. Simpan ke Database
         try {
             $user = Auth::user();
+            
+            // Hitung layer secara otomatis berdasarkan jumlah sesi sebelumnya
+            $layer = TherapyHistory::where('user_id', $user->id)->count() + 1;
+            
             $therapy = TherapyHistory::create([
                 'user_id' => $user->id,
-                'layer' => $validated['layer'],
-                'duration' => $validated['duration'],
-                'nama_pasien' => $validated['nama_pasien'],
-                'usia' => $validated['usia'],
-                'riwayat_kambuh' => $validated['riwayat_kambuh_string'], // Simpan string yang sudah divalidasi
-                'skala_mmrc' => $validated['skala_mmrc'],
-                'pendamping' => $validated['pendamping'],
-                'jenis_inhaler' => $validated['jenis_inhaler'],
-                'checklist_inhaler' => $validated['checklist_inhaler'] ?? [],
-                'hari_pemakaian' => $validated['hari_pemakaian'],
-                'kendala_kepatuhan' => $validated['kendala_kepatuhan'] ?? [],
-                'pilihan_terapi' => $validated['pilihan_terapi'],
-                'jawaban_fakta_mitos' => $validated['jawaban_fakta_mitos'] ?? [],
-                'prioritas_tujuan' => $validated['prioritas_tujuan'],
-                'dukungan_pendamping' => $validated['dukungan_pendamping'] ?? '',
-                'kesepakatan_tindakan' => $validated['kesepakatan_tindakan'] ?? [],
-                'harapan_pasien' => $validated['harapan_pasien'],
-                'dukungan_pendamping_baru' => $validated['dukungan_pendamping_baru'] ?? '',
-                'rencana_bertahap' => $validated['rencana_bertahap'] ?? [],
-                'paham_manfaat' => $validated['paham_manfaat'] ?? '',
-                'pilihan_tepat' => $validated['pilihan_tepat'] ?? '',
-                'dukungan_cukup' => $validated['dukungan_cukup'] ?? '',
-                'yakin_keputusan' => $validated['yakin_keputusan'] ?? '',
+                'admin_id' => null,
+                'layer' => $layer,
+                'duration' => (int)($validated['duration'] ?? 60),
+                'nama_pasien' => (string)$validated['nama_pasien'],
+                'usia' => (int)$validated['usia'],
+                'riwayat_kambuh' => isset($validated['riwayat_kambuh']) ? (int)$validated['riwayat_kambuh'] : 0,
+                'skala_mmrc' => isset($validated['skala_mmrc']) ? (int)$validated['skala_mmrc'] : 0,
+                'pendamping' => (string)($validated['pendamping'] ?? ''),
+                'jenis_inhaler' => (string)($validated['jenis_inhaler'] ?? ''),
+                'checklist_inhaler' => is_array($validated['checklist_inhaler'] ?? []) ? $validated['checklist_inhaler'] : [],
+                'hari_pemakaian' => isset($validated['hari_pemakaian']) ? (int)$validated['hari_pemakaian'] : 7,
+                'kendala_kepatuhan' => is_array($validated['kendala_kepatuhan'] ?? []) ? $validated['kendala_kepatuhan'] : [],
+                'pilihan_terapi' => isset($validated['pilihan_terapi']) ? (int)$validated['pilihan_terapi'] : 0,
+                'jawaban_fakta_mitos' => is_array($validated['jawaban_fakta_mitos'] ?? []) ? $validated['jawaban_fakta_mitos'] : [],
+                'prioritas_tujuan' => isset($validated['prioritas_tujuan']) ? (int)$validated['prioritas_tujuan'] : 0,
+                'dukungan_pendamping' => (string)($validated['dukungan_pendamping'] ?? ''),
+                'kesepakatan_tindakan' => is_array($validated['kesepakatan_tindakan'] ?? []) ? $validated['kesepakatan_tindakan'] : [],
+                'harapan_pasien' => (string)($validated['harapan_pasien'] ?? ''),
+                'dukungan_pendamping_baru' => (string)($validated['dukungan_pendamping_baru'] ?? ''),
+                'rencana_bertahap' => is_array($validated['rencana_bertahap'] ?? []) ? $validated['rencana_bertahap'] : [],
+                'paham_manfaat' => (string)($validated['paham_manfaat'] ?? ''),
+                'pilihan_tepat' => (string)($validated['pilihan_tepat'] ?? ''),
+                'dukungan_cukup' => (string)($validated['dukungan_cukup'] ?? ''),
+                'yakin_keputusan' => (string)($validated['yakin_keputusan'] ?? ''),
                 'therapy_type' => 'terapi_ppok',
                 'status' => 'selesai',
             ]);
+
             Log::info('Data terapi berhasil disimpan dengan ID: ' . $therapy->id);
 
-        } catch (\Exception $e) {
-            Log::error('Gagal menyimpan ke database: ' . $e->getMessage());
-            // Mungkin lebih baik mengembalikan ke halaman sebelumnya dengan pesan error
-            return back()->withErrors(['db_error' => 'Gagal menyimpan data ke database. Silakan coba lagi.'])->withInput();
-        }
-
-        // 4. Buat dan Unduh PDF
-        try {
-            // Menyiapkan data teks untuk PDF agar lebih mudah dibaca
-            $therapy->riwayat_kambuh_text = str_replace('_', ' ', ucfirst($therapy->riwayat_kambuh));
-
-            $pdf = PDF::loadView('pasien.terapi_pdf', compact('therapy'));
-            $filename = 'Ringkasan-Terapi-' . str_replace(' ', '-', $therapy->nama_pasien) . '-' . now()->format('Ymd') . '.pdf';
-            
-            Log::info('Membuat PDF dengan nama file: ' . $filename);
-            
-            return $pdf->download($filename);
+            return response()->json([
+                'success' => true,
+                'therapy_id' => $therapy->id,
+                'message' => 'Data berhasil disimpan'
+            ]);
 
         } catch (\Exception $e) {
-            Log::error('Gagal membuat PDF: ' . $e->getMessage());
-            // Data sudah tersimpan, tapi PDF gagal. Beri tahu pengguna.
-            return redirect()->route('pasien.history')->with('success', 'Data berhasil disimpan, tetapi gagal membuat PDF.');
+            Log::error('Error menyimpan terapi: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menyimpan: ' . $e->getMessage()
+            ], 500);
         }
+    }
+
+    public function downloadPdf($id)
+    {
+        $therapy = TherapyHistory::findOrFail($id);
+        
+        $riwayatKambuhText = ['0 kali', '1 kali', '2 kali atau lebih'];
+        $therapy->riwayat_kambuh_text = $riwayatKambuhText[$therapy->riwayat_kambuh] ?? 'Tidak ada data';
+
+        $pdf = PDF::loadView('pasien.terapi_pdf', compact('therapy'));
+        $filename = 'Ringkasan-Terapi-' . str_replace(' ', '-', $therapy->nama_pasien) . '-' . now()->format('Ymd') . '.pdf';
+        
+        return $pdf->download($filename);
     }
 
     public function dashboard()
@@ -127,19 +117,38 @@ class PasienController extends Controller
         try {
             $therapyHistories = TherapyHistory::where('user_id', $user->id)->latest()->get();
             $totalTherapySessions = $therapyHistories->count();
-            $currentLayer = $totalTherapySessions > 0 ? min($totalTherapySessions, 4) : 0;
+            $currentLayer = $totalTherapySessions > 0 ? min($totalTherapySessions, 6) : 0;
 
-            // Buat notifikasi real-time dari riwayat terapi terbaru
-            $notifications = $therapyHistories->take(3)->map(function ($history, $index) {
-                return (object) [
+            // Gabungkan notifikasi sesi terapi DAN catatan perawat
+            $notifications = collect();
+            
+            // Tambahkan catatan perawat dari riwayat terapi
+            foreach ($therapyHistories as $history) {
+                if ($history->perawat_notes) {
+                    $notifications->push((object) [
+                        'id' => 'note_' . $history->id,
+                        'title' => 'Catatan dari Perawat',
+                        'message' => $history->perawat_notes,
+                        'created_at' => $history->updated_at,
+                        'type' => 'note'
+                    ]);
+                }
+            }
+            
+            // Tambahkan notifikasi sesi terapi selesai
+            foreach ($therapyHistories as $index => $history) {
+                $notifications->push((object) [
                     'id' => 'therapy_' . $history->id,
                     'title' => 'Sesi Terapi Layer ' . ($index + 1) . ' Selesai',
                     'message' => 'Data terapi PPOK Anda telah berhasil disimpan pada ' .
                         \Carbon\Carbon::parse($history->created_at)->format('d F Y, H:i'),
                     'created_at' => $history->created_at,
                     'type' => 'therapy'
-                ];
-            });
+                ]);
+            }
+            
+            // Urutkan notifikasi berdasarkan waktu terbaru
+            $notifications = $notifications->sortByDesc('created_at')->values();
         } catch (\Exception $e) {
         }
 

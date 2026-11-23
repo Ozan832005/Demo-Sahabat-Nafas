@@ -93,7 +93,7 @@
                                 </button>
                                 <button onclick="editTherapy(<?php echo e($therapy->id); ?>)" class="px-4 py-2 bg-yellow-50 text-yellow-600 rounded-xl font-medium hover:bg-yellow-100 transition-all flex items-center gap-2">
                                     <i class="fa-solid fa-pen-to-square"></i>
-                                    Edit
+                                    Cetak PDF
                                 </button>
                                 <button onclick="confirmDelete(<?php echo e($therapy->id); ?>)" class="px-4 py-2 bg-red-50 text-red-600 rounded-xl font-medium hover:bg-red-100 transition-all flex items-center gap-2">
                                     <i class="fa-solid fa-trash"></i>
@@ -107,9 +107,9 @@
         <?php endif; ?>
     </div>
 
-    <div id="viewTherapyModal" class="form-modal hidden">
+    <div id="viewTherapyModal" class="fixed inset-0 z-[100] hidden">
         <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" onclick="closeModal('viewTherapyModal')"></div>
-        <div class="relative w-full max-w-4xl bg-white rounded-2xl shadow-2xl p-6 max-h-[90vh] overflow-y-auto z-10">
+        <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl bg-white rounded-2xl shadow-2xl p-6 max-h-[90vh] overflow-y-auto z-[101]">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-xl font-bold text-gray-800">Detail Riwayat Terapi</h2>
                 <button onclick="closeModal('viewTherapyModal')" class="p-2 hover:bg-gray-100 rounded-xl transition-all">
@@ -117,6 +117,27 @@
                 </button>
             </div>
             <div id="viewTherapyContent" class="space-y-4">
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteConfirmModal" class="fixed inset-0 z-[100] hidden">
+        <div class="fixed inset-0 bg-black/50 backdrop-blur-sm"></div>
+        <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 z-[101]">
+            <div class="text-center">
+                <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-trash text-red-600 text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Konfirmasi Hapus</h3>
+                <p class="text-gray-600 mb-6">Apakah Anda yakin ingin menghapus riwayat terapi ini? Tindakan ini tidak dapat dibatalkan.</p>
+                <div class="flex gap-3 justify-center">
+                    <button onclick="closeModal('deleteConfirmModal')" class="px-6 py-2.5 bg-gray-200 text-gray-700 rounded-xl font-medium hover:bg-gray-300 transition-all">
+                        Batal
+                    </button>
+                    <button id="confirmDeleteBtn" class="px-6 py-2.5 bg-red-600 text-white rounded-xl font-medium hover:bg-red-700 transition-all">
+                        Hapus
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -248,9 +269,16 @@
             });
         });
 
+        let pendingDeleteId = null;
+
         function confirmDelete(id) {
-            if (confirm('Apakah Anda yakin ingin menghapus riwayat terapi ini? Tindakan ini tidak dapat dibatalkan.')) {
-                fetch(`/pasien/terapi/${id}`, {
+            pendingDeleteId = id;
+            document.getElementById('deleteConfirmModal').classList.remove('hidden');
+        }
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            if (pendingDeleteId) {
+                fetch(`/pasien/terapi/${pendingDeleteId}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
@@ -260,12 +288,80 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
+                        closeModal('deleteConfirmModal');
+                        pendingDeleteId = null;
                         alert('Riwayat terapi berhasil dihapus');
                         window.location.reload();
                     }
                 });
             }
+        });
+
+        function printPDF(id) {
+            fetch(`/pasien/terapi/${id}/edit`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        const therapy = data.therapy;
+                        const { jsPDF } = window.jspdf;
+                        const doc = new jsPDF();
+                        
+                        doc.setFontSize(22);
+                        doc.setTextColor(13, 148, 136);
+                        doc.text('Sahabat Nafas - Laporan Terapi PPOK', 20, 25);
+                        
+                        doc.setFontSize(12);
+                        doc.setTextColor(60, 60, 60);
+                        doc.text(`Tanggal: ${new Date(therapy.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}`, 20, 35);
+                        
+                        let yPos = 50;
+                        const margin = 20;
+                        const lineHeight = 8;
+                        
+                        doc.setFontSize(14);
+                        doc.setTextColor(13, 148, 136);
+                        doc.text('Data Pasien', margin, yPos);
+                        yPos += lineHeight + 4;
+                        
+                        doc.setFontSize(11);
+                        doc.setTextColor(40, 40, 40);
+                        doc.text(`Nama Pasien: ${therapy.nama_pasien || 'TIDAK ADA'}`, margin, yPos); yPos += lineHeight;
+                        doc.text(`Usia: ${therapy.usia || 'TIDAK ADA'} tahun`, margin, yPos); yPos += lineHeight;
+                        doc.text(`Riwayat Kambuh: ${therapy.riwayat_kambuh || 'TIDAK ADA'}`, margin, yPos); yPos += lineHeight;
+                        doc.text(`Skala mMRC: ${therapy.skala_mmrc || 'TIDAK ADA'}`, margin, yPos); yPos += lineHeight + 8;
+                        
+                        doc.setFontSize(14);
+                        doc.setTextColor(13, 148, 136);
+                        doc.text('Detail Terapi', margin, yPos);
+                        yPos += lineHeight + 4;
+                        
+                        doc.setFontSize(11);
+                        doc.setTextColor(40, 40, 40);
+                        doc.text(`Pendamping: ${therapy.pendamping || 'TIDAK ADA'}`, margin, yPos); yPos += lineHeight;
+                        doc.text(`Jenis Inhaler: ${therapy.jenis_inhaler || 'TIDAK ADA'}`, margin, yPos); yPos += lineHeight;
+                        doc.text(`Pilihan Terapi: ${therapy.pilihan_terapi || 'TIDAK ADA'}`, margin, yPos); yPos += lineHeight;
+                        doc.text(`Prioritas Tujuan: ${therapy.prioritas_tujuan || 'TIDAK ADA'}`, margin, yPos); yPos += lineHeight + 8;
+                        
+                        if (therapy.harapan_pasien) {
+                            doc.setFontSize(14);
+                            doc.setTextColor(13, 148, 136);
+                            doc.text('Harapan Pasien', margin, yPos);
+                            yPos += lineHeight + 4;
+                            
+                            doc.setFontSize(11);
+                            doc.setTextColor(40, 40, 40);
+                            const harapanLines = doc.splitTextToSize(therapy.harapan_pasien, 170);
+                            harapanLines.forEach(line => {
+                                doc.text(line, margin, yPos);
+                                yPos += lineHeight;
+                            });
+                        }
+                        
+                        doc.save(`Terapi-${therapy.nama_pasien}-${new Date(therapy.created_at).toISOString().split('T')[0]}.pdf`);
+                    }
+                });
         }
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\nurda\project-sahabat-nafas\resources\views/pasien/riwayat-terapi.blade.php ENDPATH**/ ?>

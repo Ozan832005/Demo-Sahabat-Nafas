@@ -183,7 +183,256 @@
                     </div>
                 </details>
             </div>
+            
+   
         </div>
+
+                
+<section id="tutorial-fokus-panik" class="relative mt-8 overflow-hidden rounded-[28px] border border-teal-100 bg-white shadow-xl shadow-teal-900/5">
+    <div class="relative overflow-hidden bg-gradient-to-br from-slate-950 via-teal-950 to-teal-700 px-6 py-8 sm:px-8 sm:py-10">
+        <div class="pointer-events-none absolute -right-12 -top-16 h-56 w-56 rounded-full bg-teal-300/10 blur-3xl"></div>
+        <div class="pointer-events-none absolute -bottom-24 left-1/3 h-48 w-48 rounded-full bg-cyan-300/10 blur-3xl"></div>
+
+        <div class="relative z-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div class="max-w-2xl">
+                <span class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[.16em] text-teal-100">
+                    <span class="h-2 w-2 rounded-full bg-teal-300"></span>
+                    Tutorial Interaktif
+                </span>
+                <h3 class="mt-4 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+                    Fokus & Mengendalikan Panik
+                </h3>
+                <p class="mt-3 max-w-xl text-sm leading-6 text-teal-100 sm:text-base">
+                    Pelajari cara menenangkan ritme napas secara perlahan melalui empat langkah sederhana. Ikuti dengan nyaman, tanpa memaksakan napas.
+                </p>
+            </div>
+
+            <div class="hidden h-20 w-20 shrink-0 items-center justify-center rounded-3xl border border-white/20 bg-white/10 text-white shadow-lg sm:flex">
+                <svg class="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                    <path d="M3 12h3l2.2-6 4.1 12 2.4-7 1.4 3H21" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+        </div>
+
+        <div class="relative z-10 mt-7 flex flex-wrap gap-2">
+            <span class="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-3 py-2 text-xs font-semibold text-white">
+                <svg class="h-4 w-4 text-teal-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 3v18m9-9H3" stroke-width="1.8" stroke-linecap="round"/></svg>
+                Langkah bertahap
+            </span>
+            <span class="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-3 py-2 text-xs font-semibold text-white">
+                <svg class="h-4 w-4 text-teal-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.7 3.2 7.8 7.5 9.5 4.3-1.7 7.5-4.8 7.5-9.5V6L12 3Z" stroke-width="1.7" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Tanpa menahan napas
+            </span>
+        </div>
+    </div>
+
+    <div class="grid gap-6 p-5 sm:p-7 lg:grid-cols-[minmax(0,1.35fr)_minmax(260px,.65fr)] lg:p-8">
+        <div class="min-w-0">
+            <div class="mb-5">
+                <div class="mb-2 flex items-center justify-between gap-3">
+                    <p class="text-sm font-bold text-slate-800" data-tutorial-count aria-live="polite">Langkah 1 dari 4</p>
+                    <p class="text-xs font-semibold text-slate-500">Panduan 4 langkah</p>
+                </div>
+                <div class="h-2.5 overflow-hidden rounded-full bg-slate-100">
+                    <div data-tutorial-progress class="h-full w-1/4 rounded-full bg-gradient-to-r from-teal-500 to-cyan-500 transition-all duration-500" style="width:25%"></div>
+                </div>
+            </div>
+
+            <div class="relative min-h-[260px] overflow-hidden rounded-2xl border border-teal-100 bg-gradient-to-br from-teal-50 via-white to-cyan-50 p-5 sm:p-7">
+                <div data-tutorial-step="0" class="tutorial-step">
+                    <div class="flex items-start gap-4">
+                        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-teal-600 text-lg font-extrabold text-white shadow-lg shadow-teal-600/20">01</div>
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-[.15em] text-teal-700">Persiapan</p>
+                            <h4 class="mt-1 text-xl font-extrabold text-slate-900 sm:text-2xl">Atur posisi yang nyaman</h4>
+                        </div>
+                    </div>
+                    <p class="mt-5 text-sm leading-7 text-slate-600 sm:text-base">
+                        Duduk dengan posisi tegak dan nyaman. Letakkan kedua kaki dengan stabil. Rilekskan bahu dan leher. Bila terasa sesak, coba condong sedikit ke depan dan istirahatkan lengan pada paha atau meja.
+                    </p>
+                    <div class="mt-5 flex items-center gap-3 rounded-xl border border-teal-100 bg-white/90 p-4">
+                        <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-teal-100 text-teal-700">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M7 20v-5a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v5M9 8a3 3 0 1 0 6 0 3 3 0 0 0-6 0Z" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 20h16" stroke-width="1.7" stroke-linecap="round"/></svg>
+                        </span>
+                        <p class="text-sm font-medium leading-6 text-slate-700">Cari posisi yang membuat dada dan bahu terasa lebih rileks.</p>
+                    </div>
+                </div>
+
+                <div data-tutorial-step="1" class="tutorial-step" hidden>
+                    <div class="flex items-start gap-4">
+                        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-teal-600 text-lg font-extrabold text-white shadow-lg shadow-teal-600/20">02</div>
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-[.15em] text-teal-700">Tarik napas</p>
+                            <h4 class="mt-1 text-xl font-extrabold text-slate-900 sm:text-2xl">Tarik napas lembut melalui hidung</h4>
+                        </div>
+                    </div>
+                    <p class="mt-5 text-sm leading-7 text-slate-600 sm:text-base">
+                        Tutup mulut dengan santai, lalu tarik napas perlahan melalui hidung. Bila terasa nyaman, hitung pelan “satu, dua” dalam hati. Tidak perlu menarik napas terlalu dalam atau terburu-buru.
+                    </p>
+                    <div class="mt-5 flex items-center gap-3 rounded-xl border border-teal-100 bg-white/90 p-4">
+                        <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-teal-100 text-teal-700">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M4 12h4l2-5 4 10 2-5h4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </span>
+                        <p class="text-sm font-medium leading-6 text-slate-700">Biarkan napas masuk dengan alami. Jangan memaksakan volume atau kecepatannya.</p>
+                    </div>
+                </div>
+
+                <div data-tutorial-step="2" class="tutorial-step" hidden>
+                    <div class="flex items-start gap-4">
+                        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-teal-600 text-lg font-extrabold text-white shadow-lg shadow-teal-600/20">03</div>
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-[.15em] text-teal-700">Hembuskan napas</p>
+                            <h4 class="mt-1 text-xl font-extrabold text-slate-900 sm:text-2xl">Hembuskan melalui bibir mengerucut</h4>
+                        </div>
+                    </div>
+                    <p class="mt-5 text-sm leading-7 text-slate-600 sm:text-base">
+                        Kerucutkan bibir seperti hendak meniup lilin dengan lembut. Hembuskan napas perlahan melalui celah bibir. Usahakan hembusan lebih panjang daripada tarikan napas, misalnya menghitung “satu, dua, tiga, empat” bila nyaman.
+                    </p>
+                    <div class="mt-5 flex items-center gap-3 rounded-xl border border-teal-100 bg-white/90 p-4">
+                        <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-teal-100 text-teal-700">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M4 12c2.5-3 5-3 7.5 0s5 3 8.5 0M7 8.5c1.5-1.5 3-1.5 4.5 0M7 15.5c1.5 1.5 3 1.5 4.5 0" stroke-width="1.7" stroke-linecap="round"/></svg>
+                        </span>
+                        <p class="text-sm font-medium leading-6 text-slate-700">Hembuskan dengan lembut. Jangan meniup kuat-kuat dan jangan menahan napas.</p>
+                    </div>
+                </div>
+
+                <div data-tutorial-step="3" class="tutorial-step" hidden>
+                    <div class="flex items-start gap-4">
+                        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-teal-600 text-lg font-extrabold text-white shadow-lg shadow-teal-600/20">04</div>
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-[.15em] text-teal-700">Ulangi dengan nyaman</p>
+                            <h4 class="mt-1 text-xl font-extrabold text-slate-900 sm:text-2xl">Kembali ke ritme napas yang tenang</h4>
+                        </div>
+                    </div>
+                    <p class="mt-5 text-sm leading-7 text-slate-600 sm:text-base">
+                        Ulangi tarikan lembut melalui hidung dan hembusan perlahan melalui bibir mengerucut sesuai kenyamanan. Beristirahatlah bila perlu. Hentikan latihan jika terasa pusing atau semakin tidak nyaman.
+                    </p>
+                    <div class="mt-5 flex items-center gap-3 rounded-xl border border-teal-100 bg-white/90 p-4">
+                        <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-teal-100 text-teal-700">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M20 11a8 8 0 1 0 2 5M20 4v7h-7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </span>
+                        <p class="text-sm font-medium leading-6 text-slate-700">Latihan ini perlu terasa ringan. Tidak perlu mengejar jumlah hitungan atau durasi tertentu.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <button type="button" data-tutorial-prev disabled class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="m15 18-6-6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Sebelumnya
+                </button>
+                <button type="button" data-tutorial-next class="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-600 to-cyan-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-teal-600/20 transition hover:-translate-y-0.5 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-teal-200">
+                    Langkah berikutnya
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="m9 18 6-6-6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </div>
+            <p class="mt-3 text-center text-xs text-slate-400" data-tutorial-live aria-live="polite">Ikuti satu langkah demi satu langkah sesuai kenyamanan.</p>
+        </div>
+
+        <aside class="space-y-4">
+            <div class="rounded-2xl border border-teal-100 bg-teal-50/80 p-5">
+                <div class="flex items-center gap-3">
+                    <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-600 text-white">
+                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 8v4l2.5 2.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                    <div>
+                        <h4 class="font-extrabold text-slate-900">Fokus selama latihan</h4>
+                        <p class="text-xs text-teal-800">Ingat tiga hal sederhana</p>
+                    </div>
+                </div>
+                <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-700">
+                    <li class="flex gap-2"><span class="mt-0.5 font-bold text-teal-700">01</span><span>Rilekskan bahu dan leher.</span></li>
+                    <li class="flex gap-2"><span class="mt-0.5 font-bold text-teal-700">02</span><span>Fokus pada hembusan napas yang perlahan.</span></li>
+                    <li class="flex gap-2"><span class="mt-0.5 font-bold text-teal-700">03</span><span>Gunakan hitungan hanya bila terasa nyaman.</span></li>
+                </ul>
+            </div>
+
+            <div class="rounded-2xl border border-amber-200 bg-amber-50 p-5">
+                <div class="flex items-start gap-3">
+                    <svg class="mt-0.5 h-5 w-5 shrink-0 text-amber-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 9v4m0 4h.01M10.3 3.9 2.6 17.2A1.8 1.8 0 0 0 4.2 20h15.6a1.8 1.8 0 0 0 1.6-2.8L13.7 3.9a2 2 0 0 0-3.4 0Z" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <div>
+                        <h4 class="font-extrabold text-amber-900">Perhatikan keamanan</h4>
+                        <p class="mt-2 text-sm leading-6 text-amber-900/90">Jangan menahan napas atau memaksakan tarikan dan hembusan. Teknik ini merupakan edukasi umum; tanyakan kepada dokter atau fisioterapis paru apakah sesuai dengan kondisi Anda.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rounded-2xl border border-rose-200 bg-rose-50 p-5">
+                <h4 class="font-extrabold text-rose-900">Kapan harus mencari bantuan?</h4>
+                <p class="mt-2 text-sm leading-6 text-rose-900/90">Jika sesak berat, memburuk, atau disertai nyeri dada, bibir membiru, kebingungan, atau hampir pingsan, hentikan latihan dan segera cari pertolongan medis darurat.</p>
+            </div>
+
+            <p class="px-1 text-xs leading-5 text-slate-400">
+                Materi: <a class="font-semibold text-teal-700 underline decoration-teal-300 underline-offset-2" href="https://www.lung.org/lung-health-diseases/wellness/breathing-exercises" target="_blank" rel="noopener noreferrer">American Lung Association – Breathing Exercises</a> · <a class="font-semibold text-teal-700 underline decoration-teal-300 underline-offset-2" href="https://medlineplus.gov/ency/patientinstructions/000053.htm" target="_blank" rel="noopener noreferrer">MedlinePlus – Pursed-Lip Breathing</a>
+            </p>
+        </aside>
+    </div>
+</section>
+
+<style>
+    #tutorial-fokus-panik [hidden] { display: none !important; }
+    #tutorial-fokus-panik button:focus-visible,
+    #tutorial-fokus-panik a:focus-visible {
+        outline: 3px solid rgba(13, 148, 136, .45);
+        outline-offset: 3px;
+    }
+</style>
+
+<script>
+(function () {
+    const root = document.getElementById('tutorial-fokus-panik');
+    if (!root || root.dataset.initialized === 'true') return;
+    root.dataset.initialized = 'true';
+
+    const steps = Array.from(root.querySelectorAll('[data-tutorial-step]'));
+    const previousButton = root.querySelector('[data-tutorial-prev]');
+    const nextButton = root.querySelector('[data-tutorial-next]');
+    const count = root.querySelector('[data-tutorial-count]');
+    const progress = root.querySelector('[data-tutorial-progress]');
+    const liveText = root.querySelector('[data-tutorial-live]');
+    let currentStep = 0;
+
+    const messages = [
+        'Persiapkan posisi duduk yang nyaman.',
+        'Tarik napas perlahan melalui hidung, tanpa memaksakan.',
+        'Hembuskan perlahan melalui bibir yang mengerucut.',
+        'Ulangi dengan nyaman dan beristirahat bila diperlukan.'
+    ];
+
+    function renderStep() {
+        steps.forEach(function (step, index) {
+            step.hidden = index !== currentStep;
+        });
+
+        count.textContent = 'Langkah ' + (currentStep + 1) + ' dari ' + steps.length;
+        progress.style.width = (((currentStep + 1) / steps.length) * 100) + '%';
+        previousButton.disabled = currentStep === 0;
+
+        if (currentStep === steps.length - 1) {
+            nextButton.innerHTML = 'Ulangi tutorial <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M20 11a8 8 0 1 0 2 5M20 4v7h-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+            liveText.textContent = 'Tutorial selesai. Anda dapat mengulanginya kapan saja.';
+        } else {
+            nextButton.innerHTML = 'Langkah berikutnya <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="m9 18 6-6-6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+            liveText.textContent = messages[currentStep];
+        }
+    }
+
+    previousButton.addEventListener('click', function () {
+        if (currentStep > 0) {
+            currentStep -= 1;
+            renderStep();
+        }
+    });
+
+    nextButton.addEventListener('click', function () {
+        currentStep = currentStep === steps.length - 1 ? 0 : currentStep + 1;
+        renderStep();
+    });
+
+    renderStep();
+})();
+</script>
+
 
         <!-- VIDEO EDUKASI PPOK: ditambahkan di bawah artikel, tanpa mengubah konten yang sudah ada -->
         <section id="edukasi-media" class="max-w-6xl mx-auto mt-10 mb-6 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60">
@@ -215,14 +464,14 @@
             </div>
 
             <div class="p-4 sm:p-6 lg:p-8">
-                <div class="overflow-hidden rounded-2xl bg-slate-950 shadow-lg ring-1 ring-slate-900/10" style="aspect-ratio: 16 / 9;">
+                <div class="relative w-full overflow-hidden rounded-2xl bg-slate-950 shadow-lg ring-1 ring-slate-900/10" style="aspect-ratio: 16 / 9; min-height: 200px;">
                     <iframe
-                        class="h-full w-full"
-                        src="https://www.youtube-nocookie.com/embed/9lwxl0zh-LY?rel=0"
+                        class="absolute inset-0 block h-full w-full border-0"
+                        src="https://www.youtube.com/embed/9lwxl0zh-LY?rel=0&amp;playsinline=1"
                         title="Video Edukasi PPOK"
                         loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="origin"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
                         allowfullscreen>
                     </iframe>
                 </div>

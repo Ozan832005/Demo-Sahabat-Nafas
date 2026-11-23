@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'Terapi - ' . config('app.name')); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -134,6 +132,9 @@
                         </button>
                         <button onclick="pilihPendamping('anak')" class="pendamping-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-left transform hover:-translate-y-0.5" data-value="anak">
                             <p class="font-bold text-gray-800 text-lg">Anak / Keluarga</p>
+                        </button>
+                        <button onclick="pilihPendamping('lainnya')" class="pendamping-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-left transform hover:-translate-y-0.5" data-value="lainnya">
+                            <p class="font-bold text-gray-800 text-lg">Lainnya</p>
                         </button>
                     </div>
                 </div>
@@ -680,25 +681,6 @@
 
                 <div>
                     <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                        <span class="w-8 h-8 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold">C</span>
-                        Coba Langsung: Latihan Napas Bibir Mencucu (60 Detik)
-                    </h3>
-                    <div class="p-6 bg-gradient-to-r from-green-50 to-teal-50 rounded-2xl border border-green-100 text-center">
-                        <p class="text-gray-700 mb-4 leading-relaxed">Tarik napas pelan lewat hidung, lalu tiup perlahan lewat bibir mencucu seperti meniup lilin agar napas lebih lega.</p>
-                        <p class="font-bold text-gray-800 mb-5 text-lg">SIAP</p>
-                        <p class="text-gray-600 mb-3">Tekan tombol di bawah untuk mulai berlatih selama 60 detik</p>
-                        <div class="mb-5">
-                            <p class="text-sm text-gray-500 mb-2">Sisa waktu:</p>
-                            <p id="timer-display" class="text-4xl font-bold text-teal-600">60 detik</p>
-                        </div>
-                        <button id="start-timer-btn" onclick="startLatihanNapas()" class="px-8 py-3 bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-teal-300/40 transition-all transform hover:-translate-y-0.5">
-                            ▶ Mulai Latihan 60 Detik
-                        </button>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
                         <span class="w-8 h-8 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold">D</span>
                         Rencana Bertahap yang Disepakati Bersama (Boleh pilih lebih dari satu):
                     </h3>
@@ -1004,14 +986,14 @@
             </div>
 
             <div class="p-4 sm:p-6 lg:p-8">
-                <div class="overflow-hidden rounded-2xl bg-slate-950 shadow-lg ring-1 ring-slate-900/10" style="aspect-ratio: 16 / 9;">
+                <div class="relative w-full overflow-hidden rounded-2xl bg-slate-950 shadow-lg ring-1 ring-slate-900/10" style="aspect-ratio: 16 / 9; min-height: 200px;">
                     <iframe
-                        class="h-full w-full"
-                        src="https://www.youtube-nocookie.com/embed/ppaGu_ZxfwQ?rel=0"
+                        class="absolute inset-0 block h-full w-full border-0"
+                        src="https://www.youtube.com/embed/ppaGu_ZxfwQ?rel=0&amp;playsinline=1"
                         title="Video Edukasi Terapi PPOK"
                         loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="origin"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
                         allowfullscreen>
                     </iframe>
                 </div>
@@ -1529,6 +1511,12 @@ document.querySelectorAll('input[name="yakin-keputusan"]').forEach(radio => {
             // Collect all form data
             formData.nama_pasien = document.getElementById('nama-pasien').value;
             formData.usia = parseInt(document.getElementById('usia-pasien').value) || null;
+            formData.riwayat_kambuh = document.querySelector('input[name="riwayat-kambuh"]:checked')?.value || null;
+            formData.skala_mmrc = document.querySelector('input[name="skala-mmrc"]:checked')?.value || null;
+            formData.pendamping = document.querySelector('input[name="pendamping"]:checked')?.value || null;
+            formData.jenis_inhaler = document.querySelector('input[name="jenis-inhaler"]:checked')?.value || null;
+            formData.pilihan_terapi = document.querySelector('input[name="pilihan-terapi"]:checked')?.value || null;
+            formData.prioritas_tujuan = document.querySelector('input[name="prioritas-tujuan"]:checked')?.value || null;
             formData.checklist_inhaler = Array.from(document.querySelectorAll('.checklist-inhaler:checked')).map(el => el.value);
             formData.kendala_kepatuhan = Array.from(document.querySelectorAll('.kendala-kepatuhan:checked')).map(el => el.value);
             formData.dukungan_pendamping = document.getElementById('dukungan-pendamping').value;
@@ -1541,39 +1529,13 @@ document.querySelectorAll('input[name="yakin-keputusan"]').forEach(radio => {
             formData.dukungan_cukup = document.querySelector('input[name="dukungan-cukup"]:checked')?.value || null;
             formData.yakin_keputusan = document.querySelector('input[name="yakin-keputusan"]:checked')?.value || null;
             
-            // // Also get pilihan_terapi and prioritas_tujuan from form
-            // formData.pilihan_terapi = document.querySelector('input[name="pilihan-terapi"]:checked')?.value || null;
-            // formData.prioritas_tujuan = document.querySelector('input[name="prioritas-tujuan"]:checked')?.value || null;
-            // formData.riwayat_kambuh = document.querySelector('input[name="riwayat-kambuh"]:checked')?.value || null;
-            // formData.skala_mmrc = document.querySelector('input[name="skala-mmrc"]:checked')?.value || null;
-            // formData.jenis_inhaler = document.querySelector('input[name="jenis-inhaler"]:checked')?.value || null;
+            // Tambahkan field yang wajib ada di controller
+            const hariValueEl = document.getElementById('hari-value');
+            formData.hari_pemakaian = hariValueEl ? parseInt(hariValueEl.textContent) || 7 : 7;
+            formData.duration = 60;
+            formData.layer = 1;
 
-            // Validate ALL required fields are filled
-            // Check for empty/null values - use explicit checks to avoid JavaScript falsy issues
-            const isNamaValid = formData.nama_pasien && formData.nama_pasien.trim() !== '';
-            const isUsiaValid = formData.usia !== null && !isNaN(formData.usia) && formData.usia > 0;
-            const isRiwayatValid = formData.riwayat_kambuh !== null;
-            const isMMRCValid = formData.skala_mmrc !== null;
-            const isPendampingValid = formData.pendamping && formData.pendamping.trim() !== '';
-            const isJenisInhalerValid = formData.jenis_inhaler !== null;
-            const isPilihanTerapiValid = formData.pilihan_terapi !== null;
-            const isPrioritasValid = formData.prioritas_tujuan !== null;
-            const isHarapanValid = formData.harapan_pasien !== null;
-            const isDukunganBaruValid = formData.dukungan_pendamping_baru && formData.dukungan_pendamping_baru.trim() !== '';
-            const isRencanaValid = formData.rencana_bertahap && formData.rencana_bertahap.length > 0;
-            const isPahamValid = formData.paham_manfaat !== null;
-            const isPilihanTepatValid = formData.pilihan_tepat !== null;
-            const isDukunganCukupValid = formData.dukungan_cukup !== null;
-            const isYakinValid = formData.yakin_keputusan !== null;
-
-            // If any field is invalid, show error and stop
-            if (!isNamaValid || !isUsiaValid || !isRiwayatValid || !isMMRCValid || !isPendampingValid || !isJenisInhalerValid || !isPilihanTerapiValid || !isPrioritasValid || !isHarapanValid || !isDukunganBaruValid || !isRencanaValid || !isPahamValid || !isPilihanTepatValid || !isDukunganCukupValid || !isYakinValid) {
-                showToast('Harap lengkapi semua field yang wajib diisi!', 'error');
-                hideValidationErrors();
-                return;
-            }
-
-            console.log('Sending data:', formData);
+            console.log('Form data sebelum dikirim ke server:', JSON.stringify(formData, null, 2));
 
             fetch('<?php echo e(route('pasien.terapi.store')); ?>', {
                 method: 'POST',

@@ -1427,7 +1427,7 @@
             </a>
 <nav class="hidden md:flex items-center gap-2">
                 <?php if(auth()->guard()->check()): ?>
-                    <?php if(auth()->user()->isPasien()): ?>
+                    <?php if(auth()->user()->isPasien() || auth()->user()->isPerawat()): ?>
                         <style>#old-header { display: none !important; }</style>
                         <?php
                             $currentRoute = request()->route()->getName() ?? '';
