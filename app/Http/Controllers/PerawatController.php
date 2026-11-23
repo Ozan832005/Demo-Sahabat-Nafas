@@ -26,7 +26,7 @@ class PerawatController extends Controller
         $pasienList = User::where('role', User::ROLE_PASIEN)->get();
         $todayTherapies = TherapyHistory::whereDate('created_at', today())->count();
         $totalTherapies = TherapyHistory::count();
-        $needsAttention = TherapyHistory::where('difficulty_level', 'berat')->distinct('user_id')->count();
+        $needsAttention = 0;
         
         return view('perawat.dashboard', compact('user', 'pasienList', 'todayTherapies', 'totalTherapies', 'needsAttention'));
     }
