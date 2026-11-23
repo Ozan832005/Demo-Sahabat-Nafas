@@ -90,8 +90,8 @@
                                     <i class="fa-solid fa-eye"></i>
                                     Lihat
                                 </button>
-                                <button onclick="editTherapy({{ $therapy->id }})" class="px-4 py-2 bg-yellow-50 text-yellow-600 rounded-xl font-medium hover:bg-yellow-100 transition-all flex items-center gap-2">
-                                    <i class="fa-solid fa-pen-to-square"></i>
+                                <button onclick="printPDF({{ $therapy->id }})" class="px-4 py-2 bg-yellow-50 text-yellow-600 rounded-xl font-medium hover:bg-yellow-100 transition-all flex items-center gap-2">
+                                    <i class="fa-solid fa-file-pdf"></i>
                                     Cetak PDF
                                 </button>
                                 <button onclick="confirmDelete({{ $therapy->id }})" class="px-4 py-2 bg-red-50 text-red-600 rounded-xl font-medium hover:bg-red-100 transition-all flex items-center gap-2">
@@ -111,8 +111,8 @@
         <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl bg-white rounded-2xl shadow-2xl p-6 max-h-[90vh] overflow-y-auto z-[101]">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-xl font-bold text-gray-800">Detail Riwayat Terapi</h2>
-                <button onclick="closeModal('viewTherapyModal')" class="p-2 hover:bg-gray-100 rounded-xl transition-all">
-                    <i class="fa-solid fa-xmark text-gray-500 text-xl"></i>
+                <button onclick="closeModal('viewTherapyModal')" class="p-3 hover:bg-gray-100 rounded-xl transition-all bg-white border border-gray-200 shadow-sm">
+                    <i class="fa-solid fa-xmark text-gray-700 text-2xl"></i>
                 </button>
             </div>
             <div id="viewTherapyContent" class="space-y-4">
@@ -178,6 +178,21 @@
                 .then(data => {
                     if (data.success) {
                         const therapy = data.therapy;
+                        
+                        const riwayatKambuhText = ['0 kali', '1 kali', '2 kali atau lebih'];
+                        const mmrcText = ['Tidak Sesak', 'Sesak Berat Aktivitas', 'Sesak Jalan Cepat', 'Sesak Jalan Pelan', 'Sesak Ringan', 'Sesak Berat'];
+                        const inhalerText = { 'mdpi': 'MDPI (Metered Dose)', 'dpi': 'DPI (Dry Powder)', 'nebu': 'Nebulizer' };
+                        const terapiText = ['Mengurangi sesak napas', 'Meningkatkan kemampuan beraktivitas', 'Mengurangi frekuensi kambuh', 'Lainnya'];
+                        const prioritasText = ['Tertinggi', 'Sedang', 'Rendah', 'Tidak Setuju'];
+                        const pendampingText = { 'sendiri': 'Sendiri', 'pasangan': 'Istri / Suami', 'anak': 'Anak / Keluarga' };
+                        
+                        const displayRiwayatKambuh = therapy.riwayat_kambuh !== null ? riwayatKambuhText[therapy.riwayat_kambuh] : '-';
+                        const displayMmrc = therapy.skala_mmrc !== null ? mmrcText[therapy.skala_mmrc] : '-';
+                        const displayPendamping = therapy.pendamping ? pendampingText[therapy.pendamping] : '-';
+                        const displayInhaler = therapy.jenis_inhaler ? inhalerText[therapy.jenis_inhaler] : '-';
+                        const displayTerapi = therapy.pilihan_terapi !== null ? terapiText[therapy.pilihan_terapi] : '-';
+                        const displayPrioritas = therapy.prioritas_tujuan !== null ? prioritasText[therapy.prioritas_tujuan] : '-';
+                        
                         let html = `
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div class="p-4 bg-gray-50 rounded-xl">
@@ -190,27 +205,27 @@
                                 </div>
                                 <div class="p-4 bg-gray-50 rounded-xl">
                                     <p class="text-sm text-gray-500 mb-1">Riwayat Kambuh</p>
-                                    <p class="font-semibold text-gray-800">${therapy.riwayat_kambuh || '-'}</p>
+                                    <p class="font-semibold text-gray-800">${displayRiwayatKambuh}</p>
                                 </div>
                                 <div class="p-4 bg-gray-50 rounded-xl">
                                     <p class="text-sm text-gray-500 mb-1">Skala mMRC</p>
-                                    <p class="font-semibold text-gray-800">${therapy.skala_mmrc || '-'}</p>
+                                    <p class="font-semibold text-gray-800">${displayMmrc}</p>
                                 </div>
                                 <div class="p-4 bg-gray-50 rounded-xl">
                                     <p class="text-sm text-gray-500 mb-1">Pendamping</p>
-                                    <p class="font-semibold text-gray-800">${therapy.pendamping || '-'}</p>
+                                    <p class="font-semibold text-gray-800">${displayPendamping}</p>
                                 </div>
                                 <div class="p-4 bg-gray-50 rounded-xl">
                                     <p class="text-sm text-gray-500 mb-1">Jenis Inhaler</p>
-                                    <p class="font-semibold text-gray-800">${therapy.jenis_inhaler || '-'}</p>
+                                    <p class="font-semibold text-gray-800">${displayInhaler}</p>
                                 </div>
                                 <div class="p-4 bg-gray-50 rounded-xl">
                                     <p class="text-sm text-gray-500 mb-1">Pilihan Terapi</p>
-                                    <p class="font-semibold text-gray-800">${therapy.pilihan_terapi || '-'}</p>
+                                    <p class="font-semibold text-gray-800">${displayTerapi}</p>
                                 </div>
                                 <div class="p-4 bg-gray-50 rounded-xl">
                                     <p class="text-sm text-gray-500 mb-1">Prioritas Tujuan</p>
-                                    <p class="font-semibold text-gray-800">${therapy.prioritas_tujuan || '-'}</p>
+                                    <p class="font-semibold text-gray-800">${displayPrioritas}</p>
                                 </div>
                             </div>
                             ${therapy.harapan_pasien ? `
@@ -308,62 +323,86 @@
                 .then(data => {
                     if (data.success) {
                         const therapy = data.therapy;
+                        
+                        const riwayatKambuhText = ['0 kali', '1 kali', '2 kali atau lebih'];
+                        const mmrcText = ['Tidak Sesak', 'Sesak Berat Aktivitas', 'Sesak Jalan Cepat', 'Sesak Jalan Pelan', 'Sesak Ringan', 'Sesak Berat'];
+                        const inhalerText = { 'mdpi': 'MDPI (Metered Dose)', 'dpi': 'DPI (Dry Powder)', 'nebu': 'Nebulizer' };
+                        const terapiText = ['Mengurangi sesak napas', 'Meningkatkan kemampuan beraktivitas', 'Mengurangi frekuensi kambuh', 'Lainnya'];
+                        const prioritasText = ['Tertinggi', 'Sedang', 'Rendah', 'Tidak Setuju'];
+                        const pendampingText = { 'sendiri': 'Sendiri', 'pasangan': 'Istri / Suami', 'anak': 'Anak / Keluarga' };
+                        
+                        const displayRiwayatKambuh = therapy.riwayat_kambuh !== null ? riwayatKambuhText[therapy.riwayat_kambuh] : '-';
+                        const displayMmrc = therapy.skala_mmrc !== null ? mmrcText[therapy.skala_mmrc] : '-';
+                        const displayPendamping = therapy.pendamping ? pendampingText[therapy.pendamping] : '-';
+                        const displayInhaler = therapy.jenis_inhaler ? inhalerText[therapy.jenis_inhaler] : '-';
+                        const displayTerapi = therapy.pilihan_terapi !== null ? terapiText[therapy.pilihan_terapi] : '-';
+                        const displayPrioritas = therapy.prioritas_tujuan !== null ? prioritasText[therapy.prioritas_tujuan] : '-';
+                        
                         const { jsPDF } = window.jspdf;
-                        const doc = new jsPDF();
+                        const doc = new jsPDF('p', 'mm', 'a4');
                         
-                        doc.setFontSize(22);
-                        doc.setTextColor(13, 148, 136);
-                        doc.text('Sahabat Nafas - Laporan Terapi PPOK', 20, 25);
-                        
-                        doc.setFontSize(12);
-                        doc.setTextColor(60, 60, 60);
-                        doc.text(`Tanggal: ${new Date(therapy.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}`, 20, 35);
-                        
-                        let yPos = 50;
+                        const pageWidth = doc.internal.pageSize.getWidth();
                         const margin = 20;
-                        const lineHeight = 8;
+                        let yPos = margin;
+                        
+                        doc.setFillColor(13, 148, 136);
+                        doc.rect(0, 0, pageWidth, 40, 'F');
+                        
+                        doc.setTextColor(255, 255, 255);
+                        doc.setFontSize(24);
+                        doc.setFont('helvetica', 'bold');
+                        doc.text('PASPOR KEPUTUSAN TERAPI PPOK', pageWidth / 2, 25, { align: 'center' });
+                        
+                        yPos = 55;
+                        
+                        doc.setTextColor(0, 0, 0);
+                        doc.setFontSize(14);
+                        doc.setFont('helvetica', 'bold');
+                        doc.text('DATA DASAR PASIEN', margin, yPos);
+                        
+                        yPos += 10;
+                        doc.setFontSize(11);
+                        doc.setFont('helvetica', 'normal');
+                        
+                        doc.text(`Nama Pasien: ${therapy.nama_pasien || '-'}`, margin, yPos); yPos += 8;
+                        doc.text(`Usia: ${therapy.usia || '-'} tahun`, margin, yPos); yPos += 8;
+                        doc.text(`Riwayat Kambuh: ${displayRiwayatKambuh}`, margin, yPos); yPos += 8;
+                        doc.text(`Skala mMRC: ${displayMmrc}`, margin, yPos); yPos += 15;
                         
                         doc.setFontSize(14);
-                        doc.setTextColor(13, 148, 136);
-                        doc.text('Data Pasien', margin, yPos);
-                        yPos += lineHeight + 4;
+                        doc.setFont('helvetica', 'bold');
+                        doc.text('DETAIL TERAPI', margin, yPos);
                         
+                        yPos += 10;
                         doc.setFontSize(11);
-                        doc.setTextColor(40, 40, 40);
-                        doc.text(`Nama Pasien: ${therapy.nama_pasien || 'TIDAK ADA'}`, margin, yPos); yPos += lineHeight;
-                        doc.text(`Usia: ${therapy.usia || 'TIDAK ADA'} tahun`, margin, yPos); yPos += lineHeight;
-                        doc.text(`Riwayat Kambuh: ${therapy.riwayat_kambuh || 'TIDAK ADA'}`, margin, yPos); yPos += lineHeight;
-                        doc.text(`Skala mMRC: ${therapy.skala_mmrc || 'TIDAK ADA'}`, margin, yPos); yPos += lineHeight + 8;
+                        doc.setFont('helvetica', 'normal');
                         
-                        doc.setFontSize(14);
-                        doc.setTextColor(13, 148, 136);
-                        doc.text('Detail Terapi', margin, yPos);
-                        yPos += lineHeight + 4;
-                        
-                        doc.setFontSize(11);
-                        doc.setTextColor(40, 40, 40);
-                        doc.text(`Pendamping: ${therapy.pendamping || 'TIDAK ADA'}`, margin, yPos); yPos += lineHeight;
-                        doc.text(`Jenis Inhaler: ${therapy.jenis_inhaler || 'TIDAK ADA'}`, margin, yPos); yPos += lineHeight;
-                        doc.text(`Pilihan Terapi: ${therapy.pilihan_terapi || 'TIDAK ADA'}`, margin, yPos); yPos += lineHeight;
-                        doc.text(`Prioritas Tujuan: ${therapy.prioritas_tujuan || 'TIDAK ADA'}`, margin, yPos); yPos += lineHeight + 8;
+                        doc.text(`Pendamping: ${displayPendamping}`, margin, yPos); yPos += 8;
+                        doc.text(`Jenis Inhaler: ${displayInhaler}`, margin, yPos); yPos += 8;
+                        doc.text(`Pilihan Terapi: ${displayTerapi}`, margin, yPos); yPos += 8;
+                        doc.text(`Prioritas Tujuan: ${displayPrioritas}`, margin, yPos); yPos += 15;
                         
                         if (therapy.harapan_pasien) {
                             doc.setFontSize(14);
-                            doc.setTextColor(13, 148, 136);
-                            doc.text('Harapan Pasien', margin, yPos);
-                            yPos += lineHeight + 4;
+                            doc.setFont('helvetica', 'bold');
+                            doc.text('HARAPAN PASIEN', margin, yPos);
                             
+                            yPos += 10;
                             doc.setFontSize(11);
-                            doc.setTextColor(40, 40, 40);
+                            doc.setFont('helvetica', 'normal');
                             const harapanLines = doc.splitTextToSize(therapy.harapan_pasien, 170);
                             harapanLines.forEach(line => {
                                 doc.text(line, margin, yPos);
-                                yPos += lineHeight;
+                                yPos += 8;
                             });
                         }
                         
-                        doc.save(`Terapi-${therapy.nama_pasien}-${new Date(therapy.created_at).toISOString().split('T')[0]}.pdf`);
+                        doc.save(`Terapi-${therapy.nama_pasien || 'Pasien'}-${new Date().toISOString().split('T')[0]}.pdf`);
                     }
+                })
+                .catch(err => {
+                    console.error('Error:', err);
+                    alert('Gagal membuat PDF: ' + err.message);
                 });
         }
     </script>
