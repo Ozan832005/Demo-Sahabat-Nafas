@@ -15,9 +15,9 @@ class PasienController extends Controller
 
         $validated = $request->validate([
             'nama_pasien' => 'required|string|max:255',
-            'usia' => 'required|integer|min:0|max:150',
+            'usia' => 'nullable|integer|min:0|max:150',
             'riwayat_kambuh' => 'nullable',
-            'skala_mmrc' => 'nullable|integer|min:0|max:4',
+            'skala_mmrc' => 'nullable|integer|min:0|max:5',
             'pendamping' => 'nullable',
             'jenis_inhaler' => 'nullable',
             'checklist_inhaler' => 'nullable|array',
