@@ -191,5 +191,8 @@
             </div>
         </div>
     </div>
+    <?php if(isset($unreadNotes) && $unreadNotes > 0): ?>
+    <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full"><?php echo e($unreadNotes); ?></span>
+    <?php endif; ?>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\nurda\project-sahabat-nafas\resources\views/pasien/dashboard.blade.php ENDPATH**/ ?>

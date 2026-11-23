@@ -50,6 +50,8 @@ Route::middleware(['auth', 'perawat'])->group(function () {
     Route::get('/perawat/edukasi', [PerawatController::class, 'edukasi'])->name('perawat.edukasi');
     Route::get('/perawat/profile', [PerawatController::class, 'profile'])->name('perawat.profile');
     Route::put('/perawat/profile', [PerawatController::class, 'updateProfile'])->name('perawat.profile.update');
+    Route::get('/perawat/therapy/{id}', [PerawatController::class, 'showTherapyDetail'])->name('perawat.therapy.detail');
+Route::post('/perawat/therapy/{id}/add-note', [PerawatController::class, 'addNote'])->name('perawat.therapy.add-note');
 });
 
 Route::middleware(['auth', 'pasien'])->group(function () {

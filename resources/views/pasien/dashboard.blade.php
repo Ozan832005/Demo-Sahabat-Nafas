@@ -190,4 +190,7 @@
             </div>
         </div>
     </div>
+    @if(isset($unreadNotes) && $unreadNotes > 0)
+    <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full">{{ $unreadNotes }}</span>
+    @endif
 @endsection

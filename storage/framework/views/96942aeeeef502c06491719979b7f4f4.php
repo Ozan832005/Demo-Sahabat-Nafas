@@ -1514,10 +1514,10 @@ document.querySelectorAll('input[name="yakin-keputusan"]').forEach(radio => {
             formData.usia = parseInt(document.getElementById('usia-pasien').value) || null;
             formData.riwayat_kambuh = document.querySelector('input[name="riwayat-kambuh"]:checked')?.value || null;
             formData.skala_mmrc = document.querySelector('input[name="skala-mmrc"]:checked')?.value || null;
-            formData.pendamping = document.querySelector('input[name="pendamping"]:checked')?.value || null;
-            formData.jenis_inhaler = document.querySelector('input[name="jenis-inhaler"]:checked')?.value || null;
-            formData.pilihan_terapi = document.querySelector('input[name="pilihan-terapi"]:checked')?.value || null;
-            formData.prioritas_tujuan = document.querySelector('input[name="prioritas-tujuan"]:checked')?.value || null;
+            // formData.pendamping = document.querySelector('.pendamping-btn.selected')?.dataset.value || null;
+            // formData.jenis_inhaler = document.querySelector('.inhaler-btn.selected')?.dataset.value || null;
+            // formData.pilihan_terapi = document.querySelector('.terapi-btn.selected')?.dataset.value || null;
+            // formData.prioritas_tujuan = document.querySelector('.prioritas-btn.selected')?.dataset.value || null;
             formData.checklist_inhaler = Array.from(document.querySelectorAll('.checklist-inhaler:checked')).map(el => el.value);
             formData.kendala_kepatuhan = Array.from(document.querySelectorAll('.kendala-kepatuhan:checked')).map(el => el.value);
             formData.dukungan_pendamping = document.getElementById('dukungan-pendamping').value;

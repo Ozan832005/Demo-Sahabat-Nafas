@@ -9,6 +9,7 @@ use App\Models\TherapyHistory;
 use Illuminate\Support\Facades\Log;
 class PasienController extends Controller
 {
+    
     public function storeTerapi(\Illuminate\Http\Request $request)
     {
         Log::info('Menerima data terapi:', $request->all());
@@ -104,35 +105,40 @@ $therapy = TherapyHistory::create([
         return $pdf->download($filename);
     }
 
-    public function dashboard()
-    {
-        $user = Auth::user();
+ public function dashboard()
+{
+    $user = Auth::user();
+    
+    $unreadNotes = TherapyHistory::where('user_id', $user->id)
+        ->whereNotNull('catatan_perawat')
+        ->where('is_read', false)
+        ->count();
 
-        $therapyHistories = collect();
-        $totalTherapySessions = 0;
-        $currentLayer = 0;
+    $therapyHistories = TherapyHistory::where('user_id', $user->id)
+        ->latest()
+        ->take(5)
+        ->get();
+
+    $totalTherapySessions = $therapyHistories->count();
+    $currentLayer = $totalTherapySessions > 0 ? min($totalTherapySessions, 6) : 0;
+    $notifications = collect();
+
+    try {
+        // Gabungkan notifikasi sesi terapi DAN catatan perawat
         $notifications = collect();
-
-        try {
-            $therapyHistories = TherapyHistory::where('user_id', $user->id)->latest()->get();
-            $totalTherapySessions = $therapyHistories->count();
-            $currentLayer = $totalTherapySessions > 0 ? min($totalTherapySessions, 6) : 0;
-
-            // Gabungkan notifikasi sesi terapi DAN catatan perawat
-            $notifications = collect();
-            
-            // Tambahkan catatan perawat dari riwayat terapi
-            foreach ($therapyHistories as $history) {
-                if ($history->perawat_notes) {
-                    $notifications->push((object) [
-                        'id' => 'note_' . $history->id,
-                        'title' => 'Catatan dari Perawat',
-                        'message' => $history->perawat_notes,
-                        'created_at' => $history->updated_at,
-                        'type' => 'note'
-                    ]);
-                }
+        
+        // Tambahkan catatan perawat dari riwayat terapi
+        foreach ($therapyHistories as $history) {
+            if ($history->catatan_perawat) {
+                $notifications->push((object) [
+                    'id' => 'note_' . $history->id,
+                    'title' => 'Catatan dari Perawat',
+                    'message' => $history->catatan_perawat,
+                    'created_at' => $history->updated_at,
+                    'type' => 'note'
+                ]);
             }
+        }
             
             // Tambahkan notifikasi sesi terapi selesai
             foreach ($therapyHistories as $index => $history) {
