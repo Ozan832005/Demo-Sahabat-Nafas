@@ -186,21 +186,6 @@
             
    
         </div>
-                <div style="margin-top: 20px;">
-                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                        <span class="w-8 h-8 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold">C</span>
-                        Fokus Dan Mengendalikan Panik
-                    </h3>
-                    <div class="p-6 bg-gradient-to-r from-green-50 to-teal-50 rounded-2xl border border-green-100 text-center">
-                        <p class="text-gray-700 mb-4 leading-relaxed">1. Duduk Tegak Dengan Posisi Nyaman</p>
-                        <p class="text-gray-700 mb-4 leading-relaxed">2. Tarik Napas Dalam Melalui Hidung Selama 4 Detik</p>
-                        <p class="text-gray-700 mb-4 leading-relaxed">3. Tahan Napas Di Paru-Paru Selama 4 Detik </p>
-                        <p class="text-gray-700 mb-4 leading-relaxed">4. Hembuskan Napas Perlahan Melalui Mulut Selama 4 Detik</p>
-                        <p class="text-gray-700 mb-4 leading-relaxed">5. Tahan Paru-Paru Kosong Selama 4 Detik Sebelum Menarik Napas Kembali </p>
-                        <p class="font-bold text-gray-800 mb-5 text-lg">Kapan Digunakan ?</p>
-                         <p class="text-gray-700 mb-4 leading-relaxed">Sangat Efektif Saat Merasa Panik, Gugup Sebelum Presentasi/Rapat, atau ketika membutuhkan konsentrasi dan fokus tajam secara mendadak</p>
-                    </div>
-                </div>
 
                 {{--
     TUTORIAL INTERAKTIF: FOKUS & MENGENDALIKAN PANIK
