@@ -215,14 +215,14 @@
             </div>
 
             <div class="p-4 sm:p-6 lg:p-8">
-                <div class="overflow-hidden rounded-2xl bg-slate-950 shadow-lg ring-1 ring-slate-900/10" style="aspect-ratio: 16 / 9;">
+                <div class="relative w-full overflow-hidden rounded-2xl bg-slate-950 shadow-lg ring-1 ring-slate-900/10" style="aspect-ratio: 16 / 9; min-height: 200px;">
                     <iframe
-                        class="h-full w-full"
-                        src="https://www.youtube-nocookie.com/embed/9lwxl0zh-LY?rel=0"
+                        class="absolute inset-0 block h-full w-full border-0"
+                        src="https://www.youtube.com/embed/9lwxl0zh-LY?rel=0&amp;playsinline=1"
                         title="Video Edukasi PPOK"
                         loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="origin"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
                         allowfullscreen>
                     </iframe>
                 </div>
