@@ -291,32 +291,20 @@ class AdminController extends Controller
 
     public function updateSite(Request $request)
     {
-        $validated = $request->validate([
-            'slider_image_1' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'slider_image_2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'slider_image_3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'contact_email' => 'nullable|email',
-            'contact_phone' => 'nullable|string',
-            'contact_address' => 'nullable|string',
-            'contact_whatsapp' => 'nullable|string',
-            'social_tiktok' => 'nullable|url',
-            'social_facebook' => 'nullable|url',
-            'social_instagram' => 'nullable|url',
-            'social_youtube' => 'nullable|url',
-        ]);
-
         for ($i = 1; $i <= 3; $i++) {
             $sliderKey = 'slider_image_' . $i;
             if ($request->hasFile($sliderKey)) {
-                $path = $request->file($sliderKey)->store('sliders', 'public');
+                $file = $request->file($sliderKey);
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('sliders', $filename, 'public');
                 Setting::updateOrCreate(['key' => $sliderKey], ['value' => $path, 'type' => 'image']);
             }
         }
 
         $textFields = ['contact_email', 'contact_phone', 'contact_address', 'contact_whatsapp', 'social_tiktok', 'social_facebook', 'social_instagram', 'social_youtube'];
         foreach ($textFields as $field) {
-            if (isset($validated[$field])) {
-                Setting::updateOrCreate(['key' => $field], ['value' => $validated[$field], 'type' => 'text']);
+            if ($request->has($field)) {
+                Setting::updateOrCreate(['key' => $field], ['value' => $request->input($field), 'type' => 'text']);
             }
         }
 
