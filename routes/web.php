@@ -45,6 +45,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 Route::middleware(['auth', 'perawat'])->group(function () {
     Route::get('/perawat/dashboard', [PerawatController::class, 'dashboard'])->name('perawat.dashboard');
+    Route::get('/perawat/riwayat-terapi', [PerawatController::class, 'riwayatTerapi'])->name('perawat.riwayat-terapi');
+    Route::post('/perawat/riwayat-terapi/note', [PerawatController::class, 'storeNote'])->name('perawat.riwayat-terapi.note');
+    Route::get('/perawat/edukasi', [PerawatController::class, 'edukasi'])->name('perawat.edukasi');
+    Route::get('/perawat/profile', function () {
+        return view('perawat.profile');
+    })->name('perawat.profile');
+    Route::put('/perawat/profile', [PerawatController::class, 'updateProfile'])->name('perawat.profile.update');
 });
 
 Route::middleware(['auth', 'pasien'])->group(function () {
