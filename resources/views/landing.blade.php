@@ -216,6 +216,48 @@
                     </iframe>
                 </div>
 
+                       <!-- VIDEO EDUKASI PPOK: ditambahkan di bawah artikel, tanpa mengubah konten yang sudah ada -->
+        <section id="edukasi-media" class="max-w-6xl mx-auto mt-10 mb-6 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60">
+            <div class="relative overflow-hidden bg-gradient-to-br from-slate-950 via-teal-950 to-teal-800 px-6 py-8 sm:px-8 sm:py-10">
+                <div class="pointer-events-none absolute -right-12 -top-16 h-48 w-48 rounded-full bg-teal-400/10 blur-2xl"></div>
+                <div class="pointer-events-none absolute -bottom-20 left-1/3 h-44 w-44 rounded-full bg-cyan-300/10 blur-2xl"></div>
+
+                <div class="relative z-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div class="max-w-2xl">
+                        <span class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-teal-100">
+                            <span class="h-2 w-2 rounded-full bg-teal-300"></span>
+                            Edukasi Media
+                        </span>
+                        <h2 class="mt-4 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+                            Video Edukasi PPOK
+                        </h2>
+                        <p class="mt-2 max-w-xl text-sm leading-6 text-teal-100 sm:text-base">
+                            Simak video edukasi berikut untuk menambah pemahaman mengenai PPOK. Video dapat diputar langsung dari halaman ini tanpa perlu meninggalkan situs.
+                        </p>
+                    </div>
+
+                    <div class="hidden h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-white/20 bg-white/10 text-white shadow-lg sm:flex">
+                        <svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6.75A2.75 2.75 0 0 1 6.75 4h10.5A2.75 2.75 0 0 1 20 6.75v10.5A2.75 2.75 0 0 1 17.25 20H6.75A2.75 2.75 0 0 1 4 17.25V6.75Z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m10 8.5 5 3.5-5 3.5v-7Z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 sm:p-6 lg:p-8">
+                <div class="relative w-full overflow-hidden rounded-2xl bg-slate-950 shadow-lg ring-1 ring-slate-900/10" style="aspect-ratio: 16 / 9; min-height: 200px;">
+                    <iframe
+                        class="absolute inset-0 block h-full w-full border-0"
+                        src="https://www.youtube.com/embed/9lwxl0zh-LY?rel=0&amp;playsinline=1"
+                        title="Video Edukasi PPOK"
+                        loading="lazy"
+                        referrerpolicy="origin"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
                 <div class="mt-5 flex flex-col gap-4 border-t border-slate-100 pt-5 sm:flex-row sm:items-center sm:justify-between">
                     <div class="flex items-start gap-3">
                         <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-700">
@@ -246,6 +288,7 @@
                     Catatan: Video ini merupakan media edukasi umum, bukan pengganti pemeriksaan atau anjuran medis pribadi. Tetap ikuti rencana terapi dan petunjuk dokter atau tenaga kesehatan yang menangani.
                 </p>
             </div>
+        </section>
 </section>
 
 <footer class="footer-section">
