@@ -246,7 +246,7 @@
             </div>
 
             <div class="p-4 sm:p-6 lg:p-8">
-                <div class="relative w-full overflow-hidden rounded-2xl bg-slate-950 shadow-lg ring-1 ring-slate-900/10" style="aspect-ratio: 16 / 9; min-height: 200px;">
+                <!-- <div class="relative w-full overflow-hidden rounded-2xl bg-slate-950 shadow-lg ring-1 ring-slate-900/10" style="aspect-ratio: 16 / 9; min-height: 200px;">
                     <iframe
                         class="absolute inset-0 block h-full w-full border-0"
                         src="https://www.youtube.com/embed/9lwxl0zh-LY?rel=0&amp;playsinline=1"
@@ -256,7 +256,7 @@
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
                         allowfullscreen>
                     </iframe>
-                </div>
+                </div> -->
 
                 <div class="mt-5 flex flex-col gap-4 border-t border-slate-100 pt-5 sm:flex-row sm:items-center sm:justify-between">
                     <div class="flex items-start gap-3">
