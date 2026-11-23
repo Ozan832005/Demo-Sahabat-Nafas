@@ -184,7 +184,9 @@
                 </details>
             </div>
             
-                <div>
+   
+        </div>
+                     <div>
                     <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
                         <span class="w-8 h-8 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold">C</span>
                         Coba Langsung: Latihan Napas Bibir Mencucu (60 Detik)
@@ -202,7 +204,6 @@
                         </button>
                     </div>
                 </div>
-        </div>
 
         <!-- VIDEO EDUKASI PPOK: ditambahkan di bawah artikel, tanpa mengubah konten yang sudah ada -->
         <section id="edukasi-media" class="max-w-6xl mx-auto mt-10 mb-6 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60">

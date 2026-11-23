@@ -135,7 +135,7 @@
                         <button onclick="pilihPendamping('anak')" class="pendamping-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-left transform hover:-translate-y-0.5" data-value="anak">
                             <p class="font-bold text-gray-800 text-lg">Anak / Keluarga</p>
                         </button>
-                        <button onclick="pilihPendamping('anak')" class="pendamping-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-left transform hover:-translate-y-0.5" data-value="anak">
+                        <button onclick="pilihPendamping('lainnya')" class="pendamping-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-left transform hover:-translate-y-0.5" data-value="lainnya">
                             <p class="font-bold text-gray-800 text-lg">Lainnya</p>
                         </button>
                     </div>
