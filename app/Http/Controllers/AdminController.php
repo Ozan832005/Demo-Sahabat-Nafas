@@ -305,12 +305,18 @@ class AdminController extends Controller
             'social_youtube' => 'nullable|url',
         ]);
 
-        foreach ($validated as $key => $value) {
-            if (str_starts_with($key, 'slider_image_') && $request->hasFile($key)) {
-                $path = $request->file($key)->store('sliders', 'public');
-                Setting::updateOrCreate(['key' => $key], ['value' => $path, 'type' => 'image']);
-            } elseif (!str_starts_with($key, 'slider_image_')) {
-                Setting::updateOrCreate(['key' => $key], ['value' => $value, 'type' => 'text']);
+        for ($i = 1; $i <= 3; $i++) {
+            $sliderKey = 'slider_image_' . $i;
+            if ($request->hasFile($sliderKey)) {
+                $path = $request->file($sliderKey)->store('sliders', 'public');
+                Setting::updateOrCreate(['key' => $sliderKey], ['value' => $path, 'type' => 'image']);
+            }
+        }
+
+        $textFields = ['contact_email', 'contact_phone', 'contact_address', 'contact_whatsapp', 'social_tiktok', 'social_facebook', 'social_instagram', 'social_youtube'];
+        foreach ($textFields as $field) {
+            if (isset($validated[$field])) {
+                Setting::updateOrCreate(['key' => $field], ['value' => $validated[$field], 'type' => 'text']);
             }
         }
 
