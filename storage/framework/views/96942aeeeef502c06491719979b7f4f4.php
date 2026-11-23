@@ -915,9 +915,9 @@
                         ← Kembali
                     </button>
                     <div class="flex gap-3 flex-wrap">
-                        <button onclick="simpanData()" class="px-6 py-2.5 bg-gradient-to-r from-green-500 to-green-700 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-green-300/40 transition-all transform hover:-translate-y-0.5">
-                            Simpan & Cetak PDF
-                        </button>
+                 <button type="button" onclick="simpanData(event)" class="px-6 py-2.5 bg-gradient-to-r from-green-500 to-green-700 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-green-300/40 transition-all transform hover:-translate-y-0.5">
+                    Simpan & Cetak PDF
+                </button>
                         <button onclick="resetSession()" class="px-5 py-2.5 bg-gray-600 text-white rounded-xl font-medium hover:bg-gray-700 transition-all transform hover:-translate-y-0.5">
                             Reset
                         </button>
@@ -1507,7 +1507,8 @@ document.querySelectorAll('input[name="yakin-keputusan"]').forEach(radio => {
             updateProgress();
         }
 
-        function simpanData() {
+        function simpanData(e) {
+            if (e) e.preventDefault();
             // Collect all form data
             formData.nama_pasien = document.getElementById('nama-pasien').value;
             formData.usia = parseInt(document.getElementById('usia-pasien').value) || null;
@@ -1534,6 +1535,17 @@ document.querySelectorAll('input[name="yakin-keputusan"]').forEach(radio => {
             formData.hari_pemakaian = hariValueEl ? parseInt(hariValueEl.textContent) || 7 : 7;
             formData.duration = 60;
             formData.layer = 1;
+            // Konversi jawaban_fakta_mitos dari object ke array
+
+            if (typeof formData.jawaban_fakta_mitos === 'string') {
+                try {
+                    formData.jawaban_fakta_mitos = JSON.parse(formData.jawaban_fakta_mitos);
+                } catch (e) {
+                    formData.jawaban_fakta_mitos = [];
+                }
+            } else {
+                formData.jawaban_fakta_mitos = Object.values(formData.jawaban_fakta_mitos);
+            }
 
             console.log('Form data sebelum dikirim ke server:', JSON.stringify(formData, null, 2));
 

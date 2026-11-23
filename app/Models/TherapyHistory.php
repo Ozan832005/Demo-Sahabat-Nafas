@@ -8,7 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class TherapyHistory extends Model
 {
     use HasFactory;
-
+    protected $casts = [
+        'checklist_inhaler' => 'array',
+        'kendala_kepatuhan' => 'array',
+        'jawaban_fakta_mitos' => 'array',
+        'kesepakatan_tindakan' => 'array',
+        'rencana_bertahap' => 'array',
+    ];
     protected $fillable = [
         'user_id',
         'admin_id',
