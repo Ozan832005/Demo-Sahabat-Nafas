@@ -116,6 +116,50 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1.5">Catatan (opsional)</label>
                 <textarea name="notes" rows="3" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none resize-none" placeholder="Tambahkan catatan terapi"></textarea>
             </div>
+            <div class="mt-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Riwayat Kambuh</label>
+                <select name="riwayat_kambuh" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none">
+                    <option value="tidak_pernah">Tidak Pernah</option>
+                    <option value="1x">1 Kali</option>
+                    <option value="2x">2 Kali</option>
+                    <option value="3x_lebih">3 Kali atau Lebih</option>
+                </select>
+            </div>
+            <div class="mt-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Skala mMRC (0-4)</label>
+                <select name="skala_mmrc" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none">
+                    <option value="0">0 - Tidak Sesak</option>
+                    <option value="1">1 - Sesak Berat Aktivitas</option>
+                    <option value="2">2 - Sesak Jalan Cepat</option>
+                    <option value="3">3 - Sesak Jalan Pelan</option>
+                    <option value="4">4 - Sesak Ringan</option>
+                </select>
+            </div>
+            <div class="mt-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Jenis Inhaler</label>
+                <select name="jenis_inhaler" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none">
+                    <option value="kuning">Kuning (Inhaler Kuning/Seretide)</option>
+                    <option value="hijau">Hijau (Inhaler Hijau/Ventolin)</option>
+                    <option value="biru">Biru (Inhaler Biru/Atrovent)</option>
+                    <option value="lainnya">Lainnya</option>
+                </select>
+            </div>
+            <div class="mt-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Pilihan Terapi</label>
+                <select name="pilihan_terapi" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none">
+                    <option value="rutin">Rutin</option>
+                    <option value="latihan">Latihan Paru</option>
+                    <option value="kombinasi">Kombinasi Rutin + Latihan</option>
+                </select>
+            </div>
+            <div class="mt-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Prioritas Tujuan</label>
+                <select name="prioritas_tujuan" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none">
+                    <option value="tidak_ngos">Aktivitas Tanpa Ngos-ngosan</option>
+                    <option value="tidak_rawat">Tidak Rawat Inap</option>
+                    <option value="ibadah">Bisa Beribadah Bersama Keluarga</option>
+                </select>
+            </div>
             <div class="flex gap-3 pt-4">
                 <button type="button" onclick="closeModal('addTherapyModal')" class="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all">Batal</button>
                 <button type="submit" class="flex-1 btn-primary text-white px-4 py-3 rounded-xl font-semibold">Simpan</button>

@@ -21,6 +21,33 @@
             </div>
         </div>
 
+        <!-- Therapy initial data for JavaScript pre-population -->
+        <input type="hidden" id="therapy-initial-data" value="{{ json_encode($latestTherapy ? [
+    'layer' => $latestTherapy->layer,
+    'nama_pasien' => $latestTherapy->nama_pasien,
+    'usia' => $latestTherapy->usia,
+    'riwayat_kambuh' => $latestTherapy->riwayat_kambuh,
+    'skala_mmrc' => $latestTherapy->skala_mmrc,
+    'pendamping' => $latestTherapy->pendamping,
+    'jenis_inhaler' => $latestTherapy->jenis_inhaler,
+    'checklist_inhaler' => $latestTherapy->checklist_inhaler ?? [],
+    'hari_pemakaian' => $latestTherapy->hari_pemakaian,
+    'duration' => $latestTherapy->duration,
+    'kendala_kepatuhan' => $latestTherapy->kendala_kepatuhan ?? [],
+    'pilihan_terapi' => $latestTherapy->pilihan_terapi,
+    'jawaban_fakta_mitos' => $latestTherapy->jawaban_fakta_mitos ?? [],
+    'prioritas_tujuan' => $latestTherapy->prioritas_tujuan,
+    'dukungan_pendamping' => $latestTherapy->dukungan_pendamping,
+    'kesepakatan_tindakan' => $latestTherapy->kesepakatan_tindakan ?? [],
+    'harapan_pasien' => $latestTherapy->harapan_pasien,
+    'dukungan_pendamping_baru' => $latestTherapy->dukungan_pendamping_baru,
+    'rencana_bertahap' => $latestTherapy->rencana_bertahap ?? [],
+    'paham_manfaat' => $latestTherapy->paham_manfaat,
+    'pilihan_tepat' => $latestTherapy->pilihan_tepat,
+    'dukungan_cukup' => $latestTherapy->dukungan_cukup,
+    'yakin_keputusan' => $latestTherapy->yakin_keputusan
+] : null) }}">
+
         <div id="screen-0" class="screen-container bg-white rounded-2xl shadow-sm p-6 mb-6">
             <div class="mb-8 text-center">
                 <h2 class="text-2xl font-bold text-gray-800 mb-3">Mari Kita Pilih Perawatan Napas Terbaik Bersama</h2>
@@ -946,6 +973,80 @@
         </div>
 
         <div id="toast-container" class="fixed top-4 right-4 z-[100] flex flex-col gap-3 pointer-events-none"></div>
+
+        <!-- VIDEO EDUKASI PPOK: sengaja diletakkan di luar .screen-container agar selalu tampil -->
+        <section id="edukasi-media" class="max-w-6xl mx-auto mt-10 mb-6 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60">
+            <div class="relative overflow-hidden bg-gradient-to-br from-slate-950 via-teal-950 to-teal-800 px-6 py-8 sm:px-8 sm:py-10">
+                <div class="pointer-events-none absolute -right-12 -top-16 h-48 w-48 rounded-full bg-teal-400/10 blur-2xl"></div>
+                <div class="pointer-events-none absolute -bottom-20 left-1/3 h-44 w-44 rounded-full bg-cyan-300/10 blur-2xl"></div>
+
+                <div class="relative z-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div class="max-w-2xl">
+                        <span class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-teal-100">
+                            <span class="h-2 w-2 rounded-full bg-teal-300"></span>
+                            Edukasi Media
+                        </span>
+                        <h2 class="mt-4 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+                            Video Edukasi Terapi PPOK
+                        </h2>
+                        <p class="mt-2 max-w-xl text-sm leading-6 text-teal-100 sm:text-base">
+                            Pelajari informasi seputar terapi PPOK melalui video berikut. Putar langsung dari halaman ini tanpa perlu meninggalkan situs.
+                        </p>
+                    </div>
+
+                    <div class="hidden h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-white/20 bg-white/10 text-white shadow-lg sm:flex">
+                        <svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6.75A2.75 2.75 0 0 1 6.75 4h10.5A2.75 2.75 0 0 1 20 6.75v10.5A2.75 2.75 0 0 1 17.25 20H6.75A2.75 2.75 0 0 1 4 17.25V6.75Z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m10 8.5 5 3.5-5 3.5v-7Z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 sm:p-6 lg:p-8">
+                <div class="overflow-hidden rounded-2xl bg-slate-950 shadow-lg ring-1 ring-slate-900/10" style="aspect-ratio: 16 / 9;">
+                    <iframe
+                        class="h-full w-full"
+                        src="https://www.youtube-nocookie.com/embed/ppaGu_ZxfwQ?rel=0"
+                        title="Video Edukasi Terapi PPOK"
+                        loading="lazy"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+                <div class="mt-5 flex flex-col gap-4 border-t border-slate-100 pt-5 sm:flex-row sm:items-center sm:justify-between">
+                    <div class="flex items-start gap-3">
+                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-700">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                                <circle cx="12" cy="12" r="9" stroke-width="1.8"></circle>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 11v5m0-8h.01"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-slate-800">Materi edukasi pasien</p>
+                            <p class="mt-1 text-sm leading-5 text-slate-500">Gunakan video ini sebagai bahan belajar dan diskusi bersama tenaga kesehatan.</p>
+                        </div>
+                    </div>
+
+                    <a
+                        href="https://www.youtube.com/watch?v=ppaGu_ZxfwQ"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-teal-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-teal-600/20 transition duration-200 hover:-translate-y-0.5 hover:bg-teal-700 focus:outline-none focus:ring-4 focus:ring-teal-200">
+                        Tonton di YouTube
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17 17 7M8 7h9v9"></path>
+                        </svg>
+                    </a>
+                </div>
+
+                <p class="mt-5 rounded-xl border border-amber-100 bg-amber-50 px-4 py-3 text-xs leading-5 text-amber-800">
+                    Catatan: Video ini merupakan media edukasi umum, bukan pengganti pemeriksaan atau anjuran medis pribadi. Tetap ikuti rencana terapi dan petunjuk dokter atau tenaga kesehatan yang menangani.
+                </p>
+            </div>
+        </section>
     </div>
 
     <style>
@@ -1057,7 +1158,7 @@
             riwayat_kambuh: null,
             skala_mmrc: null,
             pendamping: '',
-            jenis_inhaler: null,
+            jenis_inhaler: '',
             checklist_inhaler: [],
             hari_pemakaian: 7,
             duration: 0,
@@ -1076,6 +1177,37 @@
             yakin_keputusan: null
         };
 
+        // Try to load existing therapy data from the page's initial data
+        // This will be populated by the server-side code
+        const existingTherapyData = JSON.parse(document.getElementById('therapy-initial-data')?.value || 'null');
+        if (existingTherapyData && existingTherapyData.layer && existingTherapyData.layer > 0) {
+            // Populate formData from existing therapy history
+            formData = {
+                nama_pasien: existingTherapyData.nama_pasien || '',
+                usia: existingTherapyData.usia || null,
+                riwayat_kambuh: existingTherapyData.riwayat_kambuh || null,
+                skala_mmrc: existingTherapyData.skala_mmrc || null,
+                pendamping: existingTherapyData.pendamping || '',
+                jenis_inhaler: existingTherapyData.jenis_inhaler || '',
+                checklist_inhaler: existingTherapyData.checklist_inhaler || [],
+                hari_pemakaian: existingTherapyData.hari_pemakaian || 7,
+                duration: existingTherapyData.duration || 0,
+                kendala_kepatuhan: existingTherapyData.kendala_kepatuhan || [],
+                pilihan_terapi: existingTherapyData.pilihan_terapi || null,
+                jawaban_fakta_mitos: existingTherapyData.jawaban_fakta_mitos || {},
+                prioritas_tujuan: existingTherapyData.prioritas_tujuan || null,
+                dukungan_pendamping: existingTherapyData.dukungan_pendamping || '',
+                kesepakatan_tindakan: existingTherapyData.kesepakatan_tindakan || [],
+                harapan_pasien: existingTherapyData.harapan_pasien || null,
+                dukungan_pendamping_baru: existingTherapyData.dukungan_pendamping_baru || '',
+                rencana_bertahap: existingTherapyData.rencana_bertahap || [],
+                paham_manfaat: existingTherapyData.paham_manfaat || null,
+                pilihan_tepat: existingTherapyData.pilihan_tepat || null,
+                dukungan_cukup: existingTherapyData.dukungan_cukup || null,
+                yakin_keputusan: existingTherapyData.yakin_keputusan || null
+            };
+        }
+
         function startLatihanNapas() {
             if (timerInterval) {
                 clearInterval(timerInterval);
@@ -1088,7 +1220,7 @@
             
             remainingTime = 60;
             document.getElementById('start-timer-btn').textContent = '⏹ Hentikan Latihan';
-            
+            formData.pilihan_terapi = document.querySelector('input[name="pilihan-terapi"]:checked')?.value || null;
             timerInterval = setInterval(() => {
                 remainingTime--;
                 document.getElementById('timer-display').textContent = remainingTime + ' detik';
@@ -1126,7 +1258,7 @@
             } else if (screen === 3) {
                 return formData.prioritas_tujuan !== null && formData.dukungan_pendamping && formData.kesepakatan_tindakan.length > 0;
             } else if (screen === 4) {
-                return formData.harapan_pasien !== null && formData.dukungan_pendamping_baru && formData.rencana_bertahap.length > 0 && formData.paham_manfaat !== null && formData.pilihan_tepat !== null && formData.dukungan_cukup !== null && formData.yakin_keputusan !== null;
+                return formData.harapan_pasien !== null && formData.dukungan_pendamping_baru && (formData.rencana_bertahap === null || formData.rencana_bertahap.length > 0) && formData.paham_manfaat !== null && formData.pilihan_tepat !== null && formData.dukungan_cukup !== null && formData.yakin_keputusan !== null;
             } else if (screen === 5) {
                 return true; // Summary screen doesn't need validation
             }
@@ -1257,6 +1389,77 @@
         document.getElementById('usia-pasien').addEventListener('input', function(e) {
             formData.usia = parseInt(e.target.value) || null;
         });
+        // Event listener untuk checkbox checklist inhaler
+document.querySelectorAll('.checklist-inhaler').forEach(cb => {
+    cb.addEventListener('change', function() {
+        formData.checklist_inhaler = Array.from(document.querySelectorAll('.checklist-inhaler:checked')).map(el => el.value);
+    });
+});
+
+// Event listener untuk checkbox kendala kepatuhan
+document.querySelectorAll('.kendala-kepatuhan').forEach(cb => {
+    cb.addEventListener('change', function() {
+        formData.kendala_kepatuhan = Array.from(document.querySelectorAll('.kendala-kepatuhan:checked')).map(el => el.value);
+    });
+});
+
+// Event listener untuk textarea dukungan pendamping
+document.getElementById('dukungan-pendamping').addEventListener('input', function(e) {
+    formData.dukungan_pendamping = e.target.value;
+});
+
+// Event listener untuk checkbox kesepakatan tindakan
+document.querySelectorAll('.kesepakatan-tindakan').forEach(cb => {
+    cb.addEventListener('change', function() {
+        formData.kesepakatan_tindakan = Array.from(document.querySelectorAll('.kesepakatan-tindakan:checked')).map(el => el.value);
+    });
+});
+
+// Event listener untuk radio harapan pasien
+document.querySelectorAll('input[name="harapan-pasien"]').forEach(radio => {
+    radio.addEventListener('change', function(e) {
+        formData.harapan_pasien = e.target.value;
+    });
+});
+
+// Event listener untuk textarea dukungan pendamping baru
+document.getElementById('dukungan-pendamping-baru').addEventListener('input', function(e) {
+    formData.dukungan_pendamping_baru = e.target.value;
+});
+
+// Event listener untuk checkbox rencana bertahap
+document.querySelectorAll('.rencana-bertahap').forEach(cb => {
+    cb.addEventListener('change', function() {
+        formData.rencana_bertahap = Array.from(document.querySelectorAll('.rencana-bertahap:checked')).map(el => el.value);
+    });
+});
+// Event listener untuk radio Paham Manfaat
+document.querySelectorAll('input[name="paham-manfaat"]').forEach(radio => {
+    radio.addEventListener('change', function(e) {
+        formData.paham_manfaat = e.target.value;
+    });
+});
+
+// Event listener untuk radio Pilihan Tepat
+document.querySelectorAll('input[name="pilihan-tepat"]').forEach(radio => {
+    radio.addEventListener('change', function(e) {
+        formData.pilihan_tepat = e.target.value;
+    });
+});
+
+// Event listener untuk radio Dukungan Cukup
+document.querySelectorAll('input[name="dukungan-cukup"]').forEach(radio => {
+    radio.addEventListener('change', function(e) {
+        formData.dukungan_cukup = e.target.value;
+    });
+});
+
+// Event listener untuk radio Yakin Keputusan
+document.querySelectorAll('input[name="yakin-keputusan"]').forEach(radio => {
+    radio.addEventListener('change', function(e) {
+        formData.yakin_keputusan = e.target.value;
+    });
+});
 
         function isiContohKasus() {
             document.getElementById('nama-pasien').value = 'Tn. R';
@@ -1325,7 +1528,6 @@
         function simpanData() {
             // Collect all form data
             formData.nama_pasien = document.getElementById('nama-pasien').value;
-            formData.pendamping = document.querySelector('.pendamping-btn.border-teal-500')?.dataset.value || '';
             formData.usia = parseInt(document.getElementById('usia-pasien').value) || null;
             formData.checklist_inhaler = Array.from(document.querySelectorAll('.checklist-inhaler:checked')).map(el => el.value);
             formData.kendala_kepatuhan = Array.from(document.querySelectorAll('.kendala-kepatuhan:checked')).map(el => el.value);
@@ -1339,57 +1541,33 @@
             formData.dukungan_cukup = document.querySelector('input[name="dukungan-cukup"]:checked')?.value || null;
             formData.yakin_keputusan = document.querySelector('input[name="yakin-keputusan"]:checked')?.value || null;
             
-            // Also get pilihan_terapi and prioritas_tujuan from form
-            const riwayatKambuhMap = { '0': 'tidak_pernah', '1': '1x', '2': '2x', '3': '3x_lebih' };
-            const inhalerMap = { 'mdpi': 'kuning', 'dpi': 'hijau', 'nebu': 'biru', 'lainnya': 'lainnya' };
-            const terapiMap = { '0': 'rutin', '1': 'latihan', '2': 'kombinasi', '3': 'rutin' };
-            const prioritasMap = { '0': 'tidak_ngos', '1': 'tidak_rawat', '2': 'ibadah', '3': 'tidak_ngos' };
-            
-            const riwayatVal = document.querySelector('.kambuh-btn.border-teal-500')?.dataset.value;
-            formData.riwayat_kambuh = riwayatKambuhMap[riwayatVal] || null;
-            
-            const mmrcVal = document.querySelector('.mmrc-btn.border-teal-500')?.dataset.value;
-            formData.skala_mmrc = mmrcVal !== undefined ? parseInt(mmrcVal) : null;
-            
-            const inhalerVal = document.querySelector('.inhaler-btn.border-teal-500')?.dataset.value;
-            formData.jenis_inhaler = inhalerMap[inhalerVal] || null;
-            
-            const terapiVal = document.querySelector('.terapi-btn.border-teal-500')?.dataset.value;
-            formData.pilihan_terapi = terapiMap[terapiVal] || null;
-            
-            const prioritasVal = document.querySelector('.prioritas-btn.border-teal-500')?.dataset.value;
-            formData.prioritas_tujuan = prioritasMap[prioritasVal] || null;
-            formData.hari_pemakaian = parseInt(document.getElementById('hari-pemakaian').value) || 0;
-            const timerText = document.getElementById('timer-display').textContent;
-            formData.duration = parseInt(timerText.replace(/[^0-9]/g, '')) || 0;
+            // // Also get pilihan_terapi and prioritas_tujuan from form
+            // formData.pilihan_terapi = document.querySelector('input[name="pilihan-terapi"]:checked')?.value || null;
+            // formData.prioritas_tujuan = document.querySelector('input[name="prioritas-tujuan"]:checked')?.value || null;
+            // formData.riwayat_kambuh = document.querySelector('input[name="riwayat-kambuh"]:checked')?.value || null;
+            // formData.skala_mmrc = document.querySelector('input[name="skala-mmrc"]:checked')?.value || null;
+            // formData.jenis_inhaler = document.querySelector('input[name="jenis-inhaler"]:checked')?.value || null;
 
-            console.log('Field values:', {
-                riwayat_kambuh: formData.riwayat_kambuh,
-                skala_mmrc: formData.skala_mmrc,
-                jenis_inhaler: formData.jenis_inhaler,
-                pilihan_terapi: formData.pilihan_terapi,
-                prioritas_tujuan: formData.prioritas_tujuan,
-                pendamping: formData.pendamping
-            });
-
-            // Validate ONLY required fields according to backend rules
-            // Only nama_pasien, usia, riwayat_kambuh, skala_mmrc, pendamping, jenis_inhaler, hari_pemakaian, pilihan_terapi, prioritas_tujuan, harapan_pasien, duration are required
-            console.log('Form data before validation:', formData);
+            // Validate ALL required fields are filled
+            // Check for empty/null values - use explicit checks to avoid JavaScript falsy issues
             const isNamaValid = formData.nama_pasien && formData.nama_pasien.trim() !== '';
-            const isUsiaValid = formData.usia !== null && !isNaN(formData.usia) && formData.usia >= 0;
-            const isRiwayatValid = true;
-            const isMMRCValid = true;
-            const isPendampingValid = true;
-            const isJenisInhalerValid = true;
-            const isPilihanTerapiValid = true;
-            const isPrioritasValid = true;
-            const isHarapanValid = true;
-            const isHariPemakaianValid = true;
-            const isDurationValid = true;
+            const isUsiaValid = formData.usia !== null && !isNaN(formData.usia) && formData.usia > 0;
+            const isRiwayatValid = formData.riwayat_kambuh !== null;
+            const isMMRCValid = formData.skala_mmrc !== null;
+            const isPendampingValid = formData.pendamping && formData.pendamping.trim() !== '';
+            const isJenisInhalerValid = formData.jenis_inhaler !== null;
+            const isPilihanTerapiValid = formData.pilihan_terapi !== null;
+            const isPrioritasValid = formData.prioritas_tujuan !== null;
+            const isHarapanValid = formData.harapan_pasien !== null;
+            const isDukunganBaruValid = formData.dukungan_pendamping_baru && formData.dukungan_pendamping_baru.trim() !== '';
+            const isRencanaValid = formData.rencana_bertahap && formData.rencana_bertahap.length > 0;
+            const isPahamValid = formData.paham_manfaat !== null;
+            const isPilihanTepatValid = formData.pilihan_tepat !== null;
+            const isDukunganCukupValid = formData.dukungan_cukup !== null;
+            const isYakinValid = formData.yakin_keputusan !== null;
 
-            // If any required field is invalid, show error and stop
-            if (!isNamaValid || !isUsiaValid) {
-                console.log('Validation failed!', { isNamaValid, isUsiaValid });
+            // If any field is invalid, show error and stop
+            if (!isNamaValid || !isUsiaValid || !isRiwayatValid || !isMMRCValid || !isPendampingValid || !isJenisInhalerValid || !isPilihanTerapiValid || !isPrioritasValid || !isHarapanValid || !isDukunganBaruValid || !isRencanaValid || !isPahamValid || !isPilihanTepatValid || !isDukunganCukupValid || !isYakinValid) {
                 showToast('Harap lengkapi semua field yang wajib diisi!', 'error');
                 hideValidationErrors();
                 return;
@@ -1452,40 +1630,40 @@
             });
         }
 
-        function populateSummaryScreen() {
-            const riwayatKambuhText = { 'tidak_pernah': 'Tidak Pernah', '1x': '1 Kali', '2x': '2 Kali', '3x_lebih': '3 Kali atau Lebih' };
-            const mmrcText = ['Tidak Sesak', 'Sesak Berat Aktivitas', 'Sesak Jalan Cepat', 'Sesak Jalan Pelan', 'Sesak Ringan', 'Sesak Berat'];
-            const inhalerText = { 'kuning': 'Inhaler Kuning (Seretide)', 'hijau': 'Inhaler Hijau (Ventolin)', 'biru': 'Inhaler Biru (Atrovent)', 'lainnya': 'Lainnya' };
-            const terapiText = { 'rutin': 'Terapi Rutin', 'latihan': 'Latihan Paru', 'kombinasi': 'Kombinasi Rutin + Latihan' };
-            const prioritasText = { 'tidak_ngos': 'Aktivitas Tanpa Ngos-ngosan', 'tidak_rawat': 'Tidak Rawat Inap', 'ibadah': 'Bisa Beribadah Bersama Keluarga' };
-            const harapanText = { 'aktivitas': 'Aktivitas Tanpa Ngos-ngosan', 'rawat': 'Tidak Perlu Rawat Inap', 'ibadah': 'Bisa Beribadah Bersama Keluarga' };
-            const rencanaText = { 'inhaler': 'Perbaiki Cara Pakai Inhaler', 'latihan': 'Latihan Paru Intensitas Ringan', 'obat': 'Tetap Pakai Obat Dokter' };
-            
-            document.getElementById('summary-nama').textContent = formData.nama_pasien || '-';
-            document.getElementById('summary-usia').textContent = (formData.usia ? formData.usia + ' tahun' : '-');
-            document.getElementById('summary-kambuh').textContent = (formData.riwayat_kambuh ? riwayatKambuhText[formData.riwayat_kambuh] : '-');
-            document.getElementById('summary-mmrc').textContent = (formData.skala_mmrc !== null ? mmrcText[formData.skala_mmrc] : '-');
-            document.getElementById('summary-pendamping').textContent = formData.pendamping || '-';
-            document.getElementById('summary-inhaler').textContent = (formData.jenis_inhaler ? inhalerText[formData.jenis_inhaler] : '-');
-            document.getElementById('summary-hari').textContent = (formData.hari_pemakaian ? formData.hari_pemakaian + ' hari/minggu' : '-');
-            document.getElementById('summary-checklist').textContent = (formData.checklist_inhaler.length > 0 ? formData.checklist_inhaler.join(', ') : '-');
-            document.getElementById('summary-kendala').textContent = (formData.kendala_kepatuhan.length > 0 ? formData.kendala_kepatuhan.join(', ') : '-');
-            document.getElementById('summary-terapi').textContent = (formData.pilihan_terapi ? terapiText[formData.pilihan_terapi] : '-');
-            document.getElementById('summary-fakta').textContent = Object.keys(formData.jawaban_fakta_mitos).length + ' soal terjawab';
-            document.getElementById('summary-prioritas').textContent = (formData.prioritas_tujuan ? prioritasText[formData.prioritas_tujuan] : '-');
-            document.getElementById('summary-dukungan').textContent = formData.dukungan_pendamping || '-';
-            document.getElementById('summary-kesepakatan').textContent = (formData.kesepakatan_tindakan.length > 0 ? formData.kesepakatan_tindakan.join(', ') : '-');
-            document.getElementById('summary-harapan').textContent = (formData.harapan_pasien ? harapanText[formData.harapan_pasien] : '-');
-            document.getElementById('summary-suara').textContent = formData.dukungan_pendamping_baru || '-';
-            document.getElementById('summary-rencana').textContent = (formData.rencana_bertahap.length > 0 ? formData.rencana_bertahap.map(r => rencanaText[r]).join(', ') : '-');
-            
-            const kemantapan = [];
-            if (formData.paham_manfaat) kemantapan.push('Paham Manfaat: ' + formData.paham_manfaat);
-            if (formData.pilihan_tepat) kemantapan.push('Pilihan Tepat: ' + formData.pilihan_tepat);
-            if (formData.dukungan_cukup) kemantapan.push('Dukungan Cukup: ' + formData.dukungan_cukup);
-            if (formData.yakin_keputusan) kemantapan.push('Yakin: ' + formData.yakin_keputusan);
-            document.getElementById('summary-kemantapan').textContent = kemantapan.length > 0 ? kemantapan.join(' | ') : '-';
-        }
+function populateSummaryScreen() {
+    const riwayatKambuhText = ['0 kali', '1 kali', '2 kali atau lebih'];
+    const mmrcText = ['Tidak Sesak', 'Sesak Berat Aktivitas', 'Sesak Jalan Cepat', 'Sesak Jalan Pelan', 'Sesak Ringan', 'Sesak Berat'];
+    const inhalerText = { 'mdpi': 'MDPI (Metered Dose)', 'dpi': 'DPI (Dry Powder)', 'nebu': 'Nebulizer' };
+    const terapiText = ['Mengurangi sesak napas', 'Meningkatkan kemampuan beraktivitas', 'Mengurangi frekuensi kambuh', 'Lainnya'];
+    const prioritasText = ['Tertinggi', 'Sedang', 'Rendah', 'Tidak Setuju'];
+    const pendampingText = { 'sendiri': 'Sendiri', 'pasangan': 'Istri / Suami', 'anak': 'Anak / Keluarga' };
+    const rencanaText = { 'inhaler': 'Perbaiki Cara Pakai Inhaler', 'latihan': 'Latihan Paru Intensitas Ringan', 'obat': 'Tetap Pakai Obat Dokter' };
+    
+    document.getElementById('summary-nama').textContent = formData.nama_pasien || '-';
+    document.getElementById('summary-usia').textContent = (formData.usia ? formData.usia + ' tahun' : '-');
+    document.getElementById('summary-kambuh').textContent = (formData.riwayat_kambuh !== null ? riwayatKambuhText[formData.riwayat_kambuh] : '-');
+    document.getElementById('summary-mmrc').textContent = (formData.skala_mmrc !== null ? mmrcText[formData.skala_mmrc] : '-');
+    document.getElementById('summary-pendamping').textContent = (formData.pendamping ? pendampingText[formData.pendamping] : '-');
+    document.getElementById('summary-inhaler').textContent = (formData.jenis_inhaler ? inhalerText[formData.jenis_inhaler] : '-');
+    document.getElementById('summary-hari').textContent = (formData.hari_pemakaian ? formData.hari_pemakaian + ' hari/minggu' : '-');
+    document.getElementById('summary-checklist').textContent = (formData.checklist_inhaler.length > 0 ? formData.checklist_inhaler.join(', ') : '-');
+    document.getElementById('summary-kendala').textContent = (formData.kendala_kepatuhan.length > 0 ? formData.kendala_kepatuhan.join(', ') : '-');
+    document.getElementById('summary-terapi').textContent = (formData.pilihan_terapi !== null ? terapiText[formData.pilihan_terapi] : '-');
+    document.getElementById('summary-fakta').textContent = Object.keys(formData.jawaban_fakta_mitos).length + ' soal terjawab';
+    document.getElementById('summary-prioritas').textContent = (formData.prioritas_tujuan !== null ? prioritasText[formData.prioritas_tujuan] : '-');
+    document.getElementById('summary-dukungan').textContent = formData.dukungan_pendamping || '-';
+    document.getElementById('summary-kesepakatan').textContent = (formData.kesepakatan_tindakan.length > 0 ? formData.kesepakatan_tindakan.join(', ') : '-');
+    document.getElementById('summary-harapan').textContent = formData.harapan_pasien || '-';
+    document.getElementById('summary-suara').textContent = formData.dukungan_pendamping_baru || '-';
+    document.getElementById('summary-rencana').textContent = (formData.rencana_bertahap.length > 0 ? formData.rencana_bertahap.map(r => rencanaText[r]).join(', ') : '-');
+    
+    const kemantapan = [];
+    if (formData.paham_manfaat) kemantapan.push('Paham Manfaat: ' + formData.paham_manfaat);
+    if (formData.pilihan_tepat) kemantapan.push('Pilihan Tepat: ' + formData.pilihan_tepat);
+    if (formData.dukungan_cukup) kemantapan.push('Dukungan Cukup: ' + formData.dukungan_cukup);
+    if (formData.yakin_keputusan) kemantapan.push('Yakin: ' + formData.yakin_keputusan);
+    document.getElementById('summary-kemantapan').textContent = kemantapan.length > 0 ? kemantapan.join(' | ') : '-';
+}
 
         function generatePDF() {
             const { jsPDF } = window.jspdf;
