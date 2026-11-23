@@ -51,6 +51,10 @@ Route::middleware(['auth', 'pasien'])->group(function () {
     Route::get('/pasien/dashboard', [PasienController::class, 'dashboard'])->name('pasien.dashboard');
     Route::get('/pasien/terapi', [PasienController::class, 'terapi'])->name('pasien.terapi');
     Route::post('/pasien/terapi/store', [PasienController::class, 'storeTerapi'])->name('pasien.terapi.store');
+    Route::get('/pasien/riwayat-terapi', [PasienController::class, 'riwayatTerapi'])->name('pasien.riwayat-terapi');
+    Route::get('/pasien/terapi/{therapy}/edit', [PasienController::class, 'editTerapi'])->name('pasien.terapi.edit');
+    Route::put('/pasien/terapi/{therapy}', [PasienController::class, 'updateTerapi'])->name('pasien.terapi.update');
+    Route::delete('/pasien/terapi/{therapy}', [PasienController::class, 'deleteTerapi'])->name('pasien.terapi.destroy');
     Route::get('/pasien/edukasi', [PasienController::class, 'edukasi'])->name('pasien.edukasi');
     Route::get('/pasien/catatan', [PasienController::class, 'catatan'])->name('pasien.catatan');
     Route::get('/pasien/notifikasi', [PasienController::class, 'notifikasi'])->name('pasien.notifikasi');

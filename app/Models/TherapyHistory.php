@@ -34,7 +34,14 @@ class TherapyHistory extends Model
         'jawaban_sure',
         'skor_sure',
         'paspor_keputusan',
-        'perawat_notes'
+        'perawat_notes',
+        'harapan_pasien',
+        'dukungan_pendamping_baru',
+        'rencana_bertahap',
+        'paham_manfaat',
+        'pilihan_tepat',
+        'dukungan_cukup',
+        'yakin_keputusan'
     ];
 
     public function user()

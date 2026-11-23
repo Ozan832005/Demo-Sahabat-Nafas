@@ -16,7 +16,7 @@
                     $currentRoute = request()->route()->getName() ?? '';
                     $isDashboard = $currentRoute === 'pasien.dashboard';
                     $isTerapi = $currentRoute === 'pasien.terapi';
-                    $isRiwayatTerapi = $currentRoute === 'pasien.catatan';
+                    $isRiwayatTerapi = $currentRoute === 'pasien.riwayat-terapi';
                     $isCatatanPerawat = $currentRoute === 'pasien.notifikasi';
                     $isEdukasi = $currentRoute === 'pasien.edukasi';
                 @endphp
@@ -47,7 +47,7 @@
                 </a>
 
                 <!-- Riwayat Terapi -->
-                <a href="{{ route('pasien.catatan') }}"
+                <a href="{{ route('pasien.riwayat-terapi') }}"
                    class="nav-item px-3 sm:px-4 py-2 sm:py-2.5 rounded-[16px] text-[10px] sm:text-xs font-bold transition-all duration-300 flex items-center gap-1 sm:gap-2 @if($isRiwayatTerapi) bg-teal-100 text-teal-600 @else text-gray-600 hover:bg-gray-50 hover:text-teal-600 hover:scale-101 @endif"
                    style="color: var(--text-primary)">
                     <svg width="16" height="16" sm:width="18" sm:height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">

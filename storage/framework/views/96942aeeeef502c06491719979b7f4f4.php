@@ -3,964 +3,1582 @@
 <?php $__env->startSection('title', 'Terapi - ' . config('app.name')); ?>
 
 <?php $__env->startSection('content'); ?>
-<div class="space-y-6">
-    <div class="bg-gradient-to-r from-teal-600 to-teal-700 rounded-2xl p-6 text-white shadow-lg">
-        <h1 class="text-2xl font-bold mb-2">Proses Terapi PPOK</h1>
-        <p class="text-teal-100">Alur 5 Layar & Konten Klinis Lengkap</p>
+    <?php echo $__env->make('layouts.pasien-nav', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    
+    <div class="pt-40 pb-16 px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-r from-teal-600 to-teal-700 rounded-2xl p-6 text-white shadow-lg mb-6">
+            <h1 class="text-2xl font-bold mb-2">Proses Terapi PPOK</h1>
+            <p class="text-teal-100">Alur 5 Layar & Konten Klinis Lengkap</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm p-4 mb-6">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-sm font-medium text-gray-700">Progress Sesi</span>
+                <span class="text-sm text-gray-500" id="progress-text">Layar 0 dari 4</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div id="progress-bar" class="bg-teal-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div id="screen-0" class="screen-container bg-white rounded-2xl shadow-sm p-6 mb-6">
+            <div class="mb-8 text-center">
+                <h2 class="text-2xl font-bold text-gray-800 mb-3">Mari Kita Pilih Perawatan Napas Terbaik Bersama</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Alat bantu ini memandu Bapak/Ibu dan keluarga memahami pilihan perawatan PPOK secara bertahap sebelum berdiskusi dengan dokter di poliklinik.</p>
+            </div>
+
+            <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+                Identitas, Skala Sesak & Pendamping
+            </h2>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <button onclick="isiContohKasus()" class="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition text-sm font-medium sm:w-full">
+                    Isi Contoh Kasus Tn. R
+                </button>
+                <button onclick="resetSession()" class="px-4 py-2 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition text-sm font-medium sm:w-full">
+                    Reset Sesi Baru
+                </button>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nama / Inisial Pasien</label>
+                    <input type="text" id="nama-pasien" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="Masukkan nama pasien">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Usia (Tahun)</label>
+                    <input type="number" id="usia-pasien" min="0" max="150" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="Masukkan usia">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">Riwayat Kambuh 1 Tahun Terakhir</label>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button onclick="pilihKambuh(0)" class="kambuh-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-left transform hover:-translate-y-0.5" data-value="0">
+                            <p class="font-bold text-gray-800 text-lg">0 kali</p>
+                        </button>
+                        <button onclick="pilihKambuh(1)" class="kambuh-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-left transform hover:-translate-y-0.5" data-value="1">
+                            <p class="font-bold text-gray-800 text-lg">1 kali</p>
+                        </button>
+                        <button onclick="pilihKambuh(2)" class="kambuh-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-left transform hover:-translate-y-0.5" data-value="2">
+                            <p class="font-bold text-gray-800 text-lg">2 kali atau lebih</p>
+                            <p class="text-xs text-red-600 mt-2 font-medium">Risiko Tinggi - GOLD Grup E</p>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">Skala Derajat Sesak mMRC (0-4)</label>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                        <button onclick="pilihMmrc(0)" class="mmrc-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-center transform hover:-translate-y-0.5" data-value="0">
+                            <p class="text-3xl font-bold text-teal-600 mb-2">0</p>
+                            <p class="text-sm text-gray-600 leading-tight">Sesak hanya saat aktivitas berat</p>
+                        </button>
+                        <button onclick="pilihMmrc(1)" class="mmrc-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-center transform hover:-translate-y-0.5" data-value="1">
+                            <p class="text-3xl font-bold text-teal-600 mb-2">1</p>
+                            <p class="text-sm text-gray-600 leading-tight">Sesak saat jalan cepat/menanjak ringan</p>
+                        </button>
+                        <button onclick="pilihMmrc(2)" class="mmrc-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-center transform hover:-translate-y-0.5" data-value="2">
+                            <p class="text-3xl font-bold text-yellow-600 mb-2">2</p>
+                            <p class="text-sm text-gray-600 leading-tight">Berjalan lebih lambat dari orang seusia</p>
+                        </button>
+                        <button onclick="pilihMmrc(3)" class="mmrc-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-center transform hover:-translate-y-0.5" data-value="3">
+                            <p class="text-3xl font-bold text-orange-600 mb-2">3</p>
+                            <p class="text-sm text-gray-600 leading-tight">Berhenti bernapas setelah ~100m</p>
+                        </button>
+                        <button onclick="pilihMmrc(4)" class="mmrc-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-center transform hover:-translate-y-0.5" data-value="4">
+                            <p class="text-3xl font-bold text-red-600 mb-2">4</p>
+                            <p class="text-sm text-gray-600 leading-tight">Terlalu sesak keluar rumah/berpakaian</p>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">Pendamping Konsultasi</label>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button onclick="pilihPendamping('sendiri')" class="pendamping-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-left transform hover:-translate-y-0.5" data-value="sendiri">
+                            <p class="font-bold text-gray-800 text-lg">Sendiri</p>
+                        </button>
+                        <button onclick="pilihPendamping('pasangan')" class="pendamping-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-left transform hover:-translate-y-0.5" data-value="pasangan">
+                            <p class="font-bold text-gray-800 text-lg">Istri / Suami</p>
+                        </button>
+                        <button onclick="pilihPendamping('anak')" class="pendamping-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-left transform hover:-translate-y-0.5" data-value="anak">
+                            <p class="font-bold text-gray-800 text-lg">Anak / Keluarga</p>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end mt-8">
+                <button onclick="nextScreen(1)" class="px-6 py-2.5 bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-teal-300/40 transition-all transform hover:-translate-y-0.5">
+                    Lanjut ke Layar Berikutnya →
+                </button>
+            </div>
+        </div>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-sm p-4">
-        <div class="flex items-center justify-between mb-3">
-            <span class="text-sm font-medium text-gray-700">Progress Sesi</span>
-            <span class="text-sm text-gray-500" id="progress-text">Layar 0 dari 4</span>
-        </div>
-        <div class="w-full bg-gray-200 rounded-full h-2.5">
-            <div id="progress-bar" class="bg-teal-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
-        </div>
-    </div>
-
-    <div id="screen-0" class="screen-container bg-white rounded-2xl shadow-sm p-6">
+    <div id="screen-1" class="screen-container bg-white rounded-2xl shadow-sm p-6 mb-6 hidden">
         <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
             <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
             </svg>
-            Identitas, Skala Sesak & Pendamping
+            Kepatuhan Inhaler & Faktor Penghambat
         </h2>
-
-        <div class="flex flex-wrap gap-3 mb-6">
-            <button onclick="isiContohKasus()" class="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition text-sm font-medium">
-                Isi Contoh Kasus Tn. R
-            </button>
-            <button onclick="resetSession()" class="px-4 py-2 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition text-sm font-medium">
-                Reset Sesi Baru
-            </button>
-        </div>
 
         <div class="space-y-6">
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Nama / Inisial Pasien</label>
-                <input type="text" id="nama-pasien" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="Masukkan nama pasien">
-            </div>
-
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Usia (Tahun)</label>
-                <input type="number" id="usia-pasien" min="0" max="150" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="Masukkan usia">
-            </div>
-
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-3">Riwayat Kambuh 1 Tahun Terakhir</label>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <button onclick="pilihKambuh(0)" class="kambuh-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-left" data-value="0">
-                        <p class="font-semibold text-gray-800">0 kali</p>
+                <label class="block text-sm font-semibold text-gray-700 mb-3">Jenis Inhaler yang Digunakan</label>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <button onclick="pilihInhaler('mdpi')" class="inhaler-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-left transform hover:-translate-y-0.5" data-value="mdpi">
+                        <p class="font-bold text-gray-800 text-lg">MDPI (Metered Dose)</p>
                     </button>
-                    <button onclick="pilihKambuh(1)" class="kambuh-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-left" data-value="1">
-                        <p class="font-semibold text-gray-800">1 kali</p>
+                    <button onclick="pilihInhaler('dpi')" class="inhaler-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-left transform hover:-translate-y-0.5" data-value="dpi">
+                        <p class="font-bold text-gray-800 text-lg">DPI (Dry Powder)</p>
                     </button>
-                    <button onclick="pilihKambuh(2)" class="kambuh-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-left" data-value="2">
-                        <p class="font-semibold text-gray-800">2 kali atau lebih</p>
-                        <p class="text-xs text-red-600 mt-1">Risiko Tinggi - GOLD Grup E</p>
+                    <button onclick="pilihInhaler('nebu')" class="inhaler-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-left transform hover:-translate-y-0.5" data-value="nebu">
+                        <p class="font-bold text-gray-800 text-lg">Nebulizer</p>
                     </button>
                 </div>
             </div>
 
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-3">Skala Derajat Sesak mMRC (0-4)</label>
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
-                    <button onclick="pilihMmrc(0)" class="mmrc-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-center" data-value="0">
-                        <p class="text-2xl font-bold text-teal-600">0</p>
-                        <p class="text-xs text-gray-600 mt-1">Sesak hanya saat aktivitas berat</p>
-                    </button>
-                    <button onclick="pilihMmrc(1)" class="mmrc-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-center" data-value="1">
-                        <p class="text-2xl font-bold text-teal-600">1</p>
-                        <p class="text-xs text-gray-600 mt-1">Sesak saat jalan cepat/menanjak ringan</p>
-                    </button>
-                    <button onclick="pilihMmrc(2)" class="mmrc-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-center" data-value="2">
-                        <p class="text-2xl font-bold text-yellow-600">2</p>
-                        <p class="text-xs text-gray-600 mt-1">Berjalan lebih lambat dari orang seusia</p>
-                    </button>
-                    <button onclick="pilihMmrc(3)" class="mmrc-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-center" data-value="3">
-                        <p class="text-2xl font-bold text-orange-600">3</p>
-                        <p class="text-xs text-gray-600 mt-1">Berhenti bernapas setelah ~100m</p>
-                    </button>
-                    <button onclick="pilihMmrc(4)" class="mmrc-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-center" data-value="4">
-                        <p class="text-2xl font-bold text-red-600">4</p>
-                        <p class="text-xs text-gray-600 mt-1">Terlalu sesak keluar rumah/berpakaian</p>
-                    </button>
-                </div>
-            </div>
-
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-3">Pendamping Konsultasi</label>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <button onclick="pilihPendamping('sendiri')" class="pendamping-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-left" data-value="sendiri">
-                        <p class="font-semibold text-gray-800">Sendiri</p>
-                    </button>
-                    <button onclick="pilihPendamping('pasangan')" class="pendamping-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-left" data-value="pasangan">
-                        <p class="font-semibold text-gray-800">Istri / Suami</p>
-                    </button>
-                    <button onclick="pilihPendamping('keluarga')" class="pendamping-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-left" data-value="keluarga">
-                        <p class="font-semibold text-gray-800">Anak / Keluarga</p>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex justify-end mt-8">
-            <button onclick="goToScreen(1)" class="px-6 py-3 bg-teal-600 text-white rounded-xl hover:bg-teal-700 transition font-medium">
-                Lanjut ke Langkah 1 →
-            </button>
-        </div>
-    </div>
-
-    <div id="screen-1" class="screen-container hidden bg-white rounded-2xl shadow-sm p-6">
-        <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-            <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            Audit Teknik Inhaler & Kendala Kepatuhan
-        </h2>
-
-        <div class="mb-6">
-            <label class="block text-sm font-semibold text-gray-700 mb-3">Jenis Inhaler yang Digunakan</label>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <button onclick="pilihJenisInhaler('mdi')" id="btn-mdi" class="inhaler-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-left" data-value="mdi">
-                    <p class="font-semibold text-gray-800">MDI - Inhaler Semprot</p>
-                    <p class="text-xs text-gray-600 mt-1">Metered Dose Inhaler</p>
-                </button>
-                <button onclick="pilihJenisInhaler('dpi')" id="btn-dpi" class="inhaler-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-left" data-value="dpi">
-                    <p class="font-semibold text-gray-800">DPI - Inhaler Serbuk Kering</p>
-                    <p class="text-xs text-gray-600 mt-1">Dry Powder Inhaler</p>
-                </button>
-            </div>
-        </div>
-
-        <div id="checklist-container" class="space-y-3 mb-6">
-        </div>
-
-        <div class="mb-6">
-            <label class="block text-sm font-semibold text-gray-700 mb-2">Jumlah Hari Pemakaian Inhaler dalam 7 Hari Terakhir</label>
-            <input type="range" id="hari-pakai" min="0" max="7" value="7" class="w-full" oninput="updateHariPakai()">
-            <p class="text-center text-lg font-bold text-teal-600" id="hari-pakai-text">7 hari</p>
-        </div>
-
-        <div class="mb-6">
-            <label class="block text-sm font-semibold text-gray-700 mb-3">Skrining Kendala Kepatuhan</label>
-            <div class="space-y-2">
-                <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50">
-                    <input type="checkbox" class="kendala-check w-5 h-5 text-teal-600" value="lupa" onchange="updateUmpanBalik()">
-                    <span class="text-gray-700">Lupa jadwal memakai inhaler</span>
-                </label>
-                <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50">
-                    <input type="checkbox" class="kendala-check w-5 h-5 text-teal-600" value="enak" onchange="updateUmpanBalik()">
-                    <span class="text-gray-700">Berhenti saat merasa enak</span>
-                </label>
-                <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50">
-                    <input type="checkbox" class="kendala-check w-5 h-5 text-teal-600" value="efek" onchange="updateUmpanBalik()">
-                    <span class="text-gray-700">Takut efek samping obat</span>
-                </label>
-                <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50">
-                    <input type="checkbox" class="kendala-check w-5 h-5 text-teal-600" value="sulit" onchange="updateUmpanBalik()">
-                    <span class="text-gray-700">Sulit menekan/menghisap alat</span>
-                </label>
-            </div>
-        </div>
-
-        <div id="umpan-balik" class="p-4 bg-blue-50 border border-blue-200 rounded-xl">
-            <p class="text-blue-800 text-sm">Silakan lengkapi checklist untuk mendapatkan umpan balik.</p>
-        </div>
-
-        <div class="flex justify-between mt-8">
-            <button onclick="goToScreen(0)" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition font-medium">
-                ← Kembali
-            </button>
-            <button onclick="goToScreen(2)" class="px-6 py-3 bg-teal-600 text-white rounded-xl hover:bg-teal-700 transition font-medium">
-                Lanjut ke Langkah 2 →
-            </button>
-        </div>
-    </div>
-
-    <div id="screen-2" class="screen-container hidden bg-white rounded-2xl shadow-sm p-6">
-        <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-            <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-            </svg>
-            Perbandingan Opsi & Cek Fakta Medsos
-        </h2>
-
-        <div class="mb-8">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">A. Matriks Perbandingan 4 Opsi Terapi</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <button onclick="pilihOpsi('perbaiki_inhaler')" class="opsi-btn p-5 border-2 border-green-300 bg-green-50 rounded-xl hover:border-green-500 transition text-left" data-value="perbaiki_inhaler">
-                    <p class="font-bold text-green-800">1. Perbaiki Cara Pakai Inhaler & Rutin Terapi</p>
-                    <p class="text-sm text-green-600 mt-1">Langkah Utama Aman</p>
-                </button>
-                <button onclick="pilihOpsi('latihan_paru')" class="opsi-btn p-5 border-2 border-blue-300 bg-blue-50 rounded-xl hover:border-blue-500 transition text-left" data-value="latihan_paru">
-                    <p class="font-bold text-blue-800">2. Latihan Paru & Jalan Santai Bertahap</p>
-                    <p class="text-sm text-blue-600 mt-1">Dianjurkan Dokter Paru</p>
-                </button>
-                <button onclick="pilihOpsi('diam_rumah')" class="opsi-btn p-5 border-2 border-yellow-300 bg-yellow-50 rounded-xl hover:border-yellow-500 transition text-left" data-value="diam_rumah">
-                    <p class="font-bold text-yellow-800">3. Hanya Diam di Rumah & Kurangi Gerak</p>
-                    <p class="text-sm text-yellow-600 mt-1">Kurang Dianjurkan - Risiko Otot Melemah</p>
-                </button>
-                <button onclick="pilihOpsi('obat_alternatif')" class="opsi-btn p-5 border-2 border-red-300 bg-red-50 rounded-xl hover:border-red-500 transition text-left" data-value="obat_alternatif">
-                    <p class="font-bold text-red-800">4. Ganti Obat Alternatif dari Media Sosial</p>
-                    <p class="text-sm text-red-600 mt-1">Risiko Tinggi Bila Stop Obat Dokter</p>
-                </button>
-            </div>
-        </div>
-
-        <div class="mb-8 p-5 bg-yellow-50 border border-yellow-300 rounded-xl">
-            <h3 class="text-lg font-semibold text-yellow-800 mb-3">B. Waspada 3 Ciri Info Obat Palsu di HP & Media Sosial</h3>
-            <ul class="space-y-2 text-yellow-800">
-                <li class="flex items-start gap-2">
-                    <span class="text-yellow-600 font-bold">⚠️</span>
-                    <span><strong>Janji Sembuh Total & Instan</strong></span>
-                </li>
-                <li class="flex items-start gap-2">
-                    <span class="text-yellow-600 font-bold">⚠️</span>
-                    <span><strong>Menyuruh Stop Obat Dokter</strong></span>
-                </li>
-                <li class="flex items-start gap-2">
-                    <span class="text-yellow-600 font-bold">⚠️</span>
-                    <span><strong>Hanya Modal Testimoni Video/Komentar</strong></span>
-                </li>
-            </ul>
-        </div>
-
-        <div class="mb-8">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">C. Tanya Jawab: Fakta vs Mitos Info Medsos</h3>
-            <div id="quiz-container" class="space-y-4">
-            </div>
-        </div>
-
-        <div class="flex justify-between mt-8">
-            <button onclick="goToScreen(1)" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition font-medium">
-                ← Kembali
-            </button>
-            <button onclick="goToScreen(3)" class="px-6 py-3 bg-teal-600 text-white rounded-xl hover:bg-teal-700 transition font-medium">
-                Lanjut ke Langkah 3 →
-            </button>
-        </div>
-    </div>
-
-    <div id="screen-3" class="screen-container hidden bg-white rounded-2xl shadow-sm p-6">
-        <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-            <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-            </svg>
-            Klarifikasi Nilai, Simulasi Napas & SURE Test
-        </h2>
-
-        <div class="mb-8">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">A. Skala Prioritas Tujuan Hidup</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <button onclick="pilihPrioritas('berjalan')" class="prioritas-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-left" data-value="berjalan">
-                    <p class="font-semibold text-gray-800">Berjalan kaki tanpa ngos-ngosan</p>
-                </button>
-                <button onclick="pilihPrioritas('tidak_masuk_igd')" class="prioritas-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-left" data-value="tidak_masuk_igd">
-                    <p class="font-semibold text-gray-800">Tidak masuk IGD/rawat inap lagi tahun ini</p>
-                </button>
-                <button onclick="pilihPrioritas('beribadah')" class="prioritas-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-left" data-value="beribadah">
-                    <p class="font-semibold text-gray-800">Beribadah & berkumpul nyaman bersama keluarga</p>
-                </button>
-            </div>
-        </div>
-
-        <div class="mb-8">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">B. Kotak Suara Pendamping</h3>
-            <button onclick="isiContohDukungan()" class="mb-3 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition text-sm font-medium">
-                Isi Contoh Dukungan Istri
-            </button>
-            <textarea id="suara-pendamping" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="Masukkan dukungan dari istri/keluarga..."></textarea>
-        </div>
-
-        <div class="mb-8 p-6 bg-gradient-to-br from-teal-50 to-blue-50 rounded-xl border border-teal-200">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4 text-center">C. Simulasi Pursed-Lip Breathing 60 Detik</h3>
-            <div class="flex flex-col items-center">
-                <div id="breathing-circle" class="w-32 h-32 bg-teal-500 rounded-full flex items-center justify-center text-white font-bold text-lg transition-all duration-2000">
-                    Siap
-                </div>
-                <p id="breathing-instruction" class="mt-4 text-lg font-medium text-gray-700 text-center">Klik mulai untuk memandu pernapasan</p>
-                <p id="breathing-timer" class="mt-2 text-2xl font-bold text-teal-600">60 detik</p>
-                <button onclick="toggleBreathing()" id="btn-breathing" class="mt-4 px-6 py-3 bg-teal-600 text-white rounded-xl hover:bg-teal-700 transition font-medium">
-                    Mulai Latihan
-                </button>
-            </div>
-        </div>
-
-        <div class="mb-8">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">D. Rencana Terapi yang Disepakati</h3>
-            <div class="space-y-2">
-                <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50">
-                    <input type="checkbox" class="rencana-check w-5 h-5 text-teal-600" value="teknik_inhaler">
-                    <span class="text-gray-700">Latihan teknik inhaler bersama perawat</span>
-                </label>
-                <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50">
-                    <input type="checkbox" class="rencana-check w-5 h-5 text-teal-600" value="rehab_paru">
-                    <span class="text-gray-700">Rehabilitasi paru ringan rutin</span>
-                </label>
-                <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50">
-                    <input type="checkbox" class="rencana-check w-5 h-5 text-teal-600" value="lanjut_inhaler">
-                    <span class="text-gray-700">Melanjutkan inhaler dokter tanpa terpengaruh produk medsos</span>
-                </label>
-            </div>
-        </div>
-
-        <div class="mb-8">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">E. Cek Kemantapan Keputusan (SURE Test)</h3>
-            <div id="sure-container" class="space-y-3">
-            </div>
-            <div class="mt-4 p-4 bg-gray-50 rounded-xl">
-                <p class="text-center text-lg font-semibold">Skor SURE: <span id="sure-score" class="text-teal-600">0</span>/4</p>
-            </div>
-        </div>
-
-        <div class="flex justify-between mt-8">
-            <button onclick="goToScreen(2)" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition font-medium">
-                ← Kembali
-            </button>
-            <button onclick="goToScreen(4)" class="px-6 py-3 bg-teal-600 text-white rounded-xl hover:bg-teal-700 transition font-medium">
-                Lanjut ke Langkah 4 →
-            </button>
-        </div>
-    </div>
-
-    <div id="screen-4" class="screen-container hidden bg-white rounded-2xl shadow-sm p-6">
-        <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-            <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-            </svg>
-            Paspor Keputusan Bersama
-        </h2>
-
-        <div id="paspor-container" class="p-6 border-2 border-teal-600 rounded-xl bg-gradient-to-br from-teal-50 to-white mb-8">
-            <h3 class="text-center text-xl font-bold text-teal-800 mb-4">PASPOR KEPUTUSAN BERSAMA — TERAPI PPOK</h3>
-            <div class="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                    <p class="text-gray-600">Nama Pasien:</p>
-                    <p class="font-semibold text-gray-800" id="paspor-nama">-</p>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">Teknik Penggunaan Inhaler yang Sudah Dikuasai</label>
+                    <div class="space-y-4">
+                        <label class="flex items-center gap-4 p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gradient-to-r hover:from-teal-50 hover:to-white hover:border-teal-300 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
+                            <input type="checkbox" class="checklist-inhaler w-6 h-6 text-teal-600 rounded-lg" value="kocok">
+                            <span class="text-gray-800 font-medium text-lg">Mengocok inhaler sebelum pakai</span>
+                        </label>
+                        <label class="flex items-center gap-4 p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gradient-to-r hover:from-teal-50 hover:to-white hover:border-teal-300 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
+                            <input type="checkbox" class="checklist-inhaler w-6 h-6 text-teal-600 rounded-lg" value="napasdalam">
+                            <span class="text-gray-800 font-medium text-lg">Mengembuskan napas dalam sebelum menghirup</span>
+                        </label>
+                        <label class="flex items-center gap-4 p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gradient-to-r hover:from-teal-50 hover:to-white hover:border-teal-300 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
+                            <input type="checkbox" class="checklist-inhaler w-6 h-6 text-teal-600 rounded-lg" value="hirup">
+                            <span class="text-gray-800 font-medium text-lg">Menghirup perlahan saat menekan inhaler</span>
+                        </label>
+                        <label class="flex items-center gap-4 p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gradient-to-r hover:from-teal-50 hover:to-white hover:border-teal-300 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
+                            <input type="checkbox" class="checklist-inhaler w-6 h-6 text-teal-600 rounded-lg" value="tahan">
+                            <span class="text-gray-800 font-medium text-lg">Menahan napas 10 detik setelah menghirup</span>
+                        </label>
+                        <label class="flex items-center gap-4 p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gradient-to-r hover:from-teal-50 hover:to-white hover:border-teal-300 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
+                            <input type="checkbox" class="checklist-inhaler w-6 h-6 text-teal-600 rounded-lg" value="cuci">
+                            <span class="text-gray-800 font-medium text-lg">Mencuci mulut setelah pakai inhaler steroid</span>
+                        </label>
+                    </div>
                 </div>
+
                 <div>
-                    <p class="text-gray-600">Usia:</p>
-                    <p class="font-semibold text-gray-800" id="paspor-usia">- tahun</p>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">Kendala Kepatuhan</label>
+                    <div class="space-y-4">
+                        <label class="flex items-center gap-4 p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gradient-to-r hover:from-teal-50 hover:to-white hover:border-teal-300 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
+                            <input type="checkbox" class="kendala-kepatuhan w-6 h-6 text-teal-600 rounded-lg" value="lupa">
+                            <span class="text-gray-800 font-medium text-lg">Sering lupa memakai</span>
+                        </label>
+                        <label class="flex items-center gap-4 p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gradient-to-r hover:from-teal-50 hover:to-white hover:border-teal-300 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
+                            <input type="checkbox" class="kendala-kepatuhan w-6 h-6 text-teal-600 rounded-lg" value="sembuh">
+                            <span class="text-gray-800 font-medium text-lg">Berhenti pakai karena merasa sembuh</span>
+                        </label>
+                        <label class="flex items-center gap-4 p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gradient-to-r hover:from-teal-50 hover:to-white hover:border-teal-300 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
+                            <input type="checkbox" class="kendala-kepatuhan w-6 h-6 text-teal-600 rounded-lg" value="efek">
+                            <span class="text-gray-800 font-medium text-lg">Khawatir efek samping</span>
+                        </label>
+                        <label class="flex items-center gap-4 p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gradient-to-r hover:from-teal-50 hover:to-white hover:border-teal-300 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
+                            <input type="checkbox" class="kendala-kepatuhan w-6 h-6 text-teal-600 rounded-lg" value="teknik">
+                            <span class="text-gray-800 font-medium text-lg">Teknik penggunaan salah</span>
+                        </label>
+                    </div>
                 </div>
+
                 <div>
-                    <p class="text-gray-600">Tanggal Sesi:</p>
-                    <p class="font-semibold text-gray-800" id="paspor-tanggal">-</p>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Jumlah Hari Pemakaian Inhaler dalam Seminggu</label>
+                    <input type="range" id="hari-pemakaian" min="0" max="7" value="7" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-teal-600">
+                    <div class="flex justify-between text-sm text-gray-500 mt-2">
+                        <span>0 hari</span>
+                        <span id="hari-value" class="font-bold text-teal-600">7 hari</span>
+                        <span>7 hari</span>
+                    </div>
                 </div>
+            </div>
+
+            <div class="flex justify-between items-center mt-8 gap-4">
+                <button onclick="prevScreen(0)" class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition-all transform hover:-translate-y-0.5 border border-gray-200">
+                    ← Kembali
+                </button>
+                <button onclick="nextScreen(2)" class="px-6 py-2.5 bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-teal-300/40 transition-all transform hover:-translate-y-0.5">
+                    Lanjut ke Layar Berikutnya →
+                </button>
+            </div>
+        </div>
+
+        <div id="screen-2" class="screen-container bg-white rounded-2xl shadow-sm p-6 mb-6 hidden">
+            <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                </svg>
+                Eksplorasi Persepsi & Fakta Mitos
+            </h2>
+
+            <div class="mb-8 p-5 bg-gradient-to-r from-teal-50 to-blue-50 rounded-2xl border border-teal-100 shadow-sm">
+                <p class="text-gray-700 leading-relaxed">Pelajari manfaat dan risiko tiap pilihan perawatan di bawah ini, lalu cek bersama mana informasi di HP/medsos yang merupakan Fakta dan mana yang Mitos.</p>
+            </div>
+
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-5 border border-green-200 hover:shadow-md transition-all duration-300">
+                        <div class="flex items-start gap-3 mb-3">
+                            <span class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">LANGKAH UTAMA (AMAN)</span>
+                        </div>
+                        <h4 class="font-bold text-gray-800 text-lg mb-2">1. Perbaiki Cara Pakai Inhaler & Rutin Terapi</h4>
+                        <div class="space-y-2 text-sm text-gray-700">
+                            <p><strong class="text-green-700">Manfaat:</strong> Obat masuk lebih dalam ke saluran napas sehingga sesak berkurang tanpa harus langsung ganti obat baru.</p>
+                            <p><strong class="text-green-700">Tantangan:</strong> Perlu latihan peragaan bersama perawat dan disiplin jadwal harian.</p>
+                            <p><strong class="text-green-700">Pertimbangan:</strong> Langkah pertama yang paling aman saat obat terasa kurang maksimal.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-5 border border-blue-200 hover:shadow-md transition-all duration-300">
+                        <div class="flex items-start gap-3 mb-3">
+                            <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">DIANJURKAN DOKTER PARU</span>
+
+                        </div>
+                        <h4 class="font-bold text-gray-800 text-lg mb-2">2. Latihan Paru & Jalan Santai Bertahap</h4>
+                        <div class="space-y-2 text-sm text-gray-700">
+                            <p><strong class="text-blue-700">Manfaat:</strong> Menguatkan otot pernapasan, mengurangi sesak saat beraktivitas, dan mencegah masuk rumah sakit lagi.</p>
+                            <p><strong class="text-blue-700">Tantangan:</strong> Napas terasa sedikit bekerja di awal, namun dimulai pelan-pelan di bawah pengawasan petugas.</p>
+                            <p><strong class="text-blue-700">Pertimbangan:</strong> Sangat baik untuk pasien yang sering kambuh dan didukung penuh oleh istri/keluarga.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-yellow-50 to-amber-50 rounded-2xl p-5 border border-yellow-200 hover:shadow-md transition-all duration-300">
+                        <div class="flex items-start gap-3 mb-3">
+                            <span class="bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">KURANG DIANJURKAN</span>
+           
+                        </div>
+                        <h4 class="font-bold text-gray-800 text-lg mb-2">3. Hanya Diam di Rumah & Kurangi Gerak</h4>
+                        <div class="space-y-2 text-sm text-gray-700">
+                            <p><strong class="text-yellow-700">Manfaat:</strong> Terasa aman sementara karena menghindari rasa lelah sesaat.</p>
+                            <p><strong class="text-red-600">Risiko:</strong> Otot tubuh dan otot napas makin melemah, sehingga jalan sebentar saja sudah ngos-ngosan.</p>
+                            <p><strong class="text-yellow-700">Pertimbangan:</strong> Membuat kemandirian berkurang dalam jangka panjang.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-5 border border-red-200 hover:shadow-md transition-all duration-300">
+                        <div class="flex items-start gap-3 mb-3">
+                            <span class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">RISIKO TINGGI BILA STOP OBAT DOKTER</span>
+                         
+                        </div>
+                        <h4 class="font-bold text-gray-800 text-lg mb-2">4. Ganti Obat Alternatif dari Media Sosial</h4>
+                        <div class="space-y-2 text-sm text-gray-700">
+                            <p><strong class="text-orange-700">Manfaat:</strong> Hanya memberi harapan dari cerita testimoni yang belum terbukti.</p>
+                            <p><strong class="text-red-600">Risiko:</strong> Belum teruji aman; menghentikan inhaler dokter berisiko tinggi memicu serangan sesak berat.</p>
+                            <p><strong class="text-red-700">Pertimbangan:</strong> Berbahaya bagi keselamatan bila menggantikan terapi standar dokter.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-2xl p-6 border border-orange-200">
+                    <div class="flex items-start gap-3 mb-4">
+                        <span class="text-2xl">🛡️</span>
+                        <div>
+                            <h3 class="font-bold text-gray-800 text-lg mb-1">Waspada 3 Ciri Info Obat Palsu di HP & Media Sosial</h3>
+                          
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">Sebelum percaya iklan atau kiriman video di HP, perhatikan 3 tanda bahaya berikut:</p>
+                    <div class="space-y-3">
+                        <div class="flex gap-3 items-start">
+                            <span class="bg-orange-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">1</span>
+                            <div>
+                                <p class="font-semibold text-gray-800">Janji Sembuh Total & Instan</p>
+                                <p class="text-sm text-gray-600">Penyakit paru kronis dikendalikan secara bertahap, bukan sembuh total dalam hitungan hari.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 items-start">
+                            <span class="bg-orange-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">2</span>
+                            <div>
+                                <p class="font-semibold text-gray-800">Menyuruh Stop Obat Dokter</p>
+                                <p class="text-sm text-gray-600">Info kesehatan yang aman tidak pernah menyuruh pasien membuang inhaler resep dokter.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 items-start">
+                            <span class="bg-orange-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">3</span>
+                            <div>
+                                <p class="font-semibold text-gray-800">Hanya Modal Testimoni Video</p>
+                                <p class="text-sm text-gray-600">Cerita sembuh di kolom komentar medsos tidak bisa menggantikan uji medis dan izin resmi BPOM.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div>
-                    <p class="text-gray-600">Skala mMRC:</p>
-                    <p class="font-semibold text-gray-800" id="paspor-mmrc">-</p>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">Pilihan Prioritas Terapi Pasien</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <button onclick="pilihTerapi(0)" class="terapi-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-left transform hover:-translate-y-0.5" data-value="0">
+                            <p class="font-bold text-gray-800 text-lg">Mengurangi sesak napas</p>
+                        </button>
+                        <button onclick="pilihTerapi(1)" class="terapi-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-left transform hover:-translate-y-0.5" data-value="1">
+                            <p class="font-bold text-gray-800 text-lg">Meningkatkan kemampuan beraktivitas</p>
+                        </button>
+                        <button onclick="pilihTerapi(2)" class="terapi-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-left transform hover:-translate-y-0.5" data-value="2">
+                            <p class="font-bold text-gray-800 text-lg">Mengurangi frekuensi kambuh</p>
+                        </button>
+                        <button onclick="pilihTerapi(3)" class="terapi-btn p-5 border-2 border-gray-200 rounded-2xl hover:border-teal-500 hover:shadow-md hover:shadow-teal-100/50 transition-all duration-300 text-left transform hover:-translate-y-0.5" data-value="3">
+                            <p class="font-bold text-gray-800 text-lg">Lainnya</p>
+                        </button>
+                    </div>
                 </div>
-                <div class="col-span-2">
-                    <p class="text-gray-600">Opsi Terapi Dipilih:</p>
-                    <p class="font-semibold text-gray-800" id="paspor-opsi">-</p>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">Fakta vs Mitos PPOK</label>
+                    <div class="space-y-5">
+                        <div class="fm-question p-6 border border-gray-200 rounded-2xl bg-gradient-to-br from-gray-50 to-white shadow-sm hover:shadow-md transition-all duration-300" data-q="0">
+                            <p class="font-bold text-gray-800 mb-5 text-lg leading-relaxed">1. Katanya di medsos, jamu herbal bisa menyembuhkan total sakit paru dalam seminggu?</p>
+                            <div class="flex gap-4 mb-4">
+                                <button onclick="pilihFaktaMitos(0, 'fakta')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="0" data-v="fakta">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-green-600">✓</span> Fakta (Benar)
+                                    </span>
+                                </button>
+                                <button onclick="pilihFaktaMitos(0, 'mitos')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="0" data-v="mitos">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-red-600">✕</span> Mitos (Salah)
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="fm-explanation hidden p-4 rounded-xl mt-3" id="q0-explanation">
+                                <p class="text-gray-700 leading-relaxed">Penyakit paru kronis seperti COPD atau asma adalah kondisi yang bertahap dan tidak bisa sembuh total dalam seminggu. Obat terapeutik seperti inhaler berfungsi untuk mengontrol gejala dan mencegah komplikasi, bukan untuk "sembuh" total dalam waktu sesingkat waktu.</p>
+                            </div>
+                        </div>
+
+                        <div class="fm-question p-6 border border-gray-200 rounded-2xl bg-gradient-to-br from-gray-50 to-white shadow-sm hover:shadow-md transition-all duration-300" data-q="1">
+                            <p class="font-bold text-gray-800 mb-5 text-lg leading-relaxed">2. Kata video di HP, kalau sudah minum ramuan alami, inhaler dokter harus distop?</p>
+                            <div class="flex gap-4 mb-4">
+                                <button onclick="pilihFaktaMitos(1, 'fakta')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="1" data-v="fakta">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-green-600">✓</span> Fakta (Benar)
+                                    </span>
+                                </button>
+                                <button onclick="pilihFaktaMitos(1, 'mitos')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="1" data-v="mitos">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-red-600">✕</span> Mitos (Salah)
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="fm-explanation hidden p-4 rounded-xl mt-3" id="q1-explanation">
+                                <p class="text-gray-700 leading-relaxed">Menurut prinsip perawatan standar, penghentian obat penghasil sesak (seperti inhaler bronkodilator) harus dilakukan secara bertahap dan bawah pengawasan dokter. Mercedera ramuan alami tidak berarti harus menghentikan inhaler yang telah diresepkan dokter, karena hal ini bisa memicu serangan sesak yang berat.</p>
+                            </div>
+                        </div>
+
+                        <div class="fm-question p-6 border border-gray-200 rounded-2xl bg-gradient-to-br from-gray-50 to-white shadow-sm hover:shadow-md transition-all duration-300" data-q="2">
+                            <p class="font-bold text-gray-800 mb-5 text-lg leading-relaxed">3. Beredar pesan di grup WA, sering pakai inhaler bikin paru-paru rusak dan ketagihan?</p>
+                            <div class="flex gap-4 mb-4">
+                                <button onclick="pilihFaktaMitos(2, 'fakta')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="2" data-v="fakta">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-green-600">✓</span> Fakta (Benar)
+                                    </span>
+                                </button>
+                                <button onclick="pilihFaktaMitos(2, 'mitos')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="2" data-v="mitos">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-red-600">✕</span> Mitos (Salah)
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="fm-explanation hidden p-4 rounded-xl mt-3" id="q2-explanation">
+                                <p class="text-gray-700 leading-relaxed">Inhaler yang diresepkan dokter dan digunakan sesuai petunjuk tidak merusak paru-paru. Ketagihan atau overuse obat bisa terjadi, tetapi inhaler itu sendiri tidak membuat organ paru "rusak". Justru, ketidakpatuhan dalam memakai obat yang diresepkan justru meningkatkan risiko komplikasi.</p>
+                            </div>
+                        </div>
+
+                        <div class="fm-question p-6 border border-gray-200 rounded-2xl bg-gradient-to-br from-gray-50 to-white shadow-sm hover:shadow-md transition-all duration-300" data-q="3">
+                            <p class="font-bold text-gray-800 mb-5 text-lg leading-relaxed">4. Ada dokter di medsos bilang inhaler terasa kurang mempan karena cara hisapnya salah?</p>
+                            <div class="flex gap-4 mb-4">
+                                <button onclick="pilihFaktaMitos(3, 'fakta')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="3" data-v="fakta">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-green-600">✓</span> Fakta (Benar)
+                                    </span>
+                                </button>
+                                <button onclick="pilihFaktaMitos(3, 'mitos')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="3" data-v="mitos">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-red-600">✕</span> Mitos (Salah)
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="fm-explanation hidden p-4 rounded-xl mt-3" id="q3-explanation">
+                                <p class="text-gray-700 leading-relaxed">Benar! Teknik hisap inhaler yang salah bisa membuat obat tidak menyebar dengan optimal ke saluran napas, sehingga efek terasa lemah. Teknik yang benar meliputi: mengocok inhaler sebelum digunakan, mengembuskan napas sebelum menghirup, menghirup perlahan saat menekan inhaler, dan menahan napas 10 detik setelah menghirup.</p>
+                            </div>
+                        </div>
+
+                        <div class="fm-question p-6 border border-gray-200 rounded-2xl bg-gradient-to-br from-gray-50 to-white shadow-sm hover:shadow-md transition-all duration-300" data-q="4">
+                            <p class="font-bold text-gray-800 mb-5 text-lg leading-relaxed">5. Kata postingan di medsos, orang sakit paru dilarang jalan kaki karena bikin napas putus?</p>
+                            <div class="flex gap-4 mb-4">
+                                <button onclick="pilihFaktaMitos(4, 'fakta')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="4" data-v="fakta">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-green-600">✓</span> Fakta (Benar)
+                                    </span>
+                                </button>
+                                <button onclick="pilihFaktaMitos(4, 'mitos')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="4" data-v="mitos">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-red-600">✕</span> Mitos (Salah)
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="fm-explanation hidden p-4 rounded-xl mt-3" id="q4-explanation">
+                                <p class="text-gray-700 leading-relaxed">Mitos! Pasien sakit paru tidak dilarang total untuk beraktivitas ringan seperti jalan kaki. Aktivitas fisik yang terkontrol sebenarnya membantu meningkatkan fungsi paru dan kekuatan otot pernapasan. Namun, harus dilakukan dengan pengawasan dan sesuai kemampuan pasien.</p>
+                            </div>
+                        </div>
+
+                        <div class="fm-question p-6 border border-gray-200 rounded-2xl bg-gradient-to-br from-gray-50 to-white shadow-sm hover:shadow-md transition-all duration-300" data-q="5">
+                            <p class="font-bold text-gray-800 mb-5 text-lg leading-relaxed">6. Info kesehatan terpercaya menyebut terlalu banyak diam dan tiduran malah bikin makin gampang sesak?</p>
+                            <div class="flex gap-4 mb-4">
+                                <button onclick="pilihFaktaMitos(5, 'fakta')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="5" data-v="fakta">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-green-600">✓</span> Fakta (Benar)
+                                    </span>
+                                </button>
+                                <button onclick="pilihFaktaMitos(5, 'mitos')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="5" data-v="mitos">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-red-600">✕</span> Mitos (Salah)
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="fm-explanation hidden p-4 rounded-xl mt-3" id="q5-explanation">
+                                <p class="text-gray-700 leading-relaxed">Faktanya benar! Terlalu lama diam (tidur panjang) dan aktivitas fisik minim bisa membuat otot pernapasan melemah dan sekresi mengental, justru membuat sesak menjadi lebih mudah terjadi. Gerakannya ringan dan rutin sangat dianjurkan.</p>
+                            </div>
+                        </div>
+
+                        <div class="fm-question p-6 border border-gray-200 rounded-2xl bg-gradient-to-br from-gray-50 to-white shadow-sm hover:shadow-md transition-all duration-300" data-q="6">
+                            <p class="font-bold text-gray-800 mb-5 text-lg leading-relaxed">7. Viral di medsos minuman rebusan tertentu bisa "mencuci bersih" paru-paru yang kotor?</p>
+                            <div class="flex gap-4 mb-4">
+                                <button onclick="pilihFaktaMitos(6, 'fakta')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="6" data-v="fakta">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-green-600">✓</span> Fakta (Benar)
+                                    </span>
+                                </button>
+                                <button onclick="pilihFaktaMitos(6, 'mitos')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="6" data-v="mitos">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-red-600">✕</span> Mitos (Salah)
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="fm-explanation hidden p-4 rounded-xl mt-3" id="q6-explanation">
+                                <p class="text-gray-700 leading-relaxed">Mitos! Tidak ada minuman atau larutan yang bisa "mencuci bersih" organ paru secara medis. Paru-paru memiliki sistem Imun yang sendiri dan obat-obatan yang sesuai prosedur medis yang digunakan untuk membersihkan atau mencegah infeksi. Minuman rebusan bisa membantu meredakan gejala tetapi bukan pengganti terapi medis.</p>
+                            </div>
+                        </div>
+
+                        <div class="fm-question p-6 border border-gray-200 rounded-2xl bg-gradient-to-br from-gray-50 to-white shadow-sm hover:shadow-md transition-all duration-300" data-q="7">
+                            <p class="font-bold text-gray-800 mb-5 text-lg leading-relaxed">8. Testimoni sembuh total dari sesak di kolom komentar medsos pasti aman diikuti semua orang?</p>
+                            <div class="flex gap-4 mb-4">
+                                <button onclick="pilihFaktaMitos(7, 'fakta')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="7" data-v="fakta">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-green-600">✓</span> Fakta (Benar)
+                                    </span>
+                                </button>
+                                <button onclick="pilihFaktaMitos(7, 'mitos')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="7" data-v="mitos">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-red-600">✕</span> Mitos (Salah)
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="fm-explanation hidden p-4 rounded-xl mt-3" id="q7-explanation">
+                                <p class="text-gray-700 leading-relaxed">Mitos! Setiap individu memiliki respons tubuh yang berbeda terhadap obat atau terapi. Testimoni dari kolom komentar medsos tidak dapat dijadikan standar perawatan karena belum melalui uji klinis dan regulasi BPOM. yang aman untuk satu orang mungkin berbahaya untuk orang lain.</p>
+                            </div>
+                        </div>
+
+                        <div class="fm-question p-6 border border-gray-200 rounded-2xl bg-gradient-to-br from-gray-50 to-white shadow-sm hover:shadow-md transition-all duration-300" data-q="8">
+                            <p class="font-bold text-gray-800 mb-5 text-lg leading-relaxed">9. Video perawat di medsos mengajarkan tiup napas pelan lewat bibir mencucu meredakan panik sesak?</p>
+                            <div class="flex gap-4 mb-4">
+                                <button onclick="pilihFaktaMitos(8, 'fakta')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="8" data-v="fakta">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-green-600">✓</span> Fakta (Benar)
+                                    </span>
+                                </button>
+                                <button onclick="pilihFaktaMitos(8, 'mitos')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="8" data-v="mitos">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-red-600">✕</span> Mitos (Salah)
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="fm-explanation hidden p-4 rounded-xl mt-3" id="q8-explanation">
+                                <p class="text-gray-700 leading-relaxed">Faktanya benar! Teknik tiup napas dengan bibir mencucu (pursed-lip breathing) adalah metode yang terbukti untuk mengurangi tingkat napa dan meredakan sesak napas pada saat panik. Teknik ini membantu menahan udara di saluran napas dan meningkatkan oksigenasi.</p>
+                            </div>
+                        </div>
+
+                        <div class="fm-question p-6 border border-gray-200 rounded-2xl bg-gradient-to-br from-gray-50 to-white shadow-sm hover:shadow-md transition-all duration-300" data-q="9">
+                            <p class="font-bold text-gray-800 mb-5 text-lg leading-relaxed">10. Info medis di medsos mengingatkan berhenti obat dokter tanpa izin bisa bikin masuk IGD?</p>
+                            <div class="flex gap-4 mb-4">
+                                <button onclick="pilihFaktaMitos(9, 'fakta')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="9" data-v="fakta">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-green-600">✓</span> Fakta (Benar)
+                                    </span>
+                                </button>
+                                <button onclick="pilihFaktaMitos(9, 'mitos')" class="fm-btn flex-1 px-6 py-4 border-2 border-gray-300 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-md" data-q="9" data-v="mitos">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="text-red-600">✕</span> Mitos (Salah)
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="fm-explanation hidden p-4 rounded-xl mt-3" id="q9-explanation">
+                                <p class="text-gray-700 leading-relaxed">Faktanya benar! Menghentikan obat ruam dokter tanpa izin medis berisiko tinggi menyebabkan komplikasi berat sesak napas yang membutuhkan perawatan darurat di IGD. Selalu konsultasikan dengan dokter sebelum melakukan perubahan pada terapi yang diresepkan.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-span-2">
-                    <p class="text-gray-600">Skor SURE:</p>
-                    <p class="font-semibold text-gray-800" id="paspor-sure">-/4</p>
+            <div class="flex justify-between items-center mt-8 gap-4">
+                <button onclick="prevScreen(1)" class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition-all transform hover:-translate-y-0.5 border border-gray-200">
+                    ← Kembali
+                </button>
+                <button onclick="nextScreen(3)" class="px-6 py-2.5 bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-teal-300/40 transition-all transform hover:-translate-y-0.5">
+                    Lanjut ke Layar Berikutnya →
+                </button>
+            </div>
+            </div>
+
+         
+        </div>
+
+        <div id="screen-3" class="screen-container bg-white rounded-2xl shadow-sm p-6 mb-6 hidden">
+            <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                </svg>
+                Penentuan Prioritas & Kesepakatan Tindakan
+            </h2>
+
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">Prioritas Tujuan Terapi Bersama</label>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        <button onclick="pilihPrioritas(0)" class="prioritas-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-center" data-value="0">
+                            <p class="text-3xl font-bold text-teal-600">1</p>
+                            <p class="text-sm text-gray-600 mt-1">Tertinggi</p>
+                        </button>
+                        <button onclick="pilihPrioritas(1)" class="prioritas-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-center" data-value="1">
+                            <p class="text-3xl font-bold text-yellow-600">2</p>
+                            <p class="text-sm text-gray-600 mt-1">Sedang</p>
+                        </button>
+                        <button onclick="pilihPrioritas(2)" class="prioritas-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-center" data-value="2">
+                            <p class="text-3xl font-bold text-orange-600">3</p>
+                            <p class="text-sm text-gray-600 mt-1">Rendah</p>
+                        </button>
+                        <button onclick="pilihPrioritas(3)" class="prioritas-btn p-4 border-2 border-gray-200 rounded-xl hover:border-teal-500 transition text-center" data-value="3">
+                            <p class="text-3xl font-bold text-gray-600">4</p>
+                            <p class="text-sm text-gray-600 mt-1">Tidak Setuju</p>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Dukungan Pendamping terhadap Rencana</label>
+                    <textarea id="dukungan-pendamping" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="Tuliskan dukungan pendamping terhadap rencana terapi..."></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">Kesepakatan Tindakan yang Disetujui</label>
+                    <div class="space-y-4">
+                        <label class="flex items-center gap-4 p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gradient-to-r hover:from-teal-50 hover:to-white hover:border-teal-300 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
+                            <input type="checkbox" class="kesepakatan-tindakan w-6 h-6 text-teal-600 rounded-lg" value="inhaler">
+                            <span class="text-gray-800 font-medium text-lg">Rencana penggunaan inhaler yang benar</span>
+                        </label>
+                        <label class="flex items-center gap-4 p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gradient-to-r hover:from-teal-50 hover:to-white hover:border-teal-300 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
+                            <input type="checkbox" class="kesepakatan-tindakan w-6 h-6 text-teal-600 rounded-lg" value="olahraga">
+                            <span class="text-gray-800 font-medium text-lg">Jadwal olahraga pernapasan rutin</span>
+                        </label>
+                        <label class="flex items-center gap-4 p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gradient-to-r hover:from-teal-50 hover:to-white hover:border-teal-300 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
+                            <input type="checkbox" class="kesepakatan-tindakan w-6 h-6 text-teal-600 rounded-lg" value="pantau">
+                            <span class="text-gray-800 font-medium text-lg">Pemantauan gejala harian</span>
+                        </label>
+                        <label class="flex items-center gap-4 p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gradient-to-r hover:from-teal-50 hover:to-white hover:border-teal-300 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
+                            <input type="checkbox" class="kesepakatan-tindakan w-6 h-6 text-teal-600 rounded-lg" value="kontak">
+                            <span class="text-gray-800 font-medium text-lg">Rencana kontak jika gejala memburuk</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center mt-8 gap-4">
+                <button onclick="prevScreen(2)" class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition-all transform hover:-translate-y-0.5 border border-gray-200">
+                    ← Kembali
+                </button>
+                <button onclick="nextScreen(4)" class="px-6 py-2.5 bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-teal-300/40 transition-all transform hover:-translate-y-0.5">
+                    Lanjut ke Layar Berikutnya →
+                </button>
+            </div>
+        </div>
+
+        <div id="screen-4" class="screen-container bg-white rounded-2xl shadow-sm p-6 mb-6 hidden">
+            <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Harapan Bapak/Ibu, Suara Keluarga & Latihan Napas
+            </h2>
+
+            <div class="mb-8 p-5 bg-gradient-to-r from-teal-50 to-blue-50 rounded-2xl border border-teal-100 shadow-sm">
+                <p class="text-gray-700 leading-relaxed">Selaraskan harapan Bapak/Ibu dengan dukungan keluarga, lalu coba langsung latihan pengaturan napas selama 60 detik.</p>
+            </div>
+
+            <div class="space-y-8">
+                <div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold">A</span>
+                        Apa yang Paling Penting bagi Bapak/Ibu Saat Ini?
+                    </h3>
+                    <div class="space-y-3">
+                        <label class="flex items-center gap-4 p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gradient-to-r hover:from-teal-50 hover:to-white hover:border-teal-300 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
+                            <input type="radio" name="harapan-pasien" class="w-6 h-6 text-teal-600" value="aktivitas">
+                            <span class="text-gray-800 font-medium text-lg">Bisa berjalan kaki & beraktivitas ringan tanpa ngos-ngosan</span>
+                        </label>
+                        <label class="flex items-center gap-4 p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gradient-to-r hover:from-teal-50 hover:to-white hover:border-teal-300 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
+                            <input type="radio" name="harapan-pasien" class="w-6 h-6 text-teal-600" value="tidak_rawat">
+                            <span class="text-gray-800 font-medium text-lg">Tidak masuk IGD atau dirawat inap lagi tahun ini</span>
+                        </label>
+                        <label class="flex items-center gap-4 p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gradient-to-r hover:from-teal-50 hover:to-white hover:border-teal-300 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
+                            <input type="radio" name="harapan-pasien" class="w-6 h-6 text-teal-600" value="ibadah">
+                            <span class="text-gray-800 font-medium text-lg">Bisa beribadah & berkumpul nyaman bersama keluarga</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold">B</span>
+                        Kotak Suara Pendamping (Dukungan Istri / Keluarga)
+                    </h3>
+                    <div class="p-5 bg-gradient-to-r from-blue-50 to-teal-50 rounded-2xl border border-blue-100">
+                        <p class="text-sm text-gray-600 mb-3">💬 Isi Contoh Dukungan Istri</p>
+                        <textarea id="dukungan-pendamping-baru" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="Tuliskan harapan atau bentuk dukungan pendamping (contoh: istri mendukung latihan paru dan siap menemani jalan pagi)..."></textarea>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold">C</span>
+                        Coba Langsung: Latihan Napas Bibir Mencucu (60 Detik)
+                    </h3>
+                    <div class="p-6 bg-gradient-to-r from-green-50 to-teal-50 rounded-2xl border border-green-100 text-center">
+                        <p class="text-gray-700 mb-4 leading-relaxed">Tarik napas pelan lewat hidung, lalu tiup perlahan lewat bibir mencucu seperti meniup lilin agar napas lebih lega.</p>
+                        <p class="font-bold text-gray-800 mb-5 text-lg">SIAP</p>
+                        <p class="text-gray-600 mb-3">Tekan tombol di bawah untuk mulai berlatih selama 60 detik</p>
+                        <div class="mb-5">
+                            <p class="text-sm text-gray-500 mb-2">Sisa waktu:</p>
+                            <p id="timer-display" class="text-4xl font-bold text-teal-600">60 detik</p>
+                        </div>
+                        <button id="start-timer-btn" onclick="startLatihanNapas()" class="px-8 py-3 bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-teal-300/40 transition-all transform hover:-translate-y-0.5">
+                            ▶ Mulai Latihan 60 Detik
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold">D</span>
+                        Rencana Bertahap yang Disepakati Bersama (Boleh pilih lebih dari satu):
+                    </h3>
+                    <div class="space-y-3">
+                        <label class="flex items-center gap-4 p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gradient-to-r hover:from-teal-50 hover:to-white hover:border-teal-300 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
+                            <input type="checkbox" class="rencana-bertahap w-6 h-6 text-teal-600 rounded-lg" value="inhaler">
+                            <span class="text-gray-800 font-medium text-lg">Memperbaiki cara pakai inhaler sesuai jenis alat bersama perawat hari ini.</span>
+                        </label>
+                        <label class="flex items-center gap-4 p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gradient-to-r hover:from-teal-50 hover:to-white hover:border-teal-300 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
+                            <input type="checkbox" class="rencana-bertahap w-6 h-6 text-teal-600 rounded-lg" value="latihan">
+                            <span class="text-gray-800 font-medium text-lg">Memulai latihan paru intensitas ringan dengan pendampingan istri/keluarga.</span>
+                        </label>
+                        <label class="flex items-center gap-4 p-4 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gradient-to-r hover:from-teal-50 hover:to-white hover:border-teal-300 hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
+                            <input type="checkbox" class="rencana-bertahap w-6 h-6 text-teal-600 rounded-lg" value="obat">
+                            <span class="text-gray-800 font-medium text-lg">Tetap memakai inhaler dokter sesuai jadwal dan tidak menghentikannya untuk produk medsos.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold">E</span>
+                        Cek Kemantapan Keputusan (4 Pertanyaan Singkat)
+                    </h3>
+                    <p class="text-gray-600 mb-4">Jawab Ya atau Tidak untuk memastikan Bapak/Ibu sudah mantap dengan pilihan hari ini:</p>
+                    
+                    <div class="space-y-5">
+                        <div class="p-4 border border-gray-200 rounded-2xl">
+                            <p class="text-gray-800 font-medium mb-3">1. Apakah Bapak/Ibu sudah paham manfaat dan risiko dari setiap pilihan perawatan?</p>
+                            <div class="flex gap-4">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="paham-manfaat" class="w-5 h-5 text-teal-600" value="ya">
+                                    <span>Ya</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="paham-manfaat" class="w-5 h-5 text-teal-600" value="tidak">
+                                    <span>Tidak</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 border border-gray-200 rounded-2xl">
+                            <p class="text-gray-800 font-medium mb-3">2. Apakah sudah jelas pilihan mana yang paling sesuai dengan harapan Bapak/Ibu?</p>
+                            <div class="flex gap-4">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="pilihan-tepat" class="w-5 h-5 text-teal-600" value="ya">
+                                    <span>Ya</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="pilihan-tepat" class="w-5 h-5 text-teal-600" value="tidak">
+                                    <span>Tidak</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 border border-gray-200 rounded-2xl">
+                            <p class="text-gray-800 font-medium mb-3">3. Apakah Bapak/Ibu merasa mendapat dukungan yang cukup dari keluarga dan perawat?</p>
+                            <div class="flex gap-4">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="dukungan-cukup" class="w-5 h-5 text-teal-600" value="ya">
+                                    <span>Ya</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="dukungan-cukup" class="w-5 h-5 text-teal-600" value="tidak">
+                                    <span>Tidak</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 border border-gray-200 rounded-2xl">
+                            <p class="text-gray-800 font-medium mb-3">4. Apakah Bapak/Ibu sudah merasa yakin dengan keputusan yang dipilih hari ini?</p>
+                            <div class="flex gap-4">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="yakin-keputusan" class="w-5 h-5 text-teal-600" value="ya">
+                                    <span>Ya</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="yakin-keputusan" class="w-5 h-5 text-teal-600" value="tidak">
+                                    <span>Tidak</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center mt-8 gap-4 flex-wrap">
+                <button onclick="prevScreen(3)" class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition-all transform hover:-translate-y-0.5 border border-gray-200">
+                    ← Kembali
+                </button>
+                <button onclick="nextScreen(5)" class="px-6 py-2.5 bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-teal-300/40 transition-all transform hover:-translate-y-0.5">
+                    Lanjut ke Ringkasan →
+                </button>
+            </div>
+        </div>
+
+        <div id="screen-5" class="screen-container hidden">
+            <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-gradient-to-r from-teal-500 to-teal-700 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Ringkasan Paspor Keputusan Terapi</h2>
+                    <p class="text-gray-600">Berikut adalah ringkasan lengkap dari semua isian Anda</p>
+                </div>
+
+                <div id="summary-container" class="bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-2xl p-6 shadow-inner">
+                    <div class="space-y-6">
+                        <div class="border-b border-gray-200 pb-4">
+                            <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                                <span class="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                                Data Dasar Pasien
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div class="bg-white p-3 rounded-xl border border-gray-100">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide">Nama Pasien</p>
+                                    <p id="summary-nama" class="text-gray-800 font-semibold">-</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-gray-100">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide">Usia</p>
+                                    <p id="summary-usia" class="text-gray-800 font-semibold">-</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-gray-100">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide">Riwayat Kambuh</p>
+                                    <p id="summary-kambuh" class="text-gray-800 font-semibold">-</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-gray-100">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide">Skala Sesak (MMRC)</p>
+                                    <p id="summary-mmrc" class="text-gray-800 font-semibold">-</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-gray-100 md:col-span-2">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide">Pendamping</p>
+                                    <p id="summary-pendamping" class="text-gray-800 font-semibold">-</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-b border-gray-200 pb-4">
+                            <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                                <span class="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-xs font-bold">2</span>
+                                Profil Penggunaan Inhaler
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div class="bg-white p-3 rounded-xl border border-gray-100">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide">Jenis Inhaler</p>
+                                    <p id="summary-inhaler" class="text-gray-800 font-semibold">-</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-gray-100">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide">Hari Pemakaian</p>
+                                    <p id="summary-hari" class="text-gray-800 font-semibold">-</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-gray-100 md:col-span-2">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide">Checklist Inhaler</p>
+                                    <p id="summary-checklist" class="text-gray-800 font-semibold">-</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-gray-100 md:col-span-2">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide">Kendala Kepatuhan</p>
+                                    <p id="summary-kendala" class="text-gray-800 font-semibold">-</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-b border-gray-200 pb-4">
+                            <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                                <span class="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-xs font-bold">3</span>
+                                Pilihan Terapi & Fakta Mitos
+                            </h3>
+                            <div class="grid grid-cols-1 gap-3">
+                                <div class="bg-white p-3 rounded-xl border border-gray-100">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide">Pilihan Terapi</p>
+                                    <p id="summary-terapi" class="text-gray-800 font-semibold">-</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-gray-100">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide">Jawaban Fakta & Mitos</p>
+                                    <p id="summary-fakta" class="text-gray-800 font-semibold">-</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-b border-gray-200 pb-4">
+                            <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                                <span class="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-xs font-bold">4</span>
+                                Prioritas Tujuan & Kesepakatan
+                            </h3>
+                            <div class="grid grid-cols-1 gap-3">
+                                <div class="bg-white p-3 rounded-xl border border-gray-100">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide">Prioritas Tujuan</p>
+                                    <p id="summary-prioritas" class="text-gray-800 font-semibold">-</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-gray-100">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide">Dukungan Pendamping</p>
+                                    <p id="summary-dukungan" class="text-gray-800 font-semibold">-</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-gray-100">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide">Kesepakatan Tindakan</p>
+                                    <p id="summary-kesepakatan" class="text-gray-800 font-semibold">-</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                                <span class="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-xs font-bold">5</span>
+                                Harapan Pasien & Keputusan Akhir
+                            </h3>
+                            <div class="grid grid-cols-1 gap-3">
+                                <div class="bg-white p-3 rounded-xl border border-gray-100">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide">Harapan Pasien</p>
+                                    <p id="summary-harapan" class="text-gray-800 font-semibold">-</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-gray-100">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide">Suara Pendamping</p>
+                                    <p id="summary-suara" class="text-gray-800 font-semibold">-</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-gray-100">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide">Rencana Bertahap</p>
+                                    <p id="summary-rencana" class="text-gray-800 font-semibold">-</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-gray-100">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide">Kemantapan Keputusan</p>
+                                    <p id="summary-kemantapan" class="text-gray-800 font-semibold">-</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center mt-8 gap-4 flex-wrap">
+                    <button onclick="prevScreen(4)" class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition-all transform hover:-translate-y-0.5 border border-gray-200">
+                        ← Kembali
+                    </button>
+                    <div class="flex gap-3 flex-wrap">
+                        <button onclick="simpanData()" class="px-6 py-2.5 bg-gradient-to-r from-green-500 to-green-700 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-green-300/40 transition-all transform hover:-translate-y-0.5">
+                            Simpan & Cetak PDF
+                        </button>
+                        <button onclick="resetSession()" class="px-5 py-2.5 bg-gray-600 text-white rounded-xl font-medium hover:bg-gray-700 transition-all transform hover:-translate-y-0.5">
+                            Reset
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="mb-8 p-5 bg-red-50 border border-red-300 rounded-xl">
-            <h3 class="text-lg font-semibold text-red-800 mb-3">⚠️ Tanda Bahaya (Red Flags) — Segera ke IGD Bila Muncul:</h3>
-            <ul class="space-y-2 text-red-800 text-sm">
-                <li>1. Sesak napas berat mendadak bahkan saat sedang beristirahat atau sulit mengucapkan kalimat</li>
-                <li>2. Bibir, lidah, atau ujung jari tangan/kaki tampak kebiruan atau pucat dingin</li>
-                <li>3. Dahak berubah warna menjadi kuning/hijau kental dalam jumlah banyak disertai demam tinggi</li>
-                <li>4. Pasien tampak sangat mengantuk, bingung, atau sulit diajak berbicara</li>
-            </ul>
+        <div id="success-message" class="hidden bg-green-100 border border-green-300 rounded-2xl p-6 text-center mb-6">
+            <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl shadow-green-400/25">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-green-800 mb-2">Data Berhasil Disimpan!</h3>
+            <p class="text-green-600">Sesi terapi telah dicatat ke dalam riwayat.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
-            <button onclick="simpanData()" class="px-4 py-3 bg-teal-600 text-white rounded-xl hover:bg-teal-700 transition font-medium flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
-                </svg>
-                Simpan Data ke Sistem
-            </button>
-            <button onclick="downloadPDF()" class="px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-medium flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                </svg>
-                Download Paspor (PDF)
-            </button>
-            <button onclick="printPaspor()" class="px-4 py-3 bg-gray-700 text-white rounded-xl hover:bg-gray-800 transition font-medium flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-27v-4a4 4 0 00-4-4H9a4 4 0 00-4 4v4"></path>
-                </svg>
-                Cetak Paspor (Print)
-            </button>
-            <button onclick="copySummary()" class="px-4 py-3 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition font-medium flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                </svg>
-                Salin Ringkasan untuk Dokter
-            </button>
+        <div id="validation-error-panel" class="hidden bg-red-50 border border-red-200 rounded-2xl p-6 mb-6 shadow-sm ring-1 ring-red-500/20">
+            <div class="flex items-start gap-4">
+                <div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-red-800 mb-1 flex items-center gap-2">
+                        <span>Validasi Gagal</span>
+                    </h3>
+                    <p class="text-sm text-red-700 mb-3">Periksa kembali pengisian berikut sebelum menyimpan:</p>
+                    <ul id="validation-error-list" class="list-disc list-inside space-y-2 text-sm text-red-700"></ul>
+                </div>
+            </div>
+            <div class="mt-4 pt-4 border-t border-red-100 flex justify-end">
+                <button onclick="hideValidationErrors()" class="px-4 py-2 text-red-600 text-sm font-medium hover:bg-red-50 rounded-xl transition">Tutup</button>
+            </div>
         </div>
 
-        <div class="flex justify-between mt-8">
-            <button onclick="goToScreen(3)" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition font-medium">
-                ← Kembali
-            </button>
-            <button onclick="startNewSession()" class="px-6 py-3 bg-teal-600 text-white rounded-xl hover:bg-teal-700 transition font-medium">
-                Sesi Baru
-            </button>
-        </div>
+        <div id="toast-container" class="fixed top-4 right-4 z-[100] flex flex-col gap-3 pointer-events-none"></div>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-sm p-6 mt-8">
-        <h3 class="text-lg font-bold text-gray-800 mb-4">Riwayat Sesi Terapi</h3>
-        <div id="riwayat-container">
-        </div>
-    </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script>
-let currentScreen = 0;
-let therapyData = {
-    nama: '',
-    usia: null,
-    kambuh: null,
-    mmrc: null,
-    pendamping: null,
-    jenisInhaler: null,
-    checklist: [],
-    hariPakai: 7,
-    kendala: [],
-    opsi: null,
-    jawabanQuiz: {},
-    prioritas: null,
-    suaraPendamping: '',
-    rencana: [],
-    sureAnswers: {},
-    sureScore: 0,
-    tanggal: new Date().toLocaleDateString('id-ID')
-};
-
-const mdiSteps = [
-    'Mengocok tabung inhaler semprot terlebih dahulu sebelum dipakai.',
-    'Membuang napas hingga tuntas menjauhi corong sebelum menghisap.',
-    'Merapatkan bibir mengelilingi corong inhaler agar tidak bocor.',
-    'Menekan tabung sambil menghisap obat secara pelan dan dalam.',
-    'Menahan napas selama 5-10 detik agar obat mengendap di paru.',
-    'Berkumur dengan air bersih setelah selesai memakai inhaler.'
-];
-
-const dpiSteps = [
-    'Membuka tutup/menggeser tuas dosis TANPA mengocok alat.',
-    'Membuang napas hingga tuntas menjauhi corong sebelum menghisap.',
-    'Merapatkan bibir pada corong inhaler serbuk kering dengan rapat.',
-    'Menghisap obat secara kuat dan cepat lewat mulut agar serbuk terhirup.',
-    'Menahan napas selama 5-10 detik setelah menghisap serbuk obat.',
-    'Berkumur dengan air bersih setelah selesai inhalasi.'
-];
-
-const factMitosQuestions = [
-    { id: 1, topik: 'Iklan Herbal Medsos', pertanyaan: 'Katanya di medsos, jamu herbal bisa menyembuhkan total sakit paru dalam seminggu?', kunci: 'mitos', penjelasan: 'Itu mitos. Penyakit paru kronis tidak bisa sembuh instan hanya dengan jamu tanpa pengobatan dokter.' },
-    { id: 2, topik: 'Stop Obat Dokter', pertanyaan: 'Kata video di HP, kalau sudah minum ramuan alami, inhaler dokter harus distop?', kunci: 'mitos', penjelasan: 'Jangan diikuti! Menghentikan inhaler dokter secara mendadak bisa memicu serangan sesak berat.' },
-    { id: 3, topik: 'Info Grup WA', pertanyaan: 'Beredar pesan di grup WA, sering pakai inhaler bikin paru-paru rusak dan ketagihan?', kunci: 'mitos', penjelasan: 'Itu mitos. Inhaler justru menjaga saluran napas tetap terbuka dan aman dipakai rutin sesuai aturan dokter.' },
-    { id: 4, topik: 'Edukasi Dokter', pertanyaan: 'Ada dokter di medsos bilang inhaler terasa kurang mempan karena cara hisapnya salah?', kunci: 'fakta', penjelasan: 'Betul, ini fakta! Kalau cara hisap dan tahan napasnya pas, obat masuk lebih dalam ke paru.' },
-    { id: 5, topik: 'Larangan Gerak', pertanyaan: 'Kata postingan di medsos, orang sakit paru dilarang jalan kaki karena bikin napas putus?', kunci: 'mitos', penjelasan: 'Salah kaprah. Justru jalan santai bertahap dan latihan napas bikin otot paru makin kuat.' },
-    { id: 6, topik: 'Info Kesehatan', pertanyaan: 'Info kesehatan terpercaya menyebut terlalu banyak diam dan tiduran malah bikin makin gampang sesak?', kunci: 'fakta', penjelasan: 'Betul, ini fakta. Kurang gerak bikin otot tubuh dan otot napas melemah sehingga cepat ngos-ngosan.' },
-    { id: 7, topik: 'Cuci Paru Viral', pertanyaan: 'Viral di medsos minuman rebusan tertentu bisa mencuci bersih paru-paru yang kotor?', kunci: 'mitos', penjelasan: 'Itu mitos. Minuman yang diminum masuk ke lambung, bukan mencuci saluran paru-paru.' },
-    { id: 8, topik: 'Testimoni Komentar', pertanyaan: 'Testimoni sembuh total dari sesak di kolom komentar medsos pasti aman diikuti semua orang?', kunci: 'mitos', penjelasan: 'Hati-hati, testimoni di medsos belum tentu asli dan kondisi paru setiap orang berbeda.' },
-    { id: 9, topik: 'Video Perawat', pertanyaan: 'Video perawat di medsos mengajarkan tiup napas pelan lewat bibir mencucu meredakan panik sesak?', kunci: 'fakta', penjelasan: 'Betul, ini fakta! Tiup napas pelan lewat bibir mencucu membantu mengeluarkan udara terjebak di paru.' },
-    { id: 10, topik: 'Peringatan Medis', pertanyaan: 'Info medis di medsos mengingatkan berhenti obat dokter tanpa izin bisa bikin masuk IGD?', kunci: 'fakta', penjelasan: 'Betul, ini fakta. Menghentikan obat paru tanpa evaluasi dokter berisiko tinggi memicu kambuh berat.' }
-];
-
-const sureQuestions = [
-    { id: 1, pertanyaan: 'Apakah Anda sudah memahami manfaat dan risiko dari pilihan ini?' },
-    { id: 2, pertanyaan: 'Apakah prioritas tujuan Anda sudah jelas dengan pilihan ini?' },
-    { id: 3, pertanyaan: 'Apakah dukungan dari keluarga sudah cukup untuk menjalankan rencana ini?' },
-    { id: 4, pertanyaan: 'Apakah Anda merasa yakin dengan keputusan yang diambil?' }
-];
-
-let breathingInterval = null;
-let breathingSeconds = 60;
-let breathingPhase = 'inhale';
-
-document.addEventListener('DOMContentLoaded', function() {
-    updateProgress();
-    loadRiwayat();
-    generateQuiz();
-    generateSureTest();
-});
-
-function goToScreen(screen) {
-    document.querySelectorAll('.screen-container').forEach(el => el.classList.add('hidden'));
-    document.getElementById(`screen-${screen}`).classList.remove('hidden');
-    currentScreen = screen;
-    updateProgress();
-    if (screen === 4) {
-        updatePaspor();
-    }
-}
-
-function updateProgress() {
-    const total = 4;
-    const percent = (currentScreen / total) * 100;
-    document.getElementById('progress-bar').style.width = `${percent}%`;
-    document.getElementById('progress-text').textContent = `Layar ${currentScreen} dari ${total}`;
-}
-
-function isiContohKasus() {
-    document.getElementById('nama-pasien').value = 'Tn. R';
-    document.getElementById('usia-pasien').value = 68;
-    pilihKambuh(2);
-    pilihMmrc(3);
-    pilihPendamping('pasangan');
-    therapyData.nama = 'Tn. R';
-    therapyData.usia = 68;
-}
-
-function resetSession() {
-    therapyData = {
-        nama: '',
-        usia: null,
-        kambuh: null,
-        mmrc: null,
-        pendamping: null,
-        jenisInhaler: null,
-        checklist: [],
-        hariPakai: 7,
-        kendala: [],
-        opsi: null,
-        jawabanQuiz: {},
-        prioritas: null,
-        suaraPendamping: '',
-        rencana: [],
-        sureAnswers: {},
-        sureScore: 0,
-        tanggal: new Date().toLocaleDateString('id-ID')
-    };
-    document.querySelectorAll('.kambuh-btn, .mmrc-btn, .pendamping-btn, .inhaler-btn, .opsi-btn, .prioritas-btn').forEach(btn => {
-        btn.classList.remove('border-teal-600', 'bg-teal-50', 'border-2');
-        btn.classList.add('border-gray-200');
-    });
-    document.getElementById('nama-pasien').value = '';
-    document.getElementById('usia-pasien').value = '';
-    document.getElementById('hari-pakai').value = 7;
-    document.getElementById('hari-pakai-text').textContent = '7 hari';
-    document.querySelectorAll('.kendala-check, .rencana-check').forEach(cb => cb.checked = false);
-    document.getElementById('suara-pendamping').value = '';
-    generateQuiz();
-    generateSureTest();
-    goToScreen(0);
-}
-
-function pilihKambuh(nilai) {
-    therapyData.kambuh = nilai;
-    document.querySelectorAll('.kambuh-btn').forEach(btn => {
-        btn.classList.remove('border-teal-600', 'bg-teal-50');
-        btn.classList.add('border-gray-200');
-    });
-    document.querySelector(`.kambuh-btn[data-value="${nilai}"]`).classList.remove('border-gray-200');
-    document.querySelector(`.kambuh-btn[data-value="${nilai}"]`).classList.add('border-teal-600', 'bg-teal-50');
-}
-
-function pilihMmrc(nilai) {
-    therapyData.mmrc = nilai;
-    document.querySelectorAll('.mmrc-btn').forEach(btn => {
-        btn.classList.remove('border-teal-600', 'bg-teal-50');
-        btn.classList.add('border-gray-200');
-    });
-    document.querySelector(`.mmrc-btn[data-value="${nilai}"]`).classList.remove('border-gray-200');
-    document.querySelector(`.mmrc-btn[data-value="${nilai}"]`).classList.add('border-teal-600', 'bg-teal-50');
-}
-
-function pilihPendamping(nilai) {
-    therapyData.pendamping = nilai;
-    document.querySelectorAll('.pendamping-btn').forEach(btn => {
-        btn.classList.remove('border-teal-600', 'bg-teal-50');
-        btn.classList.add('border-gray-200');
-    });
-    document.querySelector(`.pendamping-btn[data-value="${nilai}"]`).classList.remove('border-gray-200');
-    document.querySelector(`.pendamping-btn[data-value="${nilai}"]`).classList.add('border-teal-600', 'bg-teal-50');
-}
-
-function pilihJenisInhaler(jenis) {
-    therapyData.jenisInhaler = jenis;
-    document.querySelectorAll('.inhaler-btn').forEach(btn => {
-        btn.classList.remove('border-teal-600', 'bg-teal-50');
-        btn.classList.add('border-gray-200');
-    });
-    document.querySelector(`.inhaler-btn[data-value="${jenis}"]`).classList.remove('border-gray-200');
-    document.querySelector(`.inhaler-btn[data-value="${jenis}"]`).classList.add('border-teal-600', 'bg-teal-50');
-    generateChecklist();
-}
-
-function generateChecklist() {
-    const container = document.getElementById('checklist-container');
-    const steps = therapyData.jenisInhaler === 'mdi' ? mdiSteps : dpiSteps;
-    container.innerHTML = '';
-    steps.forEach((step, index) => {
-        const div = document.createElement('div');
-        div.className = 'flex items-center gap-3 p-3 border border-gray-200 rounded-xl';
-        div.innerHTML = `
-            <input type="checkbox" class="checklist-step w-5 h-5 text-teal-600" data-step="${index}" onchange="updateChecklist()">
-            <span class="text-gray-700"><strong>Langkah ${index + 1}:</strong> ${step}</span>
-        `;
-        container.appendChild(div);
-    });
-}
-
-function updateChecklist() {
-    therapyData.checklist = [];
-    document.querySelectorAll('.checklist-step:checked').forEach(cb => {
-        therapyData.checklist.push(parseInt(cb.dataset.step));
-    });
-    updateUmpanBalik();
-}
-
-function updateHariPakai() {
-    therapyData.hariPakai = parseInt(document.getElementById('hari-pakai').value);
-    document.getElementById('hari-pakai-text').textContent = `${therapyData.hariPakai} hari`;
-    updateUmpanBalik();
-}
-
-function updateUmpanBalik() {
-    therapyData.kendala = [];
-    document.querySelectorAll('.kendala-check:checked').forEach(cb => {
-        therapyData.kendala.push(cb.value);
-    });
-    
-    const totalSteps = therapyData.jenisInhaler ? 6 : 0;
-    const benar = therapyData.checklist.length;
-    const kepatuhan = therapyData.hariPakai;
-    const kendalaCount = therapyData.kendala.length;
-    
-    let pesan = '';
-    if (benar === totalSteps && kepatuhan >= 5 && kendalaCount === 0) {
-        pesan = '🎉 Luar biasa! Teknik inhaler Anda sudah sangat baik dan rutin dipakai. Pertahankan kebiasaan ini!';
-    } else if (benar >= 4 && kepatuhan >= 4) {
-        pesan = '👍 Bagus! Ada beberapa langkah teknik yang bisa diperbaiki. Mari latihan bersama perawat.';
-    } else if (kendalaCount > 0) {
-        pesan = '💡 Ada kendala kepatuhan yang perlu dibicarakan. Mari cari solusi bersama untuk memudahkan rutinitas.';
-    } else {
-        pesan = '📝 Mari kita periksa kembali teknik pemakaian inhaler dan jadwal penggunaan Anda.';
-    }
-    
-    document.getElementById('umpan-balik').innerHTML = `<p class="text-blue-800">${pesan}</p>`;
-}
-
-function pilihOpsi(nilai) {
-    therapyData.opsi = nilai;
-    document.querySelectorAll('.opsi-btn').forEach(btn => {
-        btn.classList.remove('border-teal-600', 'ring-2', 'ring-teal-500');
-    });
-    document.querySelector(`.opsi-btn[data-value="${nilai}"]`).classList.add('border-teal-600', 'ring-2', 'ring-teal-500');
-}
-
-function generateQuiz() {
-    const container = document.getElementById('quiz-container');
-    container.innerHTML = '';
-    factMitosQuestions.forEach(q => {
-        const div = document.createElement('div');
-        div.className = 'p-4 border border-gray-200 rounded-xl';
-        div.id = `quiz-${q.id}`;
-        div.innerHTML = `
-            <p class="font-medium text-gray-800 mb-3">${q.pertanyaan}</p>
-            <div class="flex gap-2">
-                <button onclick="jawabQuiz(${q.id}, 'fakta')" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-medium">Fakta (Benar)</button>
-                <button onclick="jawabQuiz(${q.id}, 'mitos')" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm font-medium">Mitos (Salah)</button>
-            </div>
-            <div id="quiz-feedback-${q.id}" class="mt-3 hidden p-3 rounded-lg"></div>
-        `;
-        container.appendChild(div);
-    });
-}
-
-function jawabQuiz(id, jawaban) {
-    const q = factMitosQuestions.find(x => x.id === id);
-    therapyData.jawabanQuiz[id] = jawaban;
-    const feedback = document.getElementById(`quiz-feedback-${id}`);
-    feedback.classList.remove('hidden');
-    if (jawaban === q.kunci) {
-        feedback.className = 'mt-3 p-3 bg-green-50 border border-green-200 rounded-lg';
-        feedback.innerHTML = `<p class="text-green-800">✅ ${q.penjelasan}</p>`;
-    } else {
-        feedback.className = 'mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg';
-        feedback.innerHTML = `<p class="text-yellow-800">💡 ${q.penjelasan}</p>`;
-    }
-}
-
-function pilihPrioritas(nilai) {
-    therapyData.prioritas = nilai;
-    document.querySelectorAll('.prioritas-btn').forEach(btn => {
-        btn.classList.remove('border-teal-600', 'bg-teal-50');
-        btn.classList.add('border-gray-200');
-    });
-    document.querySelector(`.prioritas-btn[data-value="${nilai}"]`).classList.remove('border-gray-200');
-    document.querySelector(`.prioritas-btn[data-value="${nilai}"]`).classList.add('border-teal-600', 'bg-teal-50');
-}
-
-function isiContohDukungan() {
-    document.getElementById('suara-pendamping').value = '"Saya akan selalu ingatkan bapak pakai inhaler tepat waktu setiap pagi dan malam. Kita akan jalan santai bersama di halaman rumah setiap hari."';
-    therapyData.suaraPendamping = document.getElementById('suara-pendamping').value;
-}
-
-function toggleBreathing() {
-    const btn = document.getElementById('btn-breathing');
-    if (breathingInterval) {
-        clearInterval(breathingInterval);
-        breathingInterval = null;
-        btn.textContent = 'Lanjutkan Latihan';
-        document.getElementById('breathing-circle').style.transform = 'scale(1)';
-        document.getElementById('breathing-instruction').textContent = 'Latihan dijeda';
-    } else {
-        breathingSeconds = 60;
-        btn.textContent = 'Jeda';
-        startBreathingCycle();
-        breathingInterval = setInterval(updateBreathing, 1000);
-    }
-}
-
-function startBreathingCycle() {
-    breathingPhase = 'inhale';
-    document.getElementById('breathing-circle').style.transition = 'all 2s ease-in-out';
-    document.getElementById('breathing-circle').style.transform = 'scale(1.3)';
-    document.getElementById('breathing-instruction').textContent = 'TARIK NAPAS PELAN LEWAT HIDUNG';
-    setTimeout(() => {
-        breathingPhase = 'exhale';
-        document.getElementById('breathing-circle').style.transition = 'all 4s ease-in-out';
-        document.getElementById('breathing-circle').style.transform = 'scale(1)';
-        document.getElementById('breathing-instruction').textContent = 'TIUP PERLAHAN LEWAT BIBIR MENCUCU';
-    }, 2000);
-}
-
-function updateBreathing() {
-    breathingSeconds--;
-    document.getElementById('breathing-timer').textContent = `${breathingSeconds} detik`;
-    if (breathingSeconds <= 0) {
-        clearInterval(breathingInterval);
-        breathingInterval = null;
-        document.getElementById('btn-breathing').textContent = 'Ulangi Latihan';
-        document.getElementById('breathing-instruction').textContent = 'Latihan selesai! Bagus sekali.';
-        document.getElementById('breathing-timer').textContent = 'Selesai';
-    } else if (breathingSeconds % 6 === 0) {
-        startBreathingCycle();
-    }
-}
-
-function generateSureTest() {
-    const container = document.getElementById('sure-container');
-    container.innerHTML = '';
-    sureQuestions.forEach(q => {
-        const div = document.createElement('div');
-        div.className = 'p-4 border border-gray-200 rounded-xl';
-        div.innerHTML = `
-            <p class="font-medium text-gray-800 mb-3">${q.pertanyaan}</p>
-            <div class="flex gap-2">
-                <button onclick="jawabSure(${q.id}, 1)" id="sure-ya-${q.id}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition text-sm font-medium">Ya</button>
-                <button onclick="jawabSure(${q.id}, 0)" id="sure-tidak-${q.id}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition text-sm font-medium">Belum Yakin</button>
-            </div>
-        `;
-        container.appendChild(div);
-    });
-}
-
-function jawabSure(id, nilai) {
-    therapyData.sureAnswers[id] = nilai;
-    document.getElementById(`sure-ya-${id}`).classList.remove('bg-teal-600', 'text-white');
-    document.getElementById(`sure-tidak-${id}`).classList.remove('bg-orange-600', 'text-white');
-    document.getElementById(`sure-ya-${id}`).classList.add('bg-gray-200', 'text-gray-700');
-    document.getElementById(`sure-tidak-${id}`).classList.add('bg-gray-200', 'text-gray-700');
-    
-    if (nilai === 1) {
-        document.getElementById(`sure-ya-${id}`).classList.remove('bg-gray-200', 'text-gray-700');
-        document.getElementById(`sure-ya-${id}`).classList.add('bg-teal-600', 'text-white');
-    } else {
-        document.getElementById(`sure-tidak-${id}`).classList.remove('bg-gray-200', 'text-gray-700');
-        document.getElementById(`sure-tidak-${id}`).classList.add('bg-orange-600', 'text-white');
-    }
-    
-    therapyData.sureScore = Object.values(therapyData.sureAnswers).reduce((a, b) => a + b, 0);
-    document.getElementById('sure-score').textContent = therapyData.sureScore;
-}
-
-function updatePaspor() {
-    therapyData.nama = document.getElementById('nama-pasien').value || '-';
-    therapyData.usia = document.getElementById('usia-pasien').value || '-';
-    therapyData.tanggal = new Date().toLocaleDateString('id-ID');
-    
-    document.getElementById('paspor-nama').textContent = therapyData.nama;
-    document.getElementById('paspor-usia').textContent = `${therapyData.usia} tahun`;
-    document.getElementById('paspor-tanggal').textContent = therapyData.tanggal;
-    document.getElementById('paspor-mmrc').textContent = `Skor ${therapyData.mmrc ?? '-'}`;
-    
-    const opsiText = {
-        'perbaiki_inhaler': 'Perbaiki Cara Pakai Inhaler & Rutin Terapi',
-        'latihan_paru': 'Latihan Paru & Jalan Santai Bertahap',
-        'diam_rumah': 'Hanya Diam di Rumah & Kurangi Gerak',
-        'obat_alternatif': 'Ganti Obat Alternatif dari Media Sosial'
-    };
-    document.getElementById('paspor-opsi').textContent = opsiText[therapyData.opsi] || '-';
-    document.getElementById('paspor-sure').textContent = `${therapyData.sureScore}/4`;
-}
-
-async function downloadPDF() {
-    updatePaspor();
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    
-    doc.setFontSize(20);
-    doc.text('PASPOR KEPUTUSAN BERSAMA - TERAPI PPOK', 20, 20);
-    
-    doc.setFontSize(12);
-    doc.text(`Nama Pasien: ${therapyData.nama}`, 20, 40);
-    doc.text(`Usia: ${therapyData.usia} tahun`, 20, 50);
-    doc.text(`Tanggal: ${therapyData.tanggal}`, 20, 60);
-    doc.text(`Skala mMRC: Skor ${therapyData.mmrc}`, 20, 70);
-    doc.text(`Opsi Terapi: ${therapyData.opsi?.replace(/_/g, ' ')}`, 20, 80);
-    doc.text(`Skor SURE: ${therapyData.sureScore}/4`, 20, 90);
-    
-    doc.text('Tanda Bahaya (Red Flags):', 20, 110);
-    doc.setFontSize(10);
-    doc.text('1. Sesak napas berat mendadak', 25, 120);
-    doc.text('2. Bibir/uji jari kebiruan', 25, 130);
-    doc.text('3. Dahak kuning/hijau kental + demam', 25, 140);
-    doc.text('4. Bingung/sulit diajak bicara', 25, 150);
-    
-    doc.save(`paspor-terapi-${therapyData.nama}-${Date.now()}.pdf`);
-}
-
-function printPaspor() {
-    updatePaspor();
-    window.print();
-}
-
-function copySummary() {
-    updatePaspor();
-    const summary = `PASPOR KEPUTUSAN BERSAMA - TERAPI PPOK
-Nama: ${therapyData.nama}
-Usia: ${therapyData.usia} tahun
-Tanggal: ${therapyData.tanggal}
-Skala mMRC: Skor ${therapyData.mmrc}
-Opsi Terapi: ${therapyData.opsi?.replace(/_/g, ' ') || '-'}
-Skor SURE: ${therapyData.sureScore}/4`;
-    
-    navigator.clipboard.writeText(summary).then(() => {
-        alert('Ringkasan berhasil disalin!');
-    });
-}
-
-function startNewSession() {
-    resetSession();
-}
-
-function simpanData() {
-    updatePaspor();
-    therapyData.suaraPendamping = document.getElementById('suara-pendamping').value;
-    therapyData.rencana = [];
-    document.querySelectorAll('.rencana-check:checked').forEach(cb => {
-        therapyData.rencana.push(cb.value);
-    });
-    
-    const riwayat = JSON.parse(localStorage.getItem('terapiRiwayat') || '[]');
-    riwayat.push({...therapyData, id: Date.now()});
-    localStorage.setItem('terapiRiwayat', JSON.stringify(riwayat));
-    
-    const requestData = {
-        nama_pasien: therapyData.nama,
-        usia: therapyData.usia,
-        riwayat_kambuh: therapyData.riwayatKambuh,
-        skala_mmrc: therapyData.mmrc,
-        pendamping: therapyData.pendamping,
-        jenis_inhaler: therapyData.jenisInhaler,
-        checklist_inhaler: therapyData.checklistInhaler,
-        hari_pemakaian: therapyData.hariPemakaian,
-        kendala_kepatuhan: therapyData.kendalaKepatuhan,
-        pilihan_terapi: therapyData.opsi,
-        jawaban_fakta_mitos: therapyData.factMitosAnswers,
-        prioritas_tujuan: therapyData.prioritas,
-        dukungan_pendamping: therapyData.suaraPendamping,
-        kesepakatan_tindakan: therapyData.rencana,
-        jawaban_sure: therapyData.sureAnswers,
-        skor_sure: therapyData.sureScore,
-        paspor_keputusan: JSON.stringify({
-            nama: therapyData.nama,
-            usia: therapyData.usia,
-            tanggal: therapyData.tanggal,
-            mmrc: therapyData.mmrc,
-            opsi: therapyData.opsi,
-            prioritas: therapyData.prioritas,
-            sureScore: therapyData.sureScore
-        }),
-        duration: 0
-    };
-    
-    fetch('<?php echo e(route("pasien.terapi.store")); ?>', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
-        },
-        body: JSON.stringify(requestData)
-    }).then(response => response.json()).then(data => {
-        if (data.success) {
-            alert('Data terapi berhasil disimpan ke database!');
-        } else {
-            alert('Data tersimpan di lokal. Terapi selesai!');
+    <style>
+        #toast-container .toast {
+            animation: toastIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        loadRiwayat();
-    }).catch(() => {
-        alert('Data tersimpan di lokal. Terapi selesai!');
-        loadRiwayat();
-    });
-}
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes toastOut {
+            to { opacity: 0; transform: translateY(-10px) scale(0.98); }
+        }
+        #validation-error-panel {
+            animation: slideUp 0.35s ease-out forwards;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .kambuh-btn.selected, .mmrc-btn.selected, .pendamping-btn.selected, .inhaler-btn.selected, .terapi-btn.selected, .prioritas-btn.selected, .sure-btn.selected {
+            border-color: #0d9488 !important;
+            background-color: #f0fdfa !important;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        function showToast(message, type = 'success', duration = 5000) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const isError = type === 'error';
+            const bg = isError ? 'bg-gradient-to-r from-red-500 to-red-600' : 'bg-gradient-to-r from-teal-500 to-teal-600';
+            const icon = isError
+                ? '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>'
+                : '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>';
+            toast.className = 'toast flex items-center gap-3 px-5 py-4 rounded-2xl ' + bg + ' text-white shadow-[0_10px_40px_rgba(0,0,0,0.25)] border border-white/20 backdrop-blur-sm min-w-[260px]';
+            toast.innerHTML =
+                '<div class="flex-shrink-0">' + icon + '</div>' +
+                '<div class="flex-1 min-w-0">' +
+                '<p class="text-sm font-semibold leading-tight">' + (isError ? 'Gagal' : 'Berhasil') + '</p>' +
+                '<p class="text-xs opacity-90 leading-tight mt-0.5">' + message + '</p>' +
+                '</div>' +
+                '<button onclick="this.parentElement.style.animation=\'toastOut 0.3s ease forwards\'; setTimeout(()=>this.parentElement.remove(),300)" class="w-7 h-7 rounded-full hover:bg-white/20 flex items-center justify-center transition shrink-0">' +
+                '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>' +
+                '</button>';
+            container.appendChild(toast);
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.style.animation = 'toastOut 0.3s ease forwards';
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, duration);
+        }
 
-function loadRiwayat() {
-    const riwayat = JSON.parse(localStorage.getItem('terapiRiwayat') || '[]');
-    const container = document.getElementById('riwayat-container');
-    
-    if (riwayat.length === 0) {
-        container.innerHTML = '<p class="text-gray-500 text-center py-8">Belum ada riwayat sesi terapi</p>';
-        return;
-    }
-    
-    container.innerHTML = '';
-    riwayat.reverse().forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'p-4 border border-gray-200 rounded-xl hover:bg-gray-50 transition';
-        div.innerHTML = `
-            <div class="flex justify-between items-start">
-                <div>
-                    <p class="font-semibold text-gray-800">${item.nama || 'Pasien'}</p>
-                    <p class="text-sm text-gray-600">${item.tanggal || '-'}</p>
-                </div>
-                <span class="px-3 py-1 bg-teal-100 text-teal-800 text-xs rounded-full">Skor SURE: ${item.sureScore || 0}/4</span>
-            </div>
-        `;
-        container.appendChild(div);
-    });
-}
+        function showSuccessScreenToast(screenNumber) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast flex items-center gap-3 px-5 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-green-600 text-white shadow-[0_10px_40px_rgba(0,0,0,0.25)] border border-white/20 backdrop-blur-sm min-w-[280px]';
+            toast.innerHTML =
+                '<div class="flex-shrink-0">' +
+                '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>' +
+                '</div>' +
+                '<div class="flex-1 min-w-0">' +
+                '<p class="text-sm font-semibold leading-tight">Layar Berhasil Dilengkapi!</p>' +
+                '<p class="text-xs opacity-90 leading-tight mt-0.5">Anda telah berhasil melengkapi Layar ' + screenNumber + ', lanjut ke layar berikutnya.</p>' +
+                '</div>' +
+                '<button onclick="this.parentElement.style.animation=\'toastOut 0.3s ease forwards\'; setTimeout(()=>this.parentElement.remove(),300)" class="w-7 h-7 rounded-full hover:bg-white/20 flex items-center justify-center transition shrink-0">' +
+                '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>' +
+                '</button>';
+            container.appendChild(toast);
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.style.animation = 'toastOut 0.3s ease forwards';
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 4000);
+        }
 
-document.getElementById('nama-pasien').addEventListener('input', function(e) {
-    therapyData.nama = e.target.value;
-});
+        function showValidationErrors(errors) {
+            const panel = document.getElementById('validation-error-panel');
+            const list = document.getElementById('validation-error-list');
+            list.innerHTML = '';
+            let total = 0;
+            for (const [field, msgs] of Object.entries(errors)) {
+                const label = field.replace(/_/g, ' ');
+                msgs.forEach(msg => {
+                    const li = document.createElement('li');
+                    li.className = 'flex items-center gap-2 text-sm text-red-700';
+                    li.innerHTML = '<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' +
+                        '<strong>' + label + ':</strong> ' + msg;
+                    list.appendChild(li);
+                    total++;
+                });
+            }
+            panel.classList.remove('hidden');
+            panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showToast('Terdapat ' + total + ' kesalahan pengisian data', 'error', 7000);
+        }
 
-document.getElementById('usia-pasien').addEventListener('input', function(e) {
-    therapyData.usia = e.target.value;
-});
+        function hideValidationErrors() {
+            document.getElementById('validation-error-panel').classList.add('hidden');
+        }
+        let currentScreen = 0;
+        let timerInterval = null;
+        let remainingTime = 60;
+        let formData = {
+            nama_pasien: '',
+            usia: null,
+            riwayat_kambuh: null,
+            skala_mmrc: null,
+            pendamping: '',
+            jenis_inhaler: '',
+            checklist_inhaler: [],
+            hari_pemakaian: 7,
+            duration: 0,
+            kendala_kepatuhan: [],
+            pilihan_terapi: null,
+            jawaban_fakta_mitos: {},
+            prioritas_tujuan: null,
+            dukungan_pendamping: '',
+            kesepakatan_tindakan: [],
+            harapan_pasien: null,
+            dukungan_pendamping_baru: '',
+            rencana_bertahap: [],
+            paham_manfaat: null,
+            pilihan_tepat: null,
+            dukungan_cukup: null,
+            yakin_keputusan: null
+        };
 
-document.getElementById('suara-pendamping').addEventListener('input', function(e) {
-    therapyData.suaraPendamping = e.target.value;
-});
-</script>
+        function startLatihanNapas() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                remainingTime = 60;
+                document.getElementById('timer-display').textContent = '60 detik';
+                document.getElementById('start-timer-btn').textContent = '▶ Mulai Latihan 60 Detik';
+                return;
+            }
+            
+            remainingTime = 60;
+            document.getElementById('start-timer-btn').textContent = '⏹ Hentikan Latihan';
+            
+            timerInterval = setInterval(() => {
+                remainingTime--;
+                document.getElementById('timer-display').textContent = remainingTime + ' detik';
+                
+                if (remainingTime <= 0) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    document.getElementById('timer-display').textContent = 'Selesai!';
+                    document.getElementById('start-timer-btn').textContent = '▶ Mulai Ulang';
+                    showToast('Latihan napas selesai!', 'success');
+                }
+            }, 1000);
+        }
 
-<style>
-@media print {
-    nav, .no-print, button {
-        display: none !important;
-    }
-    .screen-container, #paspor-container {
-        display: block !important;
-        position: relative !important;
-    }
-}
-</style>
+        document.getElementById('hari-pemakaian').addEventListener('input', function(e) {
+            document.getElementById('hari-value').textContent = e.target.value + ' hari';
+            formData.hari_pemakaian = parseInt(e.target.value);
+        });
+
+        function updateProgress() {
+            // 6 screens (0-5), progress calculation remains /5 for 0%-100% range
+            const progress = (currentScreen / 5) * 100;
+            // Display as "Layar 1 dari 6" to "Layar 6 dari 6" for user-friendly display
+            document.getElementById('progress-bar').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = `Layar ${currentScreen + 1} dari 6`;
+        }
+
+        function isScreenComplete(screen) {
+            if (screen === 0) {
+                return formData.nama_pasien && formData.usia && formData.riwayat_kambuh !== null && formData.skala_mmrc !== null && formData.pendamping;
+            } else if (screen === 1) {
+                return formData.jenis_inhaler && formData.checklist_inhaler.length > 0;
+            } else if (screen === 2) {
+                return formData.pilihan_terapi !== null && Object.keys(formData.jawaban_fakta_mitos).length >= 10;
+            } else if (screen === 3) {
+                return formData.prioritas_tujuan !== null && formData.dukungan_pendamping && formData.kesepakatan_tindakan.length > 0;
+            } else if (screen === 4) {
+                return formData.harapan_pasien !== null && formData.dukungan_pendamping_baru && formData.rencana_bertahap.length > 0 && formData.paham_manfaat !== null && formData.pilihan_tepat !== null && formData.dukungan_cukup !== null && formData.yakin_keputusan !== null;
+            } else if (screen === 5) {
+                return true; // Summary screen doesn't need validation
+            }
+            return true;
+        }
+
+        function nextScreen(screen) {
+            if (currentScreen < 5 && isScreenComplete(currentScreen)) {
+                showSuccessScreenToast(currentScreen);
+            }
+            document.querySelectorAll('.screen-container').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`screen-${screen}`).classList.remove('hidden');
+            currentScreen = screen;
+            updateProgress();
+            
+            // If navigating to summary screen, populate it with data
+            if (screen === 5) {
+                populateSummaryScreen();
+            }
+        }
+
+        function prevScreen(screen) {
+            document.querySelectorAll('.screen-container').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`screen-${screen}`).classList.remove('hidden');
+            currentScreen = screen;
+            updateProgress();
+        }
+
+        function pilihKambuh(val) {
+            document.querySelectorAll('.kambuh-btn').forEach(btn => {
+                btn.classList.remove('border-teal-500', 'bg-teal-50', 'selected');
+            });
+            document.querySelector(`.kambuh-btn[data-value="${val}"]`).classList.add('border-teal-500', 'bg-teal-50', 'selected');
+            formData.riwayat_kambuh = val;
+        }
+
+        function pilihMmrc(val) {
+            document.querySelectorAll('.mmrc-btn').forEach(btn => {
+                btn.classList.remove('border-teal-500', 'bg-teal-50', 'selected');
+            });
+            document.querySelector(`.mmrc-btn[data-value="${val}"]`).classList.add('border-teal-500', 'bg-teal-50', 'selected');
+            formData.skala_mmrc = val;
+        }
+
+        function pilihPendamping(val) {
+            document.querySelectorAll('.pendamping-btn').forEach(btn => {
+                btn.classList.remove('border-teal-500', 'bg-teal-50', 'selected');
+            });
+            document.querySelector(`.pendamping-btn[data-value="${val}"]`).classList.add('border-teal-500', 'bg-teal-50', 'selected');
+            formData.pendamping = val;
+        }
+
+        function pilihInhaler(val) {
+            document.querySelectorAll('.inhaler-btn').forEach(btn => {
+                btn.classList.remove('border-teal-500', 'bg-teal-50', 'selected');
+            });
+            document.querySelector(`.inhaler-btn[data-value="${val}"]`).classList.add('border-teal-500', 'bg-teal-50', 'selected');
+            formData.jenis_inhaler = val;
+        }
+
+        function pilihTerapi(val) {
+            document.querySelectorAll('.terapi-btn').forEach(btn => {
+                btn.classList.remove('border-teal-500', 'bg-teal-50', 'selected');
+            });
+            document.querySelector(`.terapi-btn[data-value="${val}"]`).classList.add('border-teal-500', 'bg-teal-50', 'selected');
+            formData.pilihan_terapi = val;
+        }
+
+        const fmExplanations = [
+            { fakta: 'Mitos! Jamu herbal tidak dapat menyembuhkan total PPOK dalam seminggu. PPOK adalah penyakit paru kronis yang perlu pengobatan jangka panjang dari dokter.', mitos: 'Benar, ini adalah Mitos! Jamu herbal tidak dapat menyembuhkan total PPOK dalam seminggu. PPOK adalah penyakit paru kronis yang perlu pengobatan jangka panjang dari dokter.' },
+            { fakta: 'Mitos! Menghentikan inhaler dokter hanya karena minum ramuan alami sangat berbahaya dan dapat memicu serangan sesak berat.', mitos: 'Benar, ini adalah Mitos! Menghentikan inhaler dokter hanya karena minum ramuan alami sangat berbahaya dan dapat memicu serangan sesak berat.' },
+            { fakta: 'Mitos! Inhaler yang diresepkan dokter aman dan tidak menyebabkan kerusakan paru atau ketagihan jika digunakan sesuai petunjuk.', mitos: 'Benar, ini adalah Mitos! Inhaler yang diresepkan dokter aman dan tidak menyebabkan kerusakan paru atau ketagihan jika digunakan sesuai petunjuk.' },
+            { fakta: 'Fakta! Banyak kasus inhaler terasa kurang mempan karena teknik menghirup yang salah, bukan karena obatnya tidak bekerja.', mitos: 'Benar, ini adalah Fakta! Banyak kasus inhaler terasa kurang mempan karena teknik menghirup yang salah, bukan karena obatnya tidak bekerja.' },
+            { fakta: 'Mitos! Jalan kaki bertahap justru memperkuat otot napas, bukan membuat napas putus. Mulailah dengan jarak pendek secara rutin.', mitos: 'Benar, ini adalah Mitos! Jalan kaki bertahap justru memperkuat otot napas, bukan membuat napas putus. Mulailah dengan jarak pendek secara rutin.' },
+            { fakta: 'Fakta! Terlalu banyak diam dan tiduran akan membuat otot tubuh melemah dan sesak semakin sering muncul.', mitos: 'Benar, ini adalah Fakta! Terlalu banyak diam dan tiduran akan membuat otot tubuh melemah dan sesak semakin sering muncul.' },
+            { fakta: 'Mitos! Tidak ada minuman rebusan yang dapat "mencuci bersih" paru-paru. Klaim ini tidak memiliki bukti medis yang kuat.', mitos: 'Benar, ini adalah Mitos! Tidak ada minuman rebusan yang dapat "mencuci bersih" paru-paru. Klaim ini tidak memiliki bukti medis yang kuat.' },
+            { fakta: 'Mitos! Testimoni di kolom komentar medsos tidak dapat dijadikan acuan umum. Setiap orang memiliki kondisi kesehatan yang berbeda.', mitos: 'Benar, ini adalah Mitos! Testimoni di kolom komentar medsos tidak dapat dijadikan acuan umum. Setiap orang memiliki kondisi kesehatan yang berbeda.' },
+            { fakta: 'Fakta! Teknik tiup napas pelan lewat bibir mencucu adalah cara yang terbukti meredakan panik saat sesak muncul.', mitos: 'Benar, ini adalah Fakta! Teknik tiup napas pelan lewat bibir mencucu adalah cara yang terbukti meredakan panik saat sesak muncul.' },
+            { fakta: 'Fakta! Berhenti obat dokter tanpa izin dapat memperburuk gejala dan meningkatkan risiko masuk IGD akibat serangan sesak berat.', mitos: 'Benar, ini adalah Fakta! Berhenti obat dokter tanpa izin dapat memperburuk gejala dan meningkatkan risiko masuk IGD akibat serangan sesak berat.' }
+        ];
+
+        function pilihFaktaMitos(q, v) {
+            document.querySelectorAll(`.fm-btn[data-q="${q}"]`).forEach(btn => {
+                btn.classList.remove('border-teal-500', 'bg-teal-500', 'text-white', 'border-red-500', 'bg-red-500');
+                btn.classList.add('border-gray-300');
+            });
+            const selectedBtn = document.querySelector(`.fm-btn[data-q="${q}"][data-v="${v}"]`);
+            const questionContainer = document.querySelector(`.fm-question[data-q="${q}"]`);
+            const explanationDiv = questionContainer.querySelector('.fm-explanation');
+            
+            if (v === 'fakta') {
+                selectedBtn.classList.remove('border-gray-300');
+                selectedBtn.classList.add('border-teal-500', 'bg-teal-500', 'text-white');
+                explanationDiv.className = 'fm-explanation p-4 rounded-xl mt-3 bg-gradient-to-r from-green-50 to-teal-50 border border-green-200';
+                explanationDiv.innerHTML = '<p class="text-green-800 font-medium">' + fmExplanations[q].fakta + '</p>';
+            } else {
+                selectedBtn.classList.remove('border-gray-300');
+                selectedBtn.classList.add('border-red-500', 'bg-red-500', 'text-white');
+                explanationDiv.className = 'fm-explanation p-4 rounded-xl mt-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200';
+                explanationDiv.innerHTML = '<p class="text-blue-800 font-medium">' + fmExplanations[q].mitos + '</p>';
+            }
+            
+            explanationDiv.classList.remove('hidden');
+            formData.jawaban_fakta_mitos[q] = v;
+            console.log('FaktaMitos selected:', q, v, formData.jawaban_fakta_mitos);
+        }
+
+        function pilihPrioritas(val) {
+            document.querySelectorAll('.prioritas-btn').forEach(btn => {
+                btn.classList.remove('border-teal-500', 'bg-teal-50', 'selected');
+            });
+            document.querySelector(`.prioritas-btn[data-value="${val}"]`).classList.add('border-teal-500', 'bg-teal-50', 'selected');
+            formData.prioritas_tujuan = val;
+        }
+
+        function pilihSure(val) {
+            document.querySelectorAll('.sure-btn').forEach(btn => {
+                btn.classList.remove('border-teal-500', 'bg-teal-50', 'selected');
+            });
+            document.querySelector(`.sure-btn[data-value="${val}"]`).classList.add('border-teal-500', 'bg-teal-50', 'selected');
+            formData.skor_sure = val;
+        }
+
+        document.getElementById('nama-pasien').addEventListener('input', function(e) {
+            formData.nama_pasien = e.target.value;
+        });
+
+        document.getElementById('usia-pasien').addEventListener('input', function(e) {
+            formData.usia = parseInt(e.target.value) || null;
+        });
+
+        function isiContohKasus() {
+            document.getElementById('nama-pasien').value = 'Tn. R';
+            document.getElementById('usia-pasien').value = 68;
+            pilihKambuh(2);
+            pilihMmrc(3);
+            pilihPendamping('pasangan');
+        }
+
+        function resetSession() {
+            currentScreen = 0;
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            remainingTime = 60;
+            formData = {
+                nama_pasien: '',
+                usia: null,
+                riwayat_kambuh: null,
+                skala_mmrc: null,
+                pendamping: '',
+                jenis_inhaler: '',
+                duration: 0,
+                checklist_inhaler: [],
+                hari_pemakaian: 7,
+                kendala_kepatuhan: [],
+                pilihan_terapi: null,
+                jawaban_fakta_mitos: {},
+                prioritas_tujuan: null,
+                dukungan_pendamping: '',
+                kesepakatan_tindakan: [],
+                harapan_pasien: null,
+                dukungan_pendamping_baru: '',
+                rencana_bertahap: [],
+                paham_manfaat: null,
+                pilihan_tepat: null,
+                dukungan_cukup: null,
+                yakin_keputusan: null
+            };
+            document.querySelectorAll('.screen-container').forEach(el => el.classList.add('hidden'));
+            document.getElementById('screen-0').classList.remove('hidden');
+            document.getElementById('success-message').classList.add('hidden');
+            document.querySelectorAll('.kambuh-btn, .mmrc-btn, .pendamping-btn, .inhaler-btn, .terapi-btn, .prioritas-btn, .sure-btn').forEach(btn => {
+                btn.classList.remove('border-teal-500', 'bg-teal-50', 'selected', 'border-teal-500', 'bg-teal-500', 'text-white', 'border-red-500', 'bg-red-500');
+            });
+            document.querySelectorAll('.checklist-inhaler, .kendala-kepatuhan, .kesepakatan-tindakan, .jawaban-sure').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.fm-explanation').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.fm-btn').forEach(btn => {
+                btn.classList.remove('border-teal-500', 'bg-teal-500', 'text-white', 'border-red-500', 'bg-red-500');
+                btn.classList.add('border-gray-300');
+            });
+            document.getElementById('hari-pemakaian').value = 7;
+            document.getElementById('hari-value').textContent = '7 hari';
+            document.getElementById('dukungan-pendamping').value = '';
+            document.getElementById('dukungan-pendamping-baru').value = '';
+            document.getElementById('nama-pasien').value = '';
+            document.getElementById('usia-pasien').value = '';
+            const timerDisplay = document.getElementById('timer-display');
+            if (timerDisplay) timerDisplay.textContent = '60 detik';
+            const startTimerBtn = document.getElementById('start-timer-btn');
+            if (startTimerBtn) startTimerBtn.textContent = '▶ Mulai Latihan 60 Detik';
+            updateProgress();
+        }
+
+        function simpanData() {
+            // Collect all form data
+            formData.nama_pasien = document.getElementById('nama-pasien').value;
+            formData.usia = parseInt(document.getElementById('usia-pasien').value) || null;
+            formData.checklist_inhaler = Array.from(document.querySelectorAll('.checklist-inhaler:checked')).map(el => el.value);
+            formData.kendala_kepatuhan = Array.from(document.querySelectorAll('.kendala-kepatuhan:checked')).map(el => el.value);
+            formData.dukungan_pendamping = document.getElementById('dukungan-pendamping').value;
+            formData.kesepakatan_tindakan = Array.from(document.querySelectorAll('.kesepakatan-tindakan:checked')).map(el => el.value);
+            formData.harapan_pasien = document.querySelector('input[name="harapan-pasien"]:checked')?.value || null;
+            formData.dukungan_pendamping_baru = document.getElementById('dukungan-pendamping-baru').value;
+            formData.rencana_bertahap = Array.from(document.querySelectorAll('.rencana-bertahap:checked')).map(el => el.value);
+            formData.paham_manfaat = document.querySelector('input[name="paham-manfaat"]:checked')?.value || null;
+            formData.pilihan_tepat = document.querySelector('input[name="pilihan-tepat"]:checked')?.value || null;
+            formData.dukungan_cukup = document.querySelector('input[name="dukungan-cukup"]:checked')?.value || null;
+            formData.yakin_keputusan = document.querySelector('input[name="yakin-keputusan"]:checked')?.value || null;
+            
+            // Also get pilihan_terapi and prioritas_tujuan from form
+            formData.pilihan_terapi = document.querySelector('input[name="pilihan-terapi"]:checked')?.value || null;
+            formData.prioritas_tujuan = document.querySelector('input[name="prioritas-tujuan"]:checked')?.value || null;
+            formData.riwayat_kambuh = document.querySelector('input[name="riwayat-kambuh"]:checked')?.value || null;
+            formData.skala_mmrc = document.querySelector('input[name="skala-mmrc"]:checked')?.value || null;
+            formData.jenis_inhaler = document.querySelector('input[name="jenis-inhaler"]:checked')?.value || null;
+
+            // Validate ALL required fields are filled
+            // Check for empty/null values - use explicit checks to avoid JavaScript falsy issues
+            const isNamaValid = formData.nama_pasien && formData.nama_pasien.trim() !== '';
+            const isUsiaValid = formData.usia !== null && !isNaN(formData.usia) && formData.usia > 0;
+            const isRiwayatValid = formData.riwayat_kambuh !== null;
+            const isMMRCValid = formData.skala_mmrc !== null;
+            const isPendampingValid = formData.pendamping && formData.pendamping.trim() !== '';
+            const isJenisInhalerValid = formData.jenis_inhaler !== null;
+            const isPilihanTerapiValid = formData.pilihan_terapi !== null;
+            const isPrioritasValid = formData.prioritas_tujuan !== null;
+            const isHarapanValid = formData.harapan_pasien !== null;
+            const isDukunganBaruValid = formData.dukungan_pendamping_baru && formData.dukungan_pendamping_baru.trim() !== '';
+            const isRencanaValid = formData.rencana_bertahap.length > 0;
+            const isPahamValid = formData.paham_manfaat !== null;
+            const isPilihanTepatValid = formData.pilihan_tepat !== null;
+            const isDukunganCukupValid = formData.dukungan_cukup !== null;
+            const isYakinValid = formData.yakin_keputusan !== null;
+
+            // If any field is invalid, show error and stop
+            if (!isNamaValid || !isUsiaValid || !isRiwayatValid || !isMMRCValid || !isPendampingValid || !isJenisInhalerValid || !isPilihanTerapiValid || !isPrioritasValid || !isHarapanValid || !isDukunganBaruValid || !isRencanaValid || !isPahamValid || !isPilihanTepatValid || !isDukunganCukupValid || !isYakinValid) {
+                showToast('Harap lengkapi semua field yang wajib diisi!', 'error');
+                hideValidationErrors();
+                return;
+            }
+
+            console.log('Sending data:', formData);
+
+            fetch('<?php echo e(route('pasien.terapi.store')); ?>', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(res => {
+                console.log('Response status:', res.status, 'Content-Type:', res.headers.get('content-type'));
+                if (!res.ok) {
+                    return res.text().then(text => {
+                        try {
+                            const errData = JSON.parse(text);
+                            throw { status: res.status, json: errData };
+                        } catch (e) {
+                            throw { status: res.status, text: text.substring(0, 200) };
+                        }
+                    });
+                }
+                return res.json();
+            })
+            .then(data => {
+                console.log('Server response:', data);
+                hideValidationErrors();
+                if (data.success) {
+                    showToast('Data terapi berhasil disimpan!', 'success');
+                    generatePDF();
+                    document.getElementById('success-message').classList.remove('hidden');
+                } else {
+                    showToast('Gagal menyimpan: ' + (data.message || 'Terjadi kesalahan server'), 'error');
+                    if (data.errors) {
+                        showValidationErrors(data.errors);
+                    }
+                }
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                let errorMsg = 'Terjadi kesalahan jaringan';
+                if (err.text) {
+                    errorMsg = 'Server mengembalikan respons tidak valid (bukan JSON). Status: ' + err.status;
+                } else if (err.json && err.json.message) {
+                    errorMsg = 'Gagal menyimpan: ' + err.json.message;
+                    if (err.json.errors) {
+                        showValidationErrors(err.json.errors);
+                    }
+                } else if (err.message) {
+                    errorMsg = 'Terjadi kesalahan jaringan: ' + err.message;
+                }
+                showToast(errorMsg, 'error');
+                hideValidationErrors();
+            });
+        }
+
+        function populateSummaryScreen() {
+            const riwayatKambuhText = { 'tidak_pernah': 'Tidak Pernah', '1x': '1 Kali', '2x': '2 Kali', '3x_lebih': '3 Kali atau Lebih' };
+            const mmrcText = ['Tidak Sesak', 'Sesak Berat Aktivitas', 'Sesak Jalan Cepat', 'Sesak Jalan Pelan', 'Sesak Ringan', 'Sesak Berat'];
+            const inhalerText = { 'kuning': 'Inhaler Kuning (Seretide)', 'hijau': 'Inhaler Hijau (Ventolin)', 'biru': 'Inhaler Biru (Atrovent)', 'lainnya': 'Lainnya' };
+            const terapiText = { 'rutin': 'Terapi Rutin', 'latihan': 'Latihan Paru', 'kombinasi': 'Kombinasi Rutin + Latihan' };
+            const prioritasText = { 'tidak_ngos': 'Aktivitas Tanpa Ngos-ngosan', 'tidak_rawat': 'Tidak Rawat Inap', 'ibadah': 'Bisa Beribadah Bersama Keluarga' };
+            const harapanText = { 'aktivitas': 'Aktivitas Tanpa Ngos-ngosan', 'rawat': 'Tidak Perlu Rawat Inap', 'ibadah': 'Bisa Beribadah Bersama Keluarga' };
+            const rencanaText = { 'inhaler': 'Perbaiki Cara Pakai Inhaler', 'latihan': 'Latihan Paru Intensitas Ringan', 'obat': 'Tetap Pakai Obat Dokter' };
+            
+            document.getElementById('summary-nama').textContent = formData.nama_pasien || '-';
+            document.getElementById('summary-usia').textContent = (formData.usia ? formData.usia + ' tahun' : '-');
+            document.getElementById('summary-kambuh').textContent = (formData.riwayat_kambuh ? riwayatKambuhText[formData.riwayat_kambuh] : '-');
+            document.getElementById('summary-mmrc').textContent = (formData.skala_mmrc !== null ? mmrcText[formData.skala_mmrc] : '-');
+            document.getElementById('summary-pendamping').textContent = formData.pendamping || '-';
+            document.getElementById('summary-inhaler').textContent = (formData.jenis_inhaler ? inhalerText[formData.jenis_inhaler] : '-');
+            document.getElementById('summary-hari').textContent = (formData.hari_pemakaian ? formData.hari_pemakaian + ' hari/minggu' : '-');
+            document.getElementById('summary-checklist').textContent = (formData.checklist_inhaler.length > 0 ? formData.checklist_inhaler.join(', ') : '-');
+            document.getElementById('summary-kendala').textContent = (formData.kendala_kepatuhan.length > 0 ? formData.kendala_kepatuhan.join(', ') : '-');
+            document.getElementById('summary-terapi').textContent = (formData.pilihan_terapi ? terapiText[formData.pilihan_terapi] : '-');
+            document.getElementById('summary-fakta').textContent = Object.keys(formData.jawaban_fakta_mitos).length + ' soal terjawab';
+            document.getElementById('summary-prioritas').textContent = (formData.prioritas_tujuan ? prioritasText[formData.prioritas_tujuan] : '-');
+            document.getElementById('summary-dukungan').textContent = formData.dukungan_pendamping || '-';
+            document.getElementById('summary-kesepakatan').textContent = (formData.kesepakatan_tindakan.length > 0 ? formData.kesepakatan_tindakan.join(', ') : '-');
+            document.getElementById('summary-harapan').textContent = (formData.harapan_pasien ? harapanText[formData.harapan_pasien] : '-');
+            document.getElementById('summary-suara').textContent = formData.dukungan_pendamping_baru || '-';
+            document.getElementById('summary-rencana').textContent = (formData.rencana_bertahap.length > 0 ? formData.rencana_bertahap.map(r => rencanaText[r]).join(', ') : '-');
+            
+            const kemantapan = [];
+            if (formData.paham_manfaat) kemantapan.push('Paham Manfaat: ' + formData.paham_manfaat);
+            if (formData.pilihan_tepat) kemantapan.push('Pilihan Tepat: ' + formData.pilihan_tepat);
+            if (formData.dukungan_cukup) kemantapan.push('Dukungan Cukup: ' + formData.dukungan_cukup);
+            if (formData.yakin_keputusan) kemantapan.push('Yakin: ' + formData.yakin_keputusan);
+            document.getElementById('summary-kemantapan').textContent = kemantapan.length > 0 ? kemantapan.join(' | ') : '-';
+        }
+
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const margin = 20;
+            let yPos = margin;
+            
+            doc.setFillColor(13, 148, 136);
+            doc.rect(0, 0, pageWidth, 40, 'F');
+            
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(24);
+            doc.setFont('helvetica', 'bold');
+            doc.text('PASPOR KEPUTUSAN TERAPI PPOK', pageWidth / 2, 25, { align: 'center' });
+            
+            yPos = 55;
+            
+            doc.setFillColor(240, 253, 250);
+            doc.roundedRect(margin, yPos, pageWidth - (margin * 2), 45, 8, 8, 'F');
+            
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('DATA DASAR PASIEN', margin + 8, yPos + 12);
+            
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'normal');
+            const riwayatKambuhText = { 'tidak_pernah': 'Tidak Pernah', '1x': '1 Kali', '2x': '2 Kali', '3x_lebih': '3 Kali atau Lebih' };
+            const mmrcText = ['Tidak Sesak', 'Sesak Berat Aktivitas', 'Sesak Jalan Cepat', 'Sesak Jalan Pelan', 'Sesak Ringan', 'Sesak Berat'];
+            const inhalerText = { 'kuning': 'Inhaler Kuning (Seretide)', 'hijau': 'Inhaler Hijau (Ventolin)', 'biru': 'Inhaler Biru (Atrovent)', 'lainnya': 'Lainnya' };
+            const terapiText = { 'rutin': 'Terapi Rutin', 'latihan': 'Latihan Paru', 'kombinasi': 'Kombinasi Rutin + Latihan' };
+            const prioritasText = { 'tidak_ngos': 'Aktivitas Tanpa Ngos-ngosan', 'tidak_rawat': 'Tidak Rawat Inap', 'ibadah': 'Bisa Beribadah Bersama Keluarga' };
+            const harapanText = { 'aktivitas': 'Aktivitas Tanpa Ngos-ngosan', 'rawat': 'Tidak Perlu Rawat Inap', 'ibadah': 'Bisa Beribadah Bersama Keluarga' };
+            const rencanaText = { 'inhaler': 'Perbaiki Cara Pakai Inhaler', 'latihan': 'Latihan Paru Intensitas Ringan', 'obat': 'Tetap Pakai Obat Dokter' };
+            
+            const leftCol = margin + 8;
+            const rightCol = pageWidth / 2 + 8;
+            doc.text('Nama Pasien', leftCol, yPos + 25);
+            doc.text(': ' + (formData.nama_pasien || '-'), leftCol + 35, yPos + 25);
+            doc.text('Usia', rightCol, yPos + 25);
+            doc.text(': ' + (formData.usia ? formData.usia + ' tahun' : '-'), rightCol + 20, yPos + 25);
+            doc.text('Tanggal', leftCol, yPos + 35);
+            doc.text(': ' + new Date().toLocaleDateString('id-ID'), leftCol + 35, yPos + 35);
+            doc.text('Pendamping', rightCol, yPos + 35);
+            doc.text(': ' + (formData.pendamping || '-'), rightCol + 20, yPos + 35);
+            
+            yPos += 55;
+            
+            doc.setFillColor(240, 253, 250);
+            doc.roundedRect(margin, yPos, pageWidth - (margin * 2), 35, 8, 8, 'F');
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('PROFIL PENGGUNAAN INHALER', margin + 8, yPos + 12);
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Jenis Inhaler', leftCol, yPos + 25);
+            doc.text(': ' + (formData.jenis_inhaler ? inhalerText[formData.jenis_inhaler] : '-'), leftCol + 35, yPos + 25);
+            doc.text('Hari Pakai', rightCol, yPos + 25);
+            doc.text(': ' + (formData.hari_pemakaian ? formData.hari_pemakaian + ' hari/minggu' : '-'), rightCol + 20, yPos + 25);
+            
+            yPos += 45;
+            
+            doc.setFillColor(240, 253, 250);
+            doc.roundedRect(margin, yPos, pageWidth - (margin * 2), 35, 8, 8, 'F');
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('PILIHAN TERAPI & FAKTA MITOS', margin + 8, yPos + 12);
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Pilihan Terapi', leftCol, yPos + 25);
+            doc.text(': ' + (formData.pilihan_terapi ? terapiText[formData.pilihan_terapi] : '-'), leftCol + 35, yPos + 25);
+            doc.text('Jawaban', rightCol, yPos + 25);
+            doc.text(': ' + Object.keys(formData.jawaban_fakta_mitos).length + ' soal', rightCol + 20, yPos + 25);
+            
+            yPos += 45;
+            
+            doc.setFillColor(240, 253, 250);
+            doc.roundedRect(margin, yPos, pageWidth - (margin * 2), 35, 8, 8, 'F');
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('PRIORITAS & KESEPAKATAN', margin + 8, yPos + 12);
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Prioritas', leftCol, yPos + 25);
+            doc.text(': ' + (formData.prioritas_tujuan ? prioritasText[formData.prioritas_tujuan] : '-'), leftCol + 35, yPos + 25);
+            doc.text('Dukungan', rightCol, yPos + 25);
+            doc.text(': ' + (formData.dukungan_pendamping || '-'), rightCol + 20, yPos + 25);
+            
+            yPos += 45;
+            
+            doc.setFillColor(240, 253, 250);
+            doc.roundedRect(margin, yPos, pageWidth - (margin * 2), 50, 8, 8, 'F');
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('HARAPAN & KEPUTUSAN AKHIR', margin + 8, yPos + 12);
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Harapan Pasien', leftCol, yPos + 25);
+            doc.text(': ' + (formData.harapan_pasien ? harapanText[formData.harapan_pasien] : '-'), leftCol + 35, yPos + 25);
+            doc.text('Rencana Bertahap', leftCol, yPos + 38);
+            doc.text(': ' + (formData.rencana_bertahap.length > 0 ? formData.rencana_bertahap.map(r => rencanaText[r]).join(', ') : '-'), leftCol + 35, yPos + 38);
+            
+            yPos += 60;
+            
+            doc.setDrawColor(200, 200, 200);
+            doc.line(margin, yPos, pageWidth - margin, yPos);
+            
+            yPos += 10;
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            doc.text('Dokumen ini dihasilkan secara otomatis oleh Sistem Sahabat Nafas', pageWidth / 2, yPos, { align: 'center' });
+            
+            doc.save('paspor-terapi-' + (formData.nama_pasien || 'pasien') + '.pdf');
+        }
+        updateProgress();
+    </script>
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('layouts.pasien-nav', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\nurda\project-sahabat-nafas\resources\views/pasien/terapi.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\nurda\project-sahabat-nafas\resources\views/pasien/terapi.blade.php ENDPATH**/ ?>
